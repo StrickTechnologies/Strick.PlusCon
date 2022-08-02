@@ -33,7 +33,7 @@ WL("Hello World!", Color.Red);
 WL("Hello World!", Color.Red, Color.White);
 ```
 >***sample 1 here***
-[Sample 1](/SampleImages/Sample01.jpg)
+![Sample 1](/SampleImages/Sample01.jpg)
 
 To hightlight only a portion of the text, enclose it in brackets ([, ]).
 
