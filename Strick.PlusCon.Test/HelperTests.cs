@@ -20,25 +20,53 @@ public class HelperTests
 	[TestMethod]
 	public void WandWL_Values()
 	{
-		string value = "test [foo]";
-		string expected = "test {df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr}";
 		/*
 		placeholders:
-			{df} - delimiter start foreground color
-			{db} - delimiter start background color
-			{dl}{dr} - left/right delimiter
-			{dfr} - delimiter reset foreground color
-			{dbr} - delimiter reset background color
-			{f} - start foreground color
-			{b} - start background color
-			{br} - reset foreground color
-			{fr} - reset background color
-		 */
+			{df}		delimiter start foreground color
+			{db}		delimiter start background color
+			{dl}{dr}	left/right delimiter
+			{dfr}		delimiter reset foreground color
+			{dbr}		delimiter reset background color
+			{f}			start foreground color
+			{b}			start background color
+			{br}		reset background color
+			{fr}		reset foreground color
+		*/
 
+		string value = "test [foo]";
+		string expected = "test {df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr}";
+		testWandWLV(value, expected);
+
+		value = "[foo] test";
+		expected = "{df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr} test";
 		testWandWLV(value, expected);
 
 		value = "test [foo] [bar]";
 		expected = "test {df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr} {df}{db}{dl}{dbr}{dfr}{f}{b}bar{br}{fr}{df}{db}{dr}{dbr}{dfr}";
+		testWandWLV(value, expected);
+
+		value = "[foo] test [bar]";
+		expected = "{df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr} test {df}{db}{dl}{dbr}{dfr}{f}{b}bar{br}{fr}{df}{db}{dr}{dbr}{dfr}";
+		testWandWLV(value, expected);
+
+		value = "[foo]";
+		expected = "{df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr}";
+		testWandWLV(value, expected);
+
+		value = "[]";
+		expected = "{df}{db}{dl}{dbr}{dfr}{f}{b}{br}{fr}{df}{db}{dr}{dbr}{dfr}";
+		testWandWLV(value, expected);
+
+		value = "[foo] [bar]";
+		expected = "{df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr} {df}{db}{dl}{dbr}{dfr}{f}{b}bar{br}{fr}{df}{db}{dr}{dbr}{dfr}";
+		testWandWLV(value, expected);
+
+		value = "[] [bar]";
+		expected = "{df}{db}{dl}{dbr}{dfr}{f}{b}{br}{fr}{df}{db}{dr}{dbr}{dfr} {df}{db}{dl}{dbr}{dfr}{f}{b}bar{br}{fr}{df}{db}{dr}{dbr}{dfr}";
+		testWandWLV(value, expected);
+
+		value = "[] []";
+		expected = "{df}{db}{dl}{dbr}{dfr}{f}{b}{br}{fr}{df}{db}{dr}{dbr}{dfr} {df}{db}{dl}{dbr}{dfr}{f}{b}{br}{fr}{df}{db}{dr}{dbr}{dfr}";
 		testWandWLV(value, expected);
 	}
 

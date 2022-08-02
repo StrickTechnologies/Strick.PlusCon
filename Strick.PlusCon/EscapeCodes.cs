@@ -10,7 +10,7 @@ namespace Strick.PlusCon;
 
 
 /// <summary>
-/// 
+/// Escape codes used for formatting console output
 /// </summary>
 public static class EscapeCodes
 {

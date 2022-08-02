@@ -7,7 +7,7 @@ namespace Strick.PlusCon;
 
 
 /// <summary>
-/// A class containing color utilities
+/// Methods for working with colors
 /// </summary>
 public static class ColorUtilities
 {

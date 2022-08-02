@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Runtime.InteropServices;
 
 using static Strick.PlusCon.Helpers;
 
@@ -10,11 +11,15 @@ internal class Program
 {
 	static void Main(string[] args)
 	{
-		WL("   S t r i c k . P l u s C o n   ".Gradient(Color.White, Color.Red, Color.White).Colorize(null, Color.DarkSlateGray).Reverse());
+		//WL("   S t r i c k . P l u s C o n   ".Gradient(Color.White, Color.Red, Color.White).Colorize(null, Color.DarkSlateGray).Reverse());
+		//WL(); 
+		//Console.SetWindowSize(45, 10);
+		//Console.SetBufferSize(45, 10);
+		DocSamples.go(true);
 		//WL("1. Show Values");
 		//WL("2. Show Gradients");
 
-		WL(); showValuesW();
+		//WL(); showValuesW();
 		//WL(); showValuesC();
 		//WL(); showValuesOther();
 		//WL(); tryStuff();
@@ -141,7 +146,9 @@ internal class Program
 		Color clrB = Color.Silver;
 		string value = "bar!";
 
-		WL($"Showing values using the [w] & [wl] methods.", Color.Lime);
+		W(EscapeCodes.Underline);
+		WL($"Showing values using the [{nameof(W)}] & [{nameof(WL)}] methods.", Color.Lime);
+		W(EscapeCodes.UnderlineReset);
 		WL(value);
 
 		//no delimited values

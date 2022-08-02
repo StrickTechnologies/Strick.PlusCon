@@ -16,7 +16,7 @@ internal static class Expectations
 	private static string csBack = "48";  //ColorSpace.back.AsString();
 
 
-	//don't use named colors... e.g. green has a green component of 128, not 255
+	//don't use named colors... e.g. Color.Green has a green component of 128, not 255
 	public static Color red = Color.FromArgb(255, 255, 0, 0);
 	public static Color green = Color.FromArgb(255, 0, 255, 0);
 	public static Color blue = Color.FromArgb(255, 0, 0, 255);

@@ -46,7 +46,7 @@ public static class Formatting
 	/// <param name="pre">The value to display <i>before</i> <paramref name="value"/> (null or empty string to display nothing)</param>
 	/// <param name="post">The value to display <i>after</i> <paramref name="value"/> (null or empty string to display nothing)</param>
 	/// <param name="ppFore">The foreground color to use for <paramref name="pre"/> and <paramref name="post"/>. If null, the default console color is used.</param>
-	/// <param name="ppBack">The foreground color to use for <paramref name="pre"/> and <paramref name="post"/>. If null, the default console color is used.</param>
+	/// <param name="ppBack">The background color to use for <paramref name="pre"/> and <paramref name="post"/>. If null, the default console color is used.</param>
 	public static string Colorize(this string value, Color? fore, Color? back, string pre, string post, Color? ppFore = null, Color? ppBack = null)
 	{
 		StringBuilder sb = new();
@@ -83,7 +83,7 @@ public static class Formatting
 
 	/// <summary>
 	/// <para>Returns <paramref name="value"/> formatted with the escape sequences to create a color gradient
-	/// for the foreground color.</para>
+	/// for the foreground color. The color varies for each character in <paramref name="value"/></para>
 	/// <para>If the length of <paramref name="value"/> is 1, its color will be <paramref name="start"/>. 
 	/// If the length of <paramref name="value"/> is 2, the color of the two charcters will be <paramref name="start"/> and <paramref name="end"/> respectively. 
 	/// </para>
@@ -114,7 +114,7 @@ public static class Formatting
 
 	/// <summary>
 	/// <para>Returns <paramref name="value"/> formatted with the escape sequences to create a three-color gradient
-	/// for the foreground color.</para>
+	/// for the foreground color. The color varies for each character in <paramref name="value"/></para>
 	/// <para>If the length of <paramref name="value"/> is 1, its color will be <paramref name="start"/>. 
 	/// If the length of <paramref name="value"/> is 2, the color of the two charcters will be <paramref name="start"/> and <paramref name="end"/> respectively. 
 	/// If the length of <paramref name="value"/> is 3, the color of the three charcters will be <paramref name="start"/>, <paramref name="middle"/> and <paramref name="end"/> respectively. 

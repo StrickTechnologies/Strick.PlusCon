@@ -29,6 +29,8 @@ public static class Helpers
 	public static void WL(string message) => Console.WriteLine(message);
 
 
+	//Original version inspired from https://stackoverflow.com/a/60492990/1585667
+
 	/// <summary>
 	/// <inheritdoc cref="W(string)"/>
 	/// Writes any portions of <paramref name="message"/> enclosed in "[" and "]" using the colors <paramref name="fore"/> and <paramref name="back"/>. 
@@ -155,7 +157,7 @@ public static class Helpers
 	/// If <paramref name="prompt"/> is null or white space, simply waits for a key press.
 	/// </summary>
 	/// <param name="prompt">Optional value to display</param>
-	/// <returns>A <see cref="ConsoleKeyInfo"/> object containing the key pressed.</returns>
+	/// <returns>A <see cref="ConsoleKeyInfo"/> object containing information about the key pressed.</returns>
 	public static ConsoleKeyInfo RK(string? prompt = null)
 	{
 		if (!string.IsNullOrWhiteSpace(prompt))
@@ -165,12 +167,12 @@ public static class Helpers
 	}
 
 	/// <summary>
-	/// Displays <paramref name="prompt"/> if not null or white space, then waits for a user input. 
+	/// Displays <paramref name="prompt"/> if not null or white space, then waits for user input. 
 	/// If <paramref name="prompt"/> is null or white space, simply waits for user input.
 	/// <para>Allows the user to enter characters until the <c>&lt;enter&gt;</c> key is pressed.</para>
 	/// </summary>
-	/// <param name="prompt"></param>
-	/// <returns>The characters entered. If only <c>&lt;enter&gt;</c> and empty string is returned.</returns>
+	/// <param name="prompt">Optional value to display</param>
+	/// <returns>The characters entered. If only <c>&lt;enter&gt;</c> an empty string is returned.</returns>
 	public static string? RL(string? prompt = null)
 	{
 		if (!string.IsNullOrWhiteSpace(prompt))
