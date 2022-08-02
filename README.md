@@ -32,7 +32,7 @@ Supply foreground and background colors (`System.Drawing.Color`) to display mess
 WL("Hello World!", Color.Red);
 WL("Hello World!", Color.Red, Color.White);
 ```
->***sample 1 here***
+
 ![Sample 1](/SampleImages/Sample01.jpg)
 
 To hightlight only a portion of the text, enclose it in brackets ([, ]).
@@ -42,7 +42,7 @@ WL("Hello [World]!", Color.Red);
 WL("Hello [World]!", Color.Red, Color.White);
 ```
 
->***sample 2 here***
+![Sample 2](/SampleImages/Sample02.jpg)
 
 To show the brackets (this can be useful if a particular value might be an empty string).
 
@@ -51,7 +51,7 @@ WL("Hello [World]!", Color.Red, null, true);
 WL("Hello [World]!", Color.Red, Color.White, true);
 ```
 
->***sample 3 here***
+![Sample 3](/SampleImages/Sample03.jpg)
 
 To specify the colors of the brackets
 
@@ -60,7 +60,7 @@ WL("Hello [World]!", Color.Red, null, Color.Red);
 WL("Hello [World]!", Color.Red, Color.White, Color.Red, Color.White);
 ```
 
->***sample 4 here***
+![Sample 4](/SampleImages/Sample04.jpg)
 
 ## Other Formatting for Console Output
 *Strick.PlusCon* includes several `string` extension methods that can be used to format information for console output.
@@ -79,7 +79,7 @@ WL("Hello World!".Colorize(Color.Red));
 WL("Hello World!".Colorize(Color.Red, Color.White));
 ```
 
->***sample 5 here***
+![Sample 5](/SampleImages/Sample05.jpg)
 
 You can also wrap your colorized string with pre- and post-values. The pre- and post-values can also, optionally, be rendered with their own colors.
 
@@ -92,7 +92,7 @@ wrapped = "cruel".Colorize(Color.Red, null, "*", "*", Color.Lime);
 WL($"Hello {wrapped} World!");
 ```
 
->***sample 6 here***
+![Sample 6](/SampleImages/Sample06.jpg)
 
 #### Underline
 The `Underline` method wraps a string with underlining escape sequences.
@@ -103,7 +103,7 @@ WL(underlined);
 WL("Hello World!".Underline());
 ```
 
->***sample 7 here***
+![Sample 7](/SampleImages/Sample07.jpg)
 
 #### Reverse
 The `Reverse` method wraps a string with reverse text (foreground and background colors are swapped, or "reversed") escape sequences.
@@ -114,7 +114,7 @@ WL(reversed);
 WL("Hello World!".Reverse());
 ```
 
->***sample 8 here***
+![Sample 8](/SampleImages/Sample08.jpg)
 
 #### Gradient
 The `Gradient` method inserts escape sequences into a string to vary the foreground color of each character in the string.
@@ -129,7 +129,7 @@ WL("***fade-in!***".Gradient(Color.Black, Color.White));
 WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)));
 ```
 
->***sample 9 here***
+![Sample 9](/SampleImages/Sample09.jpg)
 
 #### Combining
 The various formatting methods can be combined to create additional effects.
@@ -143,7 +143,7 @@ WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 
 WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Underline());
 ```
 
->***sample 10 here***
+![Sample 10](/SampleImages/Sample10.jpg)
 
 Note that nesting colors (either foreground or background) is NOT supported.  
 
@@ -157,7 +157,7 @@ WL($"Hello [cruel] World!".Colorize(Color.Red), Color.Lime);
 WL($"{"Hello".Colorize(Color.Red)} {"cruel".Colorize(Color.Lime).Underline()} {"World!".Colorize(Color.Red)}");
 ```
 
->***sample 11 here***
+![Sample 11](/SampleImages/Sample11.jpg)
 
 
 ## Background and Inspiration
