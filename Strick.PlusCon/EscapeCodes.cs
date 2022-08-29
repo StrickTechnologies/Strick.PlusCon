@@ -30,9 +30,9 @@ public static class EscapeCodes
 	/// Returns a string containing a template for a color escape sequence. The template contains the following placeholders:
 	/// <list type="bullet">
 	/// <item><c>{cs}</c>. The color space. Replace with a value from the <see cref="ColorSpace"/> enum.</item>
-	/// <item><c>{r}</c>. The Red component of the color.</item>
-	/// <item><c>{g}</c>. The Green component of the color.</item>
-	/// <item><c>{b}</c>. The Blue component of the color.</item>
+	/// <item><c>{r}</c>. The Red component of the color (a value between 0 and 255, inclusive).</item>
+	/// <item><c>{g}</c>. The Green component of the color (a value between 0 and 255, inclusive).</item>
+	/// <item><c>{b}</c>. The Blue component of the color (a value between 0 and 255, inclusive).</item>
 	/// </list>
 	/// </summary>
 	public static string Color => Escape + "[{cs};2;{r};{g};{b}m";
@@ -40,9 +40,9 @@ public static class EscapeCodes
 	/// <summary>
 	/// Returns a string containing a template for a foreground color escape sequence. The template contains the following placeholders:
 	/// <list type="bullet">
-	/// <item><c>{r}</c>. The Red component of the color.</item>
-	/// <item><c>{g}</c>. The Green component of the color.</item>
-	/// <item><c>{b}</c>. The Blue component of the color.</item>
+	/// <item><c>{r}</c>. The Red component of the color (a value between 0 and 255, inclusive).</item>
+	/// <item><c>{g}</c>. The Green component of the color (a value between 0 and 255, inclusive).</item>
+	/// <item><c>{b}</c>. The Blue component of the color (a value between 0 and 255, inclusive).</item>
 	/// </list>
 	/// </summary>
 	public static string Color_Fore => Color.Replace("{cs}", ColorSpace.fore.AsString());
@@ -50,9 +50,9 @@ public static class EscapeCodes
 	/// <summary>
 	/// Returns a string containing a template for a background color escape sequence. The template contains the following placeholders:
 	/// <list type="bullet">
-	/// <item><c>{r}</c>. The Red component of the color.</item>
-	/// <item><c>{g}</c>. The Green component of the color.</item>
-	/// <item><c>{b}</c>. The Blue component of the color.</item>
+	/// <item><c>{r}</c>. The Red component of the color (a value between 0 and 255, inclusive).</item>
+	/// <item><c>{g}</c>. The Green component of the color (a value between 0 and 255, inclusive).</item>
+	/// <item><c>{b}</c>. The Blue component of the color (a value between 0 and 255, inclusive).</item>
 	/// </list>
 	/// </summary>
 	public static string Color_Back => Color.Replace("{cs}", ColorSpace.back.AsString());

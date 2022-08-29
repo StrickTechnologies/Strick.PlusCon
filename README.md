@@ -7,10 +7,10 @@ Utilities that make working with console apps in .Net easier and more useful.
 
 Shortcut|Console Equivalent|Notes
 -|-|-
-W|Write|Overloads provide functionality to display text in color, or to highlight portions of a text value
-WL|WriteLine|Overloads provide functionality to display text in color, or to highlight portions of a text value
-RK|ReadKey|Includes an optional prompt argument that will be displayed before waiting for user input
-RL|ReadLine|Includes an optional prompt argument that will be displayed before waiting for user input
+W|[Write](https://docs.microsoft.com/en-us/dotnet/api/system.console.write?view=net-6.0)|Overloads provide functionality to display text in color, or to highlight portions of a text value.<br>See the [Write](https://docs.microsoft.com/en-us/dotnet/api/system.console.write?view=net-6.0) doc for specifics on how that works.
+WL|[WriteLine](https://docs.microsoft.com/en-us/dotnet/api/system.console.writeline?view=net-6.0)|Overloads provide functionality to display text in color, or to highlight portions of a text value.<br>See the [WriteLine](https://docs.microsoft.com/en-us/dotnet/api/system.console.writeline?view=net-6.0) doc for specifics on how that works.
+RK|[ReadKey](https://docs.microsoft.com/en-us/dotnet/api/system.console.readkey?view=net-6.0)|Includes an optional prompt argument that will be displayed before waiting for user input.<br>See the [Readkey](https://docs.microsoft.com/en-us/dotnet/api/system.console.readkey?view=net-6.0) doc for specifics on how that works.
+RL|[ReadLine](https://docs.microsoft.com/en-us/dotnet/api/system.console.readline?view=net-6.0)|Includes an optional prompt argument that will be displayed before waiting for user input.<br>See the [Readline](https://docs.microsoft.com/en-us/dotnet/api/system.console.readline?view=net-6.0) doc for specifics on how that works.
 
 Include a `using static` directive in your file to make these shortcuts available without additional qualifying.
 
@@ -33,7 +33,7 @@ WL("Hello World!", Color.Red);
 WL("Hello World!", Color.Red, Color.White);
 ```
 
-![Sample 1](/SampleImages/Sample01.jpg)
+![Sample 1](https://github.com/StrickTechnologies/Strick.PlusCon/blob/master/SampleImages/Sample01.jpg)
 
 To hightlight only a portion of the text, enclose it in brackets ([, ]).
 
@@ -57,7 +57,7 @@ To specify the colors of the brackets
 
 ```c#
 WL("Hello [World]!", Color.Red, null, Color.Red);
-WL("Hello [World]!", Color.Red, Color.White, Color.Red, Color.White);
+WL("Hello [World]!", Color.Red, Color.White, Color.Blue, Color.White);
 ```
 
 ![Sample 4](/SampleImages/Sample04.jpg)
@@ -159,6 +159,15 @@ WL($"{"Hello".Colorize(Color.Red)} {"cruel".Colorize(Color.Lime).Underline()} {"
 
 ![Sample 11](/SampleImages/Sample11.jpg)
 
+## Other Utilities
+### Virtual Terminal
+If you see things that look like this:
+```
+?[38;2;255;0;0mHello world!?[39m
+```
+when you are expting something with colors, you will need to enable virtual terminal mode. This will typically happen if you are running a cosole application from Windows Explorer, the Windows Command Prompt, or Windows PowerShell.
+
+One solution is to run the application from Windows Terminal. Another is to add a call to `ConsoleUtilities.EnableVirtualTerminal` in your application ahead of where you want to use escape sequences to format console output.
 
 ## Background and Inspiration
 Some of the things in this utility (`W` and `WL` in particular) are things I've dragged around from project to project for years -- just generally copy/pasting into a new project whenever I finally tired of typing "Console.WriteLine" (intellisense notwithstanding) over and over. These things are generally used informally for basic testing, and to aid in creating and debugging unit tests.

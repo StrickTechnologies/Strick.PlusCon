@@ -57,7 +57,6 @@ public static class Helpers
 	/// The delimiters are display using the default console colors.</param>
 	public static void W(string message, Color fore, Color? back, bool showDelimiters) => W(message, fore, back, showDelimiters ? Color.Transparent : null);
 
-
 	/// <summary>
 	/// <inheritdoc cref="W(string)"/>
 	/// Writes any portions of <paramref name="message"/> enclosed in "[" and "]" using the colors <paramref name="fore"/> and <paramref name="back"/>. 

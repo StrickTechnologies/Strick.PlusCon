@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
-using System.Runtime.InteropServices;
 
 using static Strick.PlusCon.Helpers;
+//using static Strick.PlusCon.ConsoleUtility;
 
 
 namespace Strick.PlusCon.Test;
@@ -9,27 +9,26 @@ namespace Strick.PlusCon.Test;
 
 internal class Program
 {
-	static void Main(string[] args)
+	static void Main()
 	{
-		//WL("   S t r i c k . P l u s C o n   ".Gradient(Color.White, Color.Red, Color.White).Colorize(null, Color.DarkSlateGray).Reverse());
-		//WL(); 
-		//Console.SetWindowSize(45, 10);
-		//Console.SetBufferSize(45, 10);
-		DocSamples.go(true);
-		//WL("1. Show Values");
-		//WL("2. Show Gradients");
+		//ConsoleUtilities.EnableVirtualTerminal();
 
-		//WL(); showValuesW();
-		//WL(); showValuesC();
-		//WL(); showValuesOther();
-		//WL(); tryStuff();
+		Banner(); WL();
+		SetConsoleSize(45, 10);
+		DocSamples.go(4, false);
+
+		//WL(); Boxes();
+		//WL(); ShowValuesW();
+		//WL(); ShowValuesC();
+		//WL(); ShowValuesOther();
+		//WL(); TryStuff();
 
 		//WL(); gradients();
 		//WL(); showGColors();
 		//WL(); gradientsV();
 
-		//rkTest();
-		//rlTest();
+		//RkTest();
+		//RlTest();
 
 		//var key = RK("press any key...");
 		//W(EscapeCodes.GetForeColorSequence(Color.Blue)+EscapeCodes.GetBackColorSequence(Color.White));
@@ -37,8 +36,15 @@ internal class Program
 		//W("foo bar");
 	}
 
+	private static void Banner() => WL("   S t r i c k . P l u s C o n   ".Gradient(Color.White, Color.Red, Color.White).Colorize(null, Color.DarkSlateGray).Reverse());
 
-	private static void gradients()
+	private static void SetConsoleSize(int width, int height)
+	{
+		Console.SetWindowSize(width, height);
+		Console.SetBufferSize(width, height);
+	}
+
+	private static void Gradients()
 	{
 		//odd number of characters
 		WL("--=gradients=--".Gradient(Color.White, Color.BlueViolet) + " (white => blue violet)");
@@ -83,11 +89,11 @@ internal class Program
 		WL("***fade-in!***".Gradient(Color.White, Color.Black).Colorize(null, Color.White));
 	}
 
-	private static void gradientsV()
+	private static void GradientsV()
 	{
 		//odd number of characters
-		showGColors("--=gradients=--", Color.White, Color.BlueViolet);
-		showGColors("--=gradients=--", Color.BlueViolet, Color.White);
+		ShowGColors("--=gradients=--", Color.White, Color.BlueViolet);
+		ShowGColors("--=gradients=--", Color.BlueViolet, Color.White);
 		WL("--=gradients=--".Gradient(Color.White, Color.BlueViolet, Color.White) + " (white => blue violet => white)");
 		WL("--=gradients=--".Gradient(Color.White, Color.BlueViolet, Color.White).Colorize(null, Color.Gray) + " (white => blue violet => white w/gray background)");
 		WL("--=gradients=--".Gradient(Color.LightGray, Color.BlueViolet, Color.LightGray).Colorize(null, Color.White) + " (light gray => blue violet => light gray w/white background)");
@@ -112,26 +118,26 @@ internal class Program
 		WL("***fade-in!***".Gradient(Color.White, Color.Black).Colorize(null, Color.White));
 	}
 
-	private static void showGColors()
+	private static void ShowGColors()
 	{
 		Color c1 = Color.FromArgb(0, 0, 0);
 		Color c2 = Color.FromArgb(0, 255, 0);
-		showGColors("1", c1, c2);
+		ShowGColors("1", c1, c2);
 		WL();
-		showGColors("12", c1, c2);
+		ShowGColors("12", c1, c2);
 		WL();
-		showGColors("123", c1, c2);
+		ShowGColors("123", c1, c2);
 		WL();
-		showGColors("1234", c1, c2);
+		ShowGColors("1234", c1, c2);
 		WL();
-		showGColors("12345", c1, c2);
+		ShowGColors("12345", c1, c2);
 		WL();
-		showGColors("123456", c1, c2);
+		ShowGColors("123456", c1, c2);
 		WL();
-		showGColors(new string('X', 56), c1, c2);
+		ShowGColors(new string('X', 56), c1, c2);
 	}
 
-	private static void showGColors(string Text, Color c1, Color c2)
+	private static void ShowGColors(string Text, Color c1, Color c2)
 	{
 		W(Text.Gradient(c1, c2));
 		W(" ");
@@ -140,7 +146,7 @@ internal class Program
 		{ WL($"    {"  ".Colorize(null, c)} R:{c.R} G:{c.G} B:{c.B}"); }
 	}
 
-	private static void showValuesW()
+	private static void ShowValuesW()
 	{
 		Color clr = Color.Red;
 		Color clrB = Color.Silver;
@@ -175,7 +181,7 @@ internal class Program
 		WL($"17 foo [{value}]", clr, clrB, Color.White, Color.Blue); //show delimiters with other colors
 	}
 
-	private static void showValuesC()
+	private static void ShowValuesC()
 	{
 		Color clr = Color.Red;
 		Color clrB = Color.White;
@@ -222,10 +228,8 @@ internal class Program
 		WL($"24 foo {value.Colorize(null, clrB, dL, dR, null, Color.Blue)} still green".Colorize(Color.LawnGreen));
 	}
 
-	private static void showValuesOther()
+	private static void ShowValuesOther()
 	{
-		Color clr = Color.Red;
-		Color clrB = Color.White;
 		string value = "bar!";
 
 		WL($"Showing values using {"reverse".Reverse()} and {"underline".Underline()}");
@@ -240,7 +244,7 @@ internal class Program
 		WL();
 	}
 
-	private static void tryStuff()
+	private static void TryStuff()
 	{
 		WL("\x1b[38;2;255;0;0mred\x1b[0m");
 		WL("\x1b[38;2;0;255;0mgreen\x1b[0m");
@@ -274,7 +278,28 @@ internal class Program
 		WL("123".Gradient(Color.Red, Color.Blue));
 	}
 
-	private static void rkTest()
+	private static void Boxes()
+	{
+		//https://en.wikipedia.org/wiki/Code_page_437
+		//WL("╡╢║│─┐└─┘┌┌╔═╗╚╝█▄▌▐▀■");
+		WL("╔═╗");
+		WL("║X║");
+		WL("╠═╣");
+		WL("║W║");
+		WL("╚═╝");
+		WL("┌─┐");
+		WL("│X│");
+		WL("├─┤");
+		WL("│W│");
+		WL("└─┘");
+		WL("▄▄▄");
+		WL("▌X▐");
+		WL("███");
+		WL("▌W▐");
+		WL("▀▀▀");
+	}
+
+	private static void RkTest()
 	{
 		ConsoleKeyInfo cki;
 		// Prevent example from ending if CTL+C is pressed.
@@ -293,7 +318,7 @@ internal class Program
 		} while (cki.Key != ConsoleKey.Escape);
 	}
 
-	private static void rlTest()
+	private static void RlTest()
 	{
 		string? input;
 
