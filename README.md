@@ -33,7 +33,7 @@ WL("Hello World!", Color.Red);
 WL("Hello World!", Color.Red, Color.White);
 ```
 
-![Sample 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample01.jpg)
+![Sample 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample01.png)
 
 To hightlight only a portion of the text, enclose it in brackets ([, ]).
 
@@ -42,7 +42,7 @@ WL("Hello [World]!", Color.Red);
 WL("Hello [World]!", Color.Red, Color.White);
 ```
 
-![Sample 2](/SampleImages/Sample02.jpg)
+![Sample 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample02.png)
 
 To show the brackets (this can be useful if a particular value might be an empty string).
 
@@ -51,7 +51,7 @@ WL("Hello [World]!", Color.Red, null, true);
 WL("Hello [World]!", Color.Red, Color.White, true);
 ```
 
-![Sample 3](/SampleImages/Sample03.jpg)
+![Sample 3](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample03.png)
 
 To specify the colors of the brackets
 
@@ -60,7 +60,7 @@ WL("Hello [World]!", Color.Red, null, Color.Red);
 WL("Hello [World]!", Color.Red, Color.White, Color.Blue, Color.White);
 ```
 
-![Sample 4](/SampleImages/Sample04.jpg)
+![Sample 4](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample04.png)
 
 ## Other Formatting for Console Output
 *Strick.PlusCon* includes several `string` extension methods that can be used to format information for console output.
@@ -79,7 +79,7 @@ WL("Hello World!".Colorize(Color.Red));
 WL("Hello World!".Colorize(Color.Red, Color.White));
 ```
 
-![Sample 5](/SampleImages/Sample05.jpg)
+![Sample 5](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample05.png)
 
 You can also wrap your colorized string with pre- and post-values. The pre- and post-values can also, optionally, be rendered with their own colors.
 
@@ -92,7 +92,7 @@ wrapped = "cruel".Colorize(Color.Red, null, "*", "*", Color.Lime);
 WL($"Hello {wrapped} World!");
 ```
 
-![Sample 6](/SampleImages/Sample06.jpg)
+![Sample 6](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample06.png)
 
 #### Underline
 The `Underline` method wraps a string with underlining escape sequences.
@@ -103,7 +103,7 @@ WL(underlined);
 WL("Hello World!".Underline());
 ```
 
-![Sample 7](/SampleImages/Sample07.jpg)
+![Sample 7](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample07.png)
 
 #### Reverse
 The `Reverse` method wraps a string with reverse text (foreground and background colors are swapped, or "reversed") escape sequences.
@@ -114,7 +114,7 @@ WL(reversed);
 WL("Hello World!".Reverse());
 ```
 
-![Sample 8](/SampleImages/Sample08.jpg)
+![Sample 8](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample08.png)
 
 #### Gradient
 The `Gradient` method inserts escape sequences into a string to vary the foreground color of each character in the string.
@@ -129,7 +129,7 @@ WL("***fade-in!***".Gradient(Color.Black, Color.White));
 WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)));
 ```
 
-![Sample 9](/SampleImages/Sample09.jpg)
+![Sample 9](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample09.png)
 
 #### Combining
 The various formatting methods can be combined to create additional effects.
@@ -143,7 +143,7 @@ WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 
 WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Underline());
 ```
 
-![Sample 10](/SampleImages/Sample10.jpg)
+![Sample 10](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample10.png)
 
 Note that nesting colors (either foreground or background) is NOT supported.  
 
@@ -157,7 +157,7 @@ WL($"Hello [cruel] World!".Colorize(Color.Red), Color.Lime);
 WL($"{"Hello".Colorize(Color.Red)} {"cruel".Colorize(Color.Lime).Underline()} {"World!".Colorize(Color.Red)}");
 ```
 
-![Sample 11](/SampleImages/Sample11.jpg)
+![Sample 11](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample11.png)
 
 ## Other Utilities
 ### Virtual Terminal
