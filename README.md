@@ -33,7 +33,7 @@ WL("Hello World!", Color.Red);
 WL("Hello World!", Color.Red, Color.White);
 ```
 
-![Sample 1](https://github.com/StrickTechnologies/Strick.PlusCon/blob/master/SampleImages/Sample01.jpg)
+![Sample 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample01.jpg)
 
 To hightlight only a portion of the text, enclose it in brackets ([, ]).
 

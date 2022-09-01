@@ -13,9 +13,10 @@ internal class Program
 	{
 		//ConsoleUtilities.EnableVirtualTerminal();
 
-		Banner(); WL();
-		SetConsoleSize(45, 10);
-		DocSamples.go(4, false);
+		//Banner(); WL();
+		SetConsoleSize(43, 10);
+		DocSamples.go(true);
+		//DocSamples.go(4, false);
 
 		//WL(); Boxes();
 		//WL(); ShowValuesW();
