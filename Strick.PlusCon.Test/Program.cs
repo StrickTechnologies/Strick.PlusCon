@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 
 using static Strick.PlusCon.Helpers;
-//using static Strick.PlusCon.ConsoleUtility;
 
 
 namespace Strick.PlusCon.Test;
@@ -14,9 +13,9 @@ internal class Program
 		//ConsoleUtilities.EnableVirtualTerminal();
 
 		//Banner(); WL();
-		SetConsoleSize(43, 10);
-		DocSamples.go(true);
-		//DocSamples.go(4, false);
+		//SetConsoleSize(43, 10);
+		DocSamples.Show(new Size(43, 10), true);
+		//DocSamples.Show("wwl3", true);
 
 		//WL(); Boxes();
 		//WL(); ShowValuesW();

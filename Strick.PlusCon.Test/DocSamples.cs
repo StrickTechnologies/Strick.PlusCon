@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 using static Strick.PlusCon.Helpers;
 
@@ -13,122 +8,99 @@ namespace Strick.PlusCon.Test;
 
 internal static class DocSamples
 {
-	private static Color docHdFore = Color.White;
-	private static Color docHdBack = Color.Blue;
-
-	public static void go(bool wait = false)
+	static DocSamples()
 	{
-		//WL("Hello World!");
-
-		go(1, wait, wait);
-		go(2, wait, wait);
-		go(3, wait, wait);
-		go(4, wait, wait);
-		go(5, wait, wait);
-		go(6, wait, wait);
-		go(7, wait, wait);
-		go(8, wait, wait);
-		go(9, wait, wait);
-		go(10, wait, wait);
-		go(11, wait, wait);
-	}
-
-	public static void go(int sample, bool wait = false, bool clearAfter = false)
-	{
-		switch (sample)
+		samples = new List<DocSample>()
 		{
-			case 1:
-				s1();
-				break;
-			case 2:
-				s2();
-				break;
-			case 3:
-				s3();
-				break;
-			case 4:
-				s4();
-				break;
-			case 5:
-				s5();
-				break;
-			case 6:
-				s6();
-				break;
-			case 7:
-				s7();
-				break;
-			case 8:
-				s8();
-				break;
-			case 9:
-				s9();
-				break;
-			case 10:
-				s10();
-				break;
-			case 11:
-				s11();
-				break;
+			new DocSample("wwl1", "Example - W/WL (1)", ex_wwl_1),
+			new DocSample("wwl2", "Example - W/WL (2)", ex_wwl_2),
+			new DocSample("wwl3", "Example - W/WL (3)", ex_wwl_3),
+			new DocSample("wwl4", "Example - W/WL (4)", ex_wwl_4),
+			new DocSample("colorize1", "Example - Colorize (1)", ex_colorize_1),
+			new DocSample("colorize2", "Example - Colorize (2)", ex_colorize_2),
+			new DocSample("underline1", "Example - Underline", ex_underline_1),
+			new DocSample("reverse1", "Example - Reverse", ex_reverse_1),
+			new DocSample("gradient1", "Example - Gradient", ex_gradient_1),
+			new DocSample("combo1", "Example - Combinations", ex_combo_1),
+			new DocSample("notes1", "Example - Other Notes", ex_notes_1),
+		};
+	}
 
-			default:
-				throw new ArgumentOutOfRangeException(nameof(sample));
+
+	private static List<DocSample> samples = new List<DocSample>();
+
+	private static Color ErrColor = Color.Red;
+
+	public static void Show(bool wait = false) => Show((Size?)null, wait);
+
+	public static void Show(Size? conSz = null, bool wait = false)
+	{
+		if (conSz.HasValue)
+		{ SetConsoleSize(conSz.Value); }
+
+		foreach (DocSample sample in samples)
+		{
+			sample.Show(wait, wait);
 		}
-		WL();
-
-		if (wait)
-		{ RK(); }
-
-		if (clearAfter)
-		{ Console.Clear(); }
 	}
 
-	private static void showDocHd(string text)
+	public static void Show(string sampleName, bool wait = false)
 	{
-		WL($"* {text} *".Colorize(docHdFore, docHdBack));
-		WL();
+		if(string.IsNullOrWhiteSpace(sampleName))
+		{
+			WL("Come on, dude! Give me something to work with here. I need the name of a doc sample.", ErrColor);
+			return;
+		}
+
+		var ex = samples.Where(s => s.Name.Equals(sampleName, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+		if (ex != null)
+		{ ex.Show(wait, wait); }
+		else
+		{ WL($"The doc sample [{sampleName}] was not found.", ErrColor, null, ErrColor); }
+	}
+
+	private static void SetConsoleSize(Size conSz)
+	{
+		Console.SetWindowSize(conSz.Width, conSz.Height);
+		Console.SetBufferSize(conSz.Width, conSz.Height);
 	}
 
 
-	#region SAMPLES
+	#region EXAMPLE FUNCTIONS
 
-	private static void s1()
+	private static void ex_wwl_1()
 	{
-		//sample 1
-		showDocHd("Sample 1");
+		//Example ** W/WL 1
 		WL("Hello World!", Color.Red);
 		WL("Hello World!", Color.Red, Color.White);
 	}
 
-	private static void s2()
+	private static void ex_wwl_2()
 	{
-		//sample 2
-		showDocHd("Sample 2");
+		//Example ** W/WL 2
 		WL("Hello [World]!", Color.Red);
 		WL("Hello [World]!", Color.Red, Color.White);
 
 	}
 
-	private static void s3()
+	private static void ex_wwl_3()
 	{
-		//sample 3
-		showDocHd("Sample 3");
+		//Example ** W/WL 3
 		WL("Hello [World]!", Color.Red, null, true);
 		WL("Hello [World]!", Color.Red, Color.White, true);
 	}
 
-	private static void s4()
+	private static void ex_wwl_4()
 	{
-		//sample 4
-		showDocHd("Sample 4");
+		//Example ** W/WL 4
 		WL("Hello [World]!", Color.Red, null, Color.Red);
 		WL("Hello [World]!", Color.Red, Color.White, Color.Blue, Color.White);
 	}
 
-	private static void s5()
+
+	private static void ex_colorize_1()
 	{
-		//sample 5 **COLORIZE
-		showDocHd("Sample 5 - Colorize");
+		//Example **COLORIZE 1
 		string colorized = "foo".Colorize(Color.Red);
 		WL(colorized);
 		WL(colorized.Colorize(null, Color.White)); //add background
@@ -136,10 +108,9 @@ internal static class DocSamples
 		WL("Hello World!".Colorize(Color.Red, Color.White));
 	}
 
-	private static void s6()
+	private static void ex_colorize_2()
 	{
-		//sample 6 **COLORIZE II
-		showDocHd("Sample 6 - Colorize II");
+		//Example **COLORIZE 2
 		string wrapped = "foo".Colorize(Color.Red, null, "**[", "]**");
 		WL(wrapped);
 		wrapped = "foo".Colorize(Color.Red, null, "**[", "]**", Color.Lime, Color.White);
@@ -148,28 +119,26 @@ internal static class DocSamples
 		WL($"Hello {wrapped} World!");
 	}
 
-	private static void s7()
+
+	private static void ex_underline_1()
 	{
-		//sample 7 **UNDERLINE
-		showDocHd("Sample 7 - Underline");
+		//Example **UNDERLINE
 		string underlined = "foo".Underline();
 		WL(underlined);
 		WL("Hello World!".Underline());
 	}
 
-	private static void s8()
+	private static void ex_reverse_1()
 	{
-		//sample 8 **REVERSE
-		showDocHd("Sample 8 - Reverse");
+		//Example **REVERSE
 		string reversed = "foo".Reverse();
 		WL(reversed);
 		WL("Hello World!".Reverse());
 	}
 
-	private static void s9()
+	private static void ex_gradient_1()
 	{
-		//sample 9 **GRADIENT
-		showDocHd("Sample 9 - Gradient");
+		//Example **GRADIENT
 		string grad = "foo-bar".Gradient(Color.White, Color.BlueViolet);
 		WL(grad);
 		WL("Hello-World!".Gradient(Color.Red, Color.White));
@@ -179,10 +148,9 @@ internal static class DocSamples
 		WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)));
 	}
 
-	private static void s10()
+	private static void ex_combo_1()
 	{
-		//sample 10 **COMBINATIONS
-		showDocHd("Sample 10 - Combinations");
+		//Example **COMBINATIONS
 		WL($"Hello World!".Underline(), Color.Red);
 		WL($"Hello {"cruel".Underline()} World!", Color.Red);
 		WL("***fade-out***".Gradient(Color.Black, Color.White).Colorize(null, Color.White));
@@ -191,10 +159,9 @@ internal static class DocSamples
 		WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Underline());
 	}
 
-	private static void s11()
+	private static void ex_notes_1()
 	{
-		//sample 11 **NOTES
-		showDocHd("Sample 11 - Notes");
+		//Example **OTHER NOTES
 		Console.ForegroundColor = ConsoleColor.Red;
 		WL($"Hello {"cruel".Colorize(Color.Lime).Underline()} World!");
 		Console.ResetColor();
@@ -204,5 +171,51 @@ internal static class DocSamples
 		WL($"{"Hello".Colorize(Color.Red)} {"cruel".Colorize(Color.Lime).Underline()} {"World!".Colorize(Color.Red)}");
 	}
 
-	#endregion SAMPLES
+	#endregion EXAMPLE FUNCTIONS
+
+
+	private class DocSample
+	{
+		public DocSample(string name, string header, Action action)
+		{
+			Name = name;
+			Header = header;
+			Action = action;
+		}
+
+
+		private static Color docHdFore = Color.White;
+		private static Color docHdBack = Color.Blue;
+
+
+		public string Name { get; }
+
+		public string Header { get; }
+
+		public Action Action { get; }
+
+
+		public void Show(bool wait = false, bool clear = false)
+		{
+			if (clear)
+			{
+				WL(EscapeCodes.ResetAll);
+				CLS();
+			}
+
+			ShowHd();
+
+			Action();
+			WL();
+
+			if (wait)
+			{ RK(); }
+		}
+
+		private void ShowHd()
+		{
+			WL($"* {Header} *".Colorize(docHdFore, docHdBack));
+			WL();
+		}
+	}
 }
