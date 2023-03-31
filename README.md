@@ -71,10 +71,11 @@ CLS(Color.LimeGreen, Color.Blue);
 WL("Blue in Green");
 ```
 
-*** ***Need example here...*** ***
+![Example - CLS 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_cls_1.png)
+
 
 Note that the colors set in CLS will remain in effect until a color reset sequence is sent to the console.
-This would happen, for example, by using the `Colorize`, or `WL` functions (and others), as shown below.
+This would happen, for example, by using the `Colorize`, or `WL` methods (and others), as shown below.
 To set the colors back to the desired colors, you can send a color escape sequence (without a reset sequence) to the console.
 
 ```c#
@@ -90,7 +91,7 @@ WL("Blue once more");
 WL("Still Blue");
 ```
 
-*** ***Need example here...*** ***
+![Example - CLS 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_cls_2.png)
 
 
 ## Other Formatting for Console Output
