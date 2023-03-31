@@ -14,12 +14,9 @@ internal class Program
 
 		CLS(Color.White);
 		//Banner(); WL();
-		//ShowGreens();
-		//RK();
 		//SetConsoleSize(43, 10);
 		DocSamples.Show(new Size(43, 10), true);
 		//DocSamples.Show("cls1", true);
-		//DocSamples.Show("cls2", true);
 
 		//WL(); Boxes();
 		//WL(); ShowValuesW();

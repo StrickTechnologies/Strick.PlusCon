@@ -67,8 +67,27 @@ WL("Hello [World]!", Color.Red, Color.White, Color.Blue, Color.White);
 #### CLS
 Use the CLS method to clear the console screen. Pass background and/or foreground colors to set the console screen to those colors.
 ```c#
-CLS(Color.Blue);
-WL("Hello World!");
+CLS(Color.LimeGreen, Color.Blue);
+WL("Blue in Green");
+```
+
+*** ***Need example here...*** ***
+
+Note that the colors set in CLS will remain in effect until a color reset sequence is sent to the console.
+This would happen, for example, by using the `Colorize`, or `WL` functions (and others), as shown below.
+To set the colors back to the desired colors, you can send a color escape sequence (without a reset sequence) to the console.
+
+```c#
+CLS(Color.LimeGreen, Color.Blue);
+WL("Blue in Green");
+//colors reset by the line below
+WL("Feeling stronger every day", Color.White, Color.DarkGray);
+//back to default console colors here
+WL("No longer blue");
+//set to desired colors again
+W(EscapeCodes.GetBackColorSequence(Color.LimeGreen) + EscapeCodes.GetForeColorSequence(Color.Blue));
+WL("Blue once more");
+WL("Still Blue");
 ```
 
 *** ***Need example here...*** ***
