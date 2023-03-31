@@ -16,6 +16,8 @@ internal static class DocSamples
 			new DocSample("wwl2", "Example - W/WL (2)", ex_wwl_2),
 			new DocSample("wwl3", "Example - W/WL (3)", ex_wwl_3),
 			new DocSample("wwl4", "Example - W/WL (4)", ex_wwl_4),
+			new DocSample("cls1", "Example - CLS (1)", ex_cls_1),
+			new DocSample("cls2", "Example - CLS (2)", ex_cls_2),
 			new DocSample("colorize1", "Example - Colorize (1)", ex_colorize_1),
 			new DocSample("colorize2", "Example - Colorize (2)", ex_colorize_2),
 			new DocSample("underline1", "Example - Underline", ex_underline_1),
@@ -97,6 +99,25 @@ internal static class DocSamples
 		WL("Hello [World]!", Color.Red, Color.White, Color.Blue, Color.White);
 	}
 
+	private static void ex_cls_1()
+	{
+		CLS(Color.LimeGreen, Color.Blue);
+		WL("Blue in Green");
+	}
+
+	private static void ex_cls_2()
+	{
+		CLS(Color.LimeGreen, Color.Blue);
+		WL("Blue in Green");
+		//colors reset by the line below
+		WL("Feeling stronger every day", Color.White, Color.DarkGray);
+		//back to default console colors here
+		WL("No longer blue");
+		//set to desired colors again
+		W(EscapeCodes.GetBackColorSequence(Color.LimeGreen) + EscapeCodes.GetForeColorSequence(Color.Blue));
+		WL("Blue once more");
+		WL("Still Blue");
+	}
 
 	private static void ex_colorize_1()
 	{

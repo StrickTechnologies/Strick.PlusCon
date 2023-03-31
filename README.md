@@ -11,6 +11,7 @@ W|[Write](https://learn.microsoft.com/en-us/dotnet/api/system.console.write?view
 WL|[WriteLine](https://learn.microsoft.com/en-us/dotnet/api/system.console.writeline?view=net-6.0)|Overloads provide functionality to display text in color, or to highlight portions of a text value.
 RK|[ReadKey](https://learn.microsoft.com/en-us/dotnet/api/system.console.readkey?view=net-6.0)|Includes an optional prompt argument that will be displayed before waiting for user input.
 RL|[ReadLine](https://learn.microsoft.com/en-us/dotnet/api/system.console.readline?view=net-6.0)|Includes an optional prompt argument that will be displayed before waiting for user input.
+CLS|[Clear](https://learn.microsoft.com/en-us/dotnet/api/system.console.clear?view=net-6.0)|An overload provides the ability to clear the console window to specified foreground and background colors.
 
 Include a `using static` directive in your file to make these shortcuts available without additional qualifying.
 
@@ -61,6 +62,16 @@ WL("Hello [World]!", Color.Red, Color.White, Color.Blue, Color.White);
 ```
 
 ![Example - W/WL 4](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_wwl_4.png)
+
+
+#### CLS
+Use the CLS method to clear the console screen. Pass background and/or foreground colors to set the console screen to those colors.
+```c#
+CLS(Color.Blue);
+WL("Hello World!");
+```
+
+*** ***Need example here...*** ***
 
 
 ## Other Formatting for Console Output

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Text.RegularExpressions;
 
 
@@ -178,6 +179,39 @@ public static class Helpers
 		{ W(prompt); }
 
 		return Console.ReadLine();
+	}
+
+
+	/// <summary>
+	/// <para>A simple shortcut for <see cref="Console.Clear()"/></para>
+	/// </summary>
+	public static void CLS()
+	{
+		//just to catch an io exception if console output is redirected
+		try
+		{
+			Console.Clear();
+		}
+		catch { }
+	}
+
+	/// <summary>
+	/// <inheritdoc cref="CLS()"/>
+	/// Applies the colors <paramref name="back"/> and/or <paramref name="fore"/> (if non-null) to the screen before clearing. 
+	/// <br />Note: the color(s) will remain in effect until a reset sequence (see <see cref="EscapeCodes.ColorReset_Back"/>, <see cref="EscapeCodes.ColorReset_Fore"/>) is sent to the console. 
+	/// This would happen, for example, by using the <see cref="Formatting.Colorize(string, Color?, Color?)"/> function (and others).
+	/// </summary>
+	/// <param name="back">The background color to use for the console window</param>
+	/// <param name="fore">The foreground color to use for content displayed in the console window</param>
+	public static void CLS(Color? back = null, Color? fore = null)
+	{
+		if (back != null)
+		{ W(EscapeCodes.GetBackColorSequence(back.Value)); }
+
+		if (fore != null)
+		{ W(EscapeCodes.GetForeColorSequence(fore.Value)); }
+
+		CLS();
 	}
 
 

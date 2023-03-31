@@ -333,9 +333,41 @@ public class HelperTests
 		sw.Flush();
 		result = sw.ToString();
 		Assert.AreEqual(exp + "\r\n", result);
-		sw.Clear();
 
 
 		Console.SetOut(originalOut);
+		sw.Clear();
+	}
+
+
+	[TestMethod]
+	public void testCls()
+	{
+		var originalOut = Console.Out;
+		using var sw = new StringWriter();
+		Console.SetOut(sw);
+		CLS();
+		sw.Flush();
+		string result = sw.ToString();
+
+		Assert.IsNotNull(result);
+		Assert.IsTrue(string.IsNullOrEmpty(result));
+
+		sw.Clear();
+		CLS(Color.Red);
+		sw.Flush();
+		result = sw.ToString();
+		Assert.IsNotNull(result);
+		Assert.AreEqual(BackColorRed, result);
+
+		sw.Clear();
+		CLS(Color.Red, Color.Blue);
+		sw.Flush();
+		result = sw.ToString();
+		Assert.IsNotNull(result);
+		Assert.AreEqual(BackColorRed + ForeColorBlue, result);
+
+		Console.SetOut(originalOut);
+		sw.Clear();
 	}
 }
