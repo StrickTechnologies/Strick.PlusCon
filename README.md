@@ -168,7 +168,7 @@ If you see things that look like this:
 ```
 when you are expecting something with colors, you will need to enable virtual terminal mode. This will typically happen if you are running a console application from Windows Explorer, the Windows Command Prompt, or Windows PowerShell.
 
-One solution is to run the application from Windows Terminal. Another is to add a call to `ConsoleUtilities.EnableVirtualTerminal` in your application ahead of where you want to use escape sequences to format console output.
+One solution is to run the application from [Windows Terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701) (a free download). Another is to add a call to `ConsoleUtilities.EnableVirtualTerminal` in your application ahead of where you want to use escape sequences to format console output.
 
 ## Background and Inspiration
 Some of the things in this utility (`W` and `WL` in particular) are things I've dragged around from project to project for years -- just generally copy/pasting into a new project whenever I finally tired of typing "Console.WriteLine" (intellisense notwithstanding) over and over. These things are generally used informally for basic testing, and to aid in creating and debugging unit tests.
