@@ -2,15 +2,15 @@
 Utilities that make working with console apps in .Net easier and more useful.
 
 ## Console shortcuts
-*Strick.PlusCon* includes several shortcuts for commonly used Console methods.
+*Strick.PlusCon* includes several shortcuts or "wrappers" for commonly used Console methods. Documentation on the underlying console methods is beyond the scope of this document, but you can see the linked documentaion for information on how the methods work.
 
 
 Shortcut|Console Equivalent|Notes
 -|-|-
-W|[Write](https://docs.microsoft.com/en-us/dotnet/api/system.console.write?view=net-6.0)|Overloads provide functionality to display text in color, or to highlight portions of a text value.<br>See the [Write](https://docs.microsoft.com/en-us/dotnet/api/system.console.write?view=net-6.0) doc for specifics on how that works.
-WL|[WriteLine](https://docs.microsoft.com/en-us/dotnet/api/system.console.writeline?view=net-6.0)|Overloads provide functionality to display text in color, or to highlight portions of a text value.<br>See the [WriteLine](https://docs.microsoft.com/en-us/dotnet/api/system.console.writeline?view=net-6.0) doc for specifics on how that works.
-RK|[ReadKey](https://docs.microsoft.com/en-us/dotnet/api/system.console.readkey?view=net-6.0)|Includes an optional prompt argument that will be displayed before waiting for user input.<br>See the [Readkey](https://docs.microsoft.com/en-us/dotnet/api/system.console.readkey?view=net-6.0) doc for specifics on how that works.
-RL|[ReadLine](https://docs.microsoft.com/en-us/dotnet/api/system.console.readline?view=net-6.0)|Includes an optional prompt argument that will be displayed before waiting for user input.<br>See the [Readline](https://docs.microsoft.com/en-us/dotnet/api/system.console.readline?view=net-6.0) doc for specifics on how that works.
+W|[Write](https://learn.microsoft.com/en-us/dotnet/api/system.console.write?view=net-6.0)|Overloads provide functionality to display text in color, or to highlight portions of a text value.
+WL|[WriteLine](https://learn.microsoft.com/en-us/dotnet/api/system.console.writeline?view=net-6.0)|Overloads provide functionality to display text in color, or to highlight portions of a text value.
+RK|[ReadKey](https://learn.microsoft.com/en-us/dotnet/api/system.console.readkey?view=net-6.0)|Includes an optional prompt argument that will be displayed before waiting for user input.
+RL|[ReadLine](https://learn.microsoft.com/en-us/dotnet/api/system.console.readline?view=net-6.0)|Includes an optional prompt argument that will be displayed before waiting for user input.
 
 Include a `using static` directive in your file to make these shortcuts available without additional qualifying.
 
@@ -33,16 +33,16 @@ WL("Hello World!", Color.Red);
 WL("Hello World!", Color.Red, Color.White);
 ```
 
-![Sample 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample01.png)
+![Example - W/WL 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_wwl_1.png)
 
-To hightlight only a portion of the text, enclose it in brackets ([, ]).
+To hightlight only a portion of the text, enclose it in square brackets ([, ]).
 
 ```c#
 WL("Hello [World]!", Color.Red);
 WL("Hello [World]!", Color.Red, Color.White);
 ```
 
-![Sample 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample02.png)
+![Example - W/WL 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_wwl_2.png)
 
 To show the brackets (this can be useful if a particular value might be an empty string).
 
@@ -51,7 +51,7 @@ WL("Hello [World]!", Color.Red, null, true);
 WL("Hello [World]!", Color.Red, Color.White, true);
 ```
 
-![Sample 3](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample03.png)
+![Example - W/WL 3](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_wwl_3.png)
 
 To specify the colors of the brackets
 
@@ -60,7 +60,8 @@ WL("Hello [World]!", Color.Red, null, Color.Red);
 WL("Hello [World]!", Color.Red, Color.White, Color.Blue, Color.White);
 ```
 
-![Sample 4](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample04.png)
+![Example - W/WL 4](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_wwl_4.png)
+
 
 ## Other Formatting for Console Output
 *Strick.PlusCon* includes several `string` extension methods that can be used to format information for console output.
@@ -79,7 +80,7 @@ WL("Hello World!".Colorize(Color.Red));
 WL("Hello World!".Colorize(Color.Red, Color.White));
 ```
 
-![Sample 5](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample05.png)
+![Example - Colorize 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_colorize_1.png)
 
 You can also wrap your colorized string with pre- and post-values. The pre- and post-values can also, optionally, be rendered with their own colors.
 
@@ -92,7 +93,7 @@ wrapped = "cruel".Colorize(Color.Red, null, "*", "*", Color.Lime);
 WL($"Hello {wrapped} World!");
 ```
 
-![Sample 6](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample06.png)
+![Example - Colorize 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_colorize_2.png)
 
 #### Underline
 The `Underline` method wraps a string with underlining escape sequences.
@@ -103,7 +104,7 @@ WL(underlined);
 WL("Hello World!".Underline());
 ```
 
-![Sample 7](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample07.png)
+![Example - Underline 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_underline_1.png)
 
 #### Reverse
 The `Reverse` method wraps a string with reverse text (foreground and background colors are swapped, or "reversed") escape sequences.
@@ -114,7 +115,7 @@ WL(reversed);
 WL("Hello World!".Reverse());
 ```
 
-![Sample 8](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample08.png)
+![Example - Reverse 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_reverse_1.png)
 
 #### Gradient
 The `Gradient` method inserts escape sequences into a string to vary the foreground color of each character in the string.
@@ -129,7 +130,7 @@ WL("***fade-in!***".Gradient(Color.Black, Color.White));
 WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)));
 ```
 
-![Sample 9](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample09.png)
+![Example - Gradient 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_gradient_1.png)
 
 #### Combining
 The various formatting methods can be combined to create additional effects.
@@ -143,7 +144,7 @@ WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 
 WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Underline());
 ```
 
-![Sample 10](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample10.png)
+![Example - Combinations 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_combo_1.png)
 
 Note that nesting colors (either foreground or background) is NOT supported.  
 
@@ -157,7 +158,7 @@ WL($"Hello [cruel] World!".Colorize(Color.Red), Color.Lime);
 WL($"{"Hello".Colorize(Color.Red)} {"cruel".Colorize(Color.Lime).Underline()} {"World!".Colorize(Color.Red)}");
 ```
 
-![Sample 11](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/Sample11.png)
+![Example - Other Notes 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_notes_1.png)
 
 ## Other Utilities
 ### Virtual Terminal
@@ -165,7 +166,7 @@ If you see things that look like this:
 ```
 ?[38;2;255;0;0mHello world!?[39m
 ```
-when you are expting something with colors, you will need to enable virtual terminal mode. This will typically happen if you are running a cosole application from Windows Explorer, the Windows Command Prompt, or Windows PowerShell.
+when you are expecting something with colors, you will need to enable virtual terminal mode. This will typically happen if you are running a console application from Windows Explorer, the Windows Command Prompt, or Windows PowerShell.
 
 One solution is to run the application from Windows Terminal. Another is to add a call to `ConsoleUtilities.EnableVirtualTerminal` in your application ahead of where you want to use escape sequences to format console output.
 
