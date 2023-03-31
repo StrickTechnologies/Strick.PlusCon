@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
 
+using Strick.PlusCon.Models;
+
 using static Strick.PlusCon.Helpers;
 
 
@@ -12,10 +14,11 @@ internal class Program
 	{
 		//ConsoleUtilities.EnableVirtualTerminal();
 
-		CLS(Color.White);
+		Menu();
+
 		//Banner(); WL();
 		//SetConsoleSize(43, 10);
-		DocSamples.Show(new Size(43, 10), true);
+		//DocSamples.Show(new Size(43, 10), true);
 		//DocSamples.Show("cls1", true);
 
 		//WL(); Boxes();
@@ -37,7 +40,20 @@ internal class Program
 		//W("foo bar");
 	}
 
-	private static void Banner() => WL("   S t r i c k . P l u s C o n   ".Gradient(Color.White, Color.Red, Color.White).Colorize(null, Color.DarkSlateGray).Reverse());
+	private static void Menu()
+	{
+		Menu mainMenu = new Menu(BannerText, " ");
+		mainMenu.Options.Add(new MenuOption('d', "Show Doc Samples", ShowDocSamples));
+		mainMenu.Show();
+	}
+
+	private static void ShowDocSamples()
+	{
+		DocSamples.Show(new Size(43, 10), true);
+	}
+
+	private static void Banner() => WL(BannerText);
+	private static string BannerText => "   S t r i c k . P l u s C o n   ".Gradient(Color.White, Color.Red, Color.White).Colorize(null, Color.DarkSlateGray).Reverse();
 
 	private static void SetConsoleSize(int width, int height)
 	{
