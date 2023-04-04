@@ -82,13 +82,13 @@ To set the colors back to the desired colors, you can send a color escape sequen
 CLS(Color.LimeGreen, Color.Blue);
 WL("Blue in Green");
 //colors reset by the line below
-WL("Feeling stronger every day", Color.White, Color.DarkGray);
+WL("Kind Of Blue", Color.White, Color.Blue);
 //back to default console colors here
 WL("No longer blue");
 //set to desired colors again
 W(EscapeCodes.GetBackColorSequence(Color.LimeGreen) + EscapeCodes.GetForeColorSequence(Color.Blue));
 WL("Blue once more");
-WL("Still Blue");
+WL("All Blues");
 ```
 
 ![Example - CLS 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_cls_2.png)
