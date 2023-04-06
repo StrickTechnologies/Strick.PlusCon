@@ -1,4 +1,7 @@
 ﻿using System.Drawing;
+using System.Security.AccessControl;
+
+using Strick.PlusCon.Models;
 
 using static Strick.PlusCon.Helpers;
 
@@ -25,6 +28,8 @@ internal static class DocSamples
 			new DocSample("gradient1", "Example - Gradient", Ex_gradient_1),
 			new DocSample("combo1", "Example - Combinations", Ex_combo_1),
 			new DocSample("notes1", "Example - Other Notes", Ex_notes_1),
+			new DocSample("menu1", "Example - Menu (1)", Ex_Menu_1),
+			new DocSample("menu2", "Example - Menu (2)", Ex_Menu_2),
 		};
 	}
 
@@ -206,6 +211,96 @@ internal static class DocSamples
 		WL($"Hello [cruel] World!".Colorize(Color.Red), Color.Lime);
 		//You have to use something more like this...
 		WL($"{"Hello".Colorize(Color.Red)} {"cruel".Colorize(Color.Lime).Underline()} {"World!".Colorize(Color.Red)}");
+	}
+
+
+	private static void Ex_Menu_1()
+	{
+		Menu subMenu = new("Example Submenu");
+		//lambda
+		subMenu.Add(new MenuOption("Option 1", '1', () =>
+		{
+			CLS();
+			WL("This is Example Submenu Option 1", Color.Red);
+			RK("press a key to return to the menu...");
+		}));
+
+		//lambda
+		subMenu.Add(new MenuOption("Option 2", '2', () =>
+		{
+			CLS();
+			WL("This is Example Submenu Option 2", Color.LimeGreen);
+			RK("press a key to return to the menu...");
+		}));
+
+		subMenu.Add(new MenuSeperator("-"));
+		subMenu.Add(new MenuBackOption("Return to Example Menu", 'X'));
+
+
+		Menu myMenu = new("Example Menu");
+		myMenu.Add(new MenuOption("Option 1", '1', ExampleMenuOption1));
+		myMenu.Add(new MenuOption("Option 2", '2', ExampleMenuOption2));
+		myMenu.Add(new MenuOption("Submenu", 'S', subMenu));
+
+		myMenu.Show();
+	}
+
+	private static void Ex_Menu_2()
+	{
+		Menu subMenu = new("Example Submenu", "-");
+		subMenu.Title!.Style.SetGradientColors(Color.Silver, Color.SlateGray, Color.Silver);
+		subMenu.Title!.Style.BackColor = Color.White;
+		subMenu.Title!.Style.Reverse = true;
+		subMenu.Subtitle!.Style = subMenu.Title.Style;
+		subMenu.OptionsStyle = new(Color.DodgerBlue);
+		subMenu.Prompt!.Style.ForeColor = Color.White;
+
+		//lambda
+		subMenu.Add(new MenuOption("Option 1", '1', () =>
+		{
+			CLS();
+			WL("This is Example Submenu Option 1", Color.Red);
+			RK("press a key to return to the menu...");
+		}));
+
+		//lambda
+		subMenu.Add(new MenuOption("Option 2", '2', () =>
+		{
+			CLS();
+			WL("This is Example Submenu Option 2", Color.LimeGreen);
+			RK("press a key to return to the menu...");
+		}));
+
+		subMenu.Add(new MenuSeperator("-"));
+		subMenu.Add(new MenuBackOption("Return to Example Menu", 'X'));
+		subMenu.Options[subMenu.Options.Count - 1].Style = new(Color.Silver);
+
+
+		Menu myMenu = new("Example Menu", " ");
+		myMenu.Title!.Style.ForeColor = Color.LimeGreen;
+		myMenu.OptionsStyle = new(Color.BlueViolet);
+		myMenu.Add(new MenuOption("Option 1", '1', ExampleMenuOption1));
+		myMenu.Add(new MenuOption("Option 2", '2', ExampleMenuOption2));
+		myMenu.Add(new MenuSeperator(""));
+		myMenu.Add(new MenuOption("Submenu", 'S', subMenu));
+		myMenu.Options[myMenu.Options.Count - 1].Style = new(Color.White);
+		myMenu.Add(new MenuSeperator(""));
+
+		myMenu.Show();
+	}
+
+	private static void ExampleMenuOption1()
+	{
+		CLS();
+		WL("This is Example Menu Option 1", Color.Red);
+		RK("press a key to return to the menu...");
+	}
+
+	private static void ExampleMenuOption2()
+	{
+		CLS();
+		WL("This is Example Menu Option 2", Color.LimeGreen);
+		RK("press a key to return to the menu...");
 	}
 
 	#endregion EXAMPLE FUNCTIONS
