@@ -17,7 +17,7 @@ namespace Strick.PlusCon.Test;
 public class ColorUtilityTests
 {
 	[TestMethod]
-	public void getGradientColorsTests()
+	public void GetGradientColorsTests()
 	{
 		var colors = GetGradientColors(red, blue, 1).ToList();
 		Assert.IsNotNull(colors);

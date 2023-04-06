@@ -25,7 +25,7 @@ public class EscapeCodeTests
 	}
 
 	[TestMethod]
-	public void colors()
+	public void Colors()
 	{
 		string csFore = ColorSpace.fore.AsString();
 		string csBack = ColorSpace.back.AsString();
@@ -50,16 +50,16 @@ public class EscapeCodeTests
 	}
 
 	[TestMethod]
-	public void underline()
+	public void Underline()
 	{
-		Assert.AreEqual(Underline, EscapeCodes.Underline);
+		Assert.AreEqual(Expectations.Underline, EscapeCodes.Underline);
 		Assert.AreEqual(UnderlineReset, EscapeCodes.UnderlineReset);
 	}
 
 	[TestMethod]
-	public void reverse()
+	public void Reverse()
 	{
-		Assert.AreEqual(Reverse, EscapeCodes.Reverse);
+		Assert.AreEqual(Expectations.Reverse, EscapeCodes.Reverse);
 		Assert.AreEqual(ReverseReset, EscapeCodes.ReverseReset);
 	}
 }

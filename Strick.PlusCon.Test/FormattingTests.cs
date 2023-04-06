@@ -1,38 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using static Strick.PlusCon.Test.Expectations;
 
 
 namespace Strick.PlusCon.Test;
 
+
 [TestClass]
 public class FormattingTests
 {
 	[TestMethod]
-	public void colorize()
+	public void ColorizeTests()
 	{
 		string test = "test";
 
 		Assert.AreEqual(test, test.Colorize(null));
 
-		testColorizedString(test, test.Colorize(red), red, null);
-		testColorizedString(test, test.Colorize(green), green, null);
-		testColorizedString(test, test.Colorize(blue), blue, null);
-		testColorizedString(test, test.Colorize(white), white, null);
+		TestColorizedString(test, test.Colorize(red), red, null);
+		TestColorizedString(test, test.Colorize(green), green, null);
+		TestColorizedString(test, test.Colorize(blue), blue, null);
+		TestColorizedString(test, test.Colorize(white), white, null);
 
-		testColorizedString(test, test.Colorize(null, red), null, red);
-		testColorizedString(test, test.Colorize(null, green), null, green);
-		testColorizedString(test, test.Colorize(null, blue), null, blue);
-		testColorizedString(test, test.Colorize(null, white), null, white);
+		TestColorizedString(test, test.Colorize(null, red), null, red);
+		TestColorizedString(test, test.Colorize(null, green), null, green);
+		TestColorizedString(test, test.Colorize(null, blue), null, blue);
+		TestColorizedString(test, test.Colorize(null, white), null, white);
 
-		testColorizedString(test, test.Colorize(red, red), red, red);
+		TestColorizedString(test, test.Colorize(red, red), red, red);
 
 
 		string dL = "[";
@@ -95,7 +90,7 @@ public class FormattingTests
 	}
 
 	[TestMethod]
-	public void gradient()
+	public void GradientTests()
 	{
 		string val = "";
 		string result = val.Gradient(red, blue);
@@ -106,62 +101,105 @@ public class FormattingTests
 
 		val = "1";
 		result = val.Gradient(red, blue);
-		testGResult(val, result, red);
+		TestGResult(val, result, red);
 
 		val = "1";
 		result = val.Gradient(red, white, blue);
-		testGResult(val, result, red);
+		TestGResult(val, result, red);
 
 		val = "12";
 		result = val.Gradient(red, blue);
-		testGResult(val, result, red, blue);
+		TestGResult(val, result, red, blue);
 
 		val = "12";
 		result = val.Gradient(red, white, blue);
-		testGResult(val, result, red, blue);
+		TestGResult(val, result, red, blue);
 
 		val = "123";
 		result = val.Gradient(red, blue);
-		testGResult(val, result, red, Color.FromArgb(255, 127, 0, 128), blue);
+		TestGResult(val, result, red, Color.FromArgb(255, 127, 0, 128), blue);
 
 		val = "123";
 		result = val.Gradient(red, white, blue);
-		testGResult(val, result, red, white, blue);
+		TestGResult(val, result, red, white, blue);
 
 		val = "1234";
 		result = val.Gradient(red, white, blue);
-		testGResult(val, result, red, white, white, blue);
+		TestGResult(val, result, red, white, white, blue);
 
 		val = "12345";
 		result = val.Gradient(red, white, blue);
-		testGResult(val, result, red, white, white, Color.FromArgb(127, 127, 255), blue);
+		TestGResult(val, result, red, white, white, Color.FromArgb(127, 127, 255), blue);
 
 		val = "123456";
 		result = val.Gradient(red, white, blue);
-		testGResult(val, result, red, Color.FromArgb(255, 128, 128), white, white, Color.FromArgb(127, 127, 255), blue);
+		TestGResult(val, result, red, Color.FromArgb(255, 128, 128), white, white, Color.FromArgb(127, 127, 255), blue);
 
 		val = new string('x', 256);
 		result = val.Gradient(black, white);
 		List<Color> colors = new List<Color>();
 		for (int i = 0; i < val.Length; i++)
 		{ colors.Add(Color.FromArgb(i, i, i)); }
-		testGResult(val, result, colors.ToArray());
+		TestGResult(val, result, colors.ToArray());
 	}
 
-	private void testGResult(string source, string result, params Color[] expectedColors)
+	[TestMethod]
+	public void UnderlineTests()
+	{
+		string test = "test";
+		Assert.AreEqual(Underline + test + UnderlineReset, test.Underline());
+	}
+
+	[TestMethod]
+	public void ReverseTests()
+	{
+		string test = "test";
+		Assert.AreEqual(Reverse + test + ReverseReset, test.Reverse());
+	}
+
+	[TestMethod]
+	public void CenterTests()
+	{
+		string src = default!;
+		TestCenter(src);
+		TestCenter(src, '-');
+
+		src = "";
+		TestCenter(src);
+		TestCenter(src, '-');
+
+		src = "1";
+		TestCenter(src);
+		TestCenter(src, '-');
+		
+		src = "12";
+		TestCenter(src);
+		TestCenter(src, '-');
+
+		src = "123";
+		TestCenter(src);
+		TestCenter(src, '-');
+		
+		src = "1234567890";
+		TestCenter(src);
+		TestCenter(src, '-');
+	}
+
+
+	internal static void TestGResult(string source, string result, params Color[] expectedColors)
 	{
 		Assert.IsNotNull(source);
 		Assert.IsNotNull(result);
 		Assert.IsNotNull(expectedColors);
 
 		string[] results = result.Split($"{ForeColorReset}", StringSplitOptions.RemoveEmptyEntries);
-		Assert.AreEqual(results.Length, expectedColors.Count());
+		Assert.AreEqual(results.Length, expectedColors.Length);
 
 		for (int i = 0; i < results.Length; i++)
-		{ testColorizedString(source.Substring(i, 1), results[i] + ForeColorReset, expectedColors.ElementAt(i), null); }
+		{ TestColorizedString(source.Substring(i, 1), results[i] + ForeColorReset, expectedColors.ElementAt(i), null); }
 	}
 
-	private void testColorizedString(string source, string result, Color? fore, Color? back)
+	internal static void TestColorizedString(string source, string result, Color? fore, Color? back)
 	{
 		Assert.IsNotNull(source);
 		Assert.IsNotNull(result);
@@ -177,5 +215,28 @@ public class FormattingTests
 
 		else //if (back != null)
 		{ Assert.AreEqual($"{back!.Value.BackColorString()}{source}{BackColorReset}", result); }
+	}
+
+	internal static void TestCenter(string source, char fillChar = ' ')
+	{
+		int sl = string.IsNullOrEmpty(source) ? 0 : source.Length;
+
+		Assert.ThrowsException<ArgumentOutOfRangeException>(() => { source.Center(0); });
+		Assert.ThrowsException<ArgumentOutOfRangeException>(() => { source.Center(0, fillChar); });
+
+		for (int i = 1; i < sl; i++)
+		{
+			Assert.AreEqual(source, source.Center(i));
+			Assert.AreEqual(source, source.Center(i, fillChar));
+		}
+
+		for (int i = sl + 1; i < Math.Max(sl * 3, 50); i++)
+		{
+			int l = (i - sl) / 2;
+			int r = i - l - sl;
+			Assert.AreEqual(new string(' ', l) + source + new string(' ', r), source.Center(i), $"src:'{source}', i:{i}");
+			Assert.AreEqual(new string(fillChar, l) + source + new string(fillChar, r), source.Center(i, fillChar), $"src:'{source}', i:{i}");
+			//Debug.WriteLine($"{i} '{source.Center(i, fillChar)}'");
+		}
 	}
 }

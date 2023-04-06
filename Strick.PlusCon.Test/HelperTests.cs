@@ -14,7 +14,7 @@ public class HelperTests
 	public void WandWL_NoValues()
 	{
 		foreach (string value in new[] { "test", "Test [22", "Test 22]" })
-		{ testWandWL(value, value); }
+		{ TestWandWL(value, value); }
 	}
 
 	[TestMethod]
@@ -35,43 +35,43 @@ public class HelperTests
 
 		string value = "test [foo]";
 		string expected = "test {df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr}";
-		testWandWLV(value, expected);
+		TestWandWLV(value, expected);
 
 		value = "[foo] test";
 		expected = "{df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr} test";
-		testWandWLV(value, expected);
+		TestWandWLV(value, expected);
 
 		value = "test [foo] [bar]";
 		expected = "test {df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr} {df}{db}{dl}{dbr}{dfr}{f}{b}bar{br}{fr}{df}{db}{dr}{dbr}{dfr}";
-		testWandWLV(value, expected);
+		TestWandWLV(value, expected);
 
 		value = "[foo] test [bar]";
 		expected = "{df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr} test {df}{db}{dl}{dbr}{dfr}{f}{b}bar{br}{fr}{df}{db}{dr}{dbr}{dfr}";
-		testWandWLV(value, expected);
+		TestWandWLV(value, expected);
 
 		value = "[foo]";
 		expected = "{df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr}";
-		testWandWLV(value, expected);
+		TestWandWLV(value, expected);
 
 		value = "[]";
 		expected = "{df}{db}{dl}{dbr}{dfr}{f}{b}{br}{fr}{df}{db}{dr}{dbr}{dfr}";
-		testWandWLV(value, expected);
+		TestWandWLV(value, expected);
 
 		value = "[foo] [bar]";
 		expected = "{df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr} {df}{db}{dl}{dbr}{dfr}{f}{b}bar{br}{fr}{df}{db}{dr}{dbr}{dfr}";
-		testWandWLV(value, expected);
+		TestWandWLV(value, expected);
 
 		value = "[] [bar]";
 		expected = "{df}{db}{dl}{dbr}{dfr}{f}{b}{br}{fr}{df}{db}{dr}{dbr}{dfr} {df}{db}{dl}{dbr}{dfr}{f}{b}bar{br}{fr}{df}{db}{dr}{dbr}{dfr}";
-		testWandWLV(value, expected);
+		TestWandWLV(value, expected);
 
 		value = "[] []";
 		expected = "{df}{db}{dl}{dbr}{dfr}{f}{b}{br}{fr}{df}{db}{dr}{dbr}{dfr} {df}{db}{dl}{dbr}{dfr}{f}{b}{br}{fr}{df}{db}{dr}{dbr}{dfr}";
-		testWandWLV(value, expected);
+		TestWandWLV(value, expected);
 	}
 
 
-	private void testWandWL(string value, string expected)
+	private static void TestWandWL(string value, string expected)
 	{
 		var originalOut = Console.Out;
 		using var sw = new StringWriter();
@@ -122,7 +122,7 @@ public class HelperTests
 		Console.SetOut(originalOut);
 	}
 
-	private void testWandWLV(string value, string expected)
+	private static void TestWandWLV(string value, string expected)
 	{
 		var originalOut = Console.Out;
 		using var sw = new StringWriter();
@@ -341,7 +341,7 @@ public class HelperTests
 
 
 	[TestMethod]
-	public void testCls()
+	public void TestCls()
 	{
 		var originalOut = Console.Out;
 		using var sw = new StringWriter();

@@ -12,8 +12,8 @@ internal static class Expectations
 
 	public static string ResetAll => $"{esc}[0m";
 
-	private static string csFore = "38";  //ColorSpace.fore.AsString();
-	private static string csBack = "48";  //ColorSpace.back.AsString();
+	private static readonly string csFore = "38";  //ColorSpace.fore.AsString();
+	private static readonly string csBack = "48";  //ColorSpace.back.AsString();
 
 
 	//don't use named colors... e.g. Color.Green has a green component of 128, not 255

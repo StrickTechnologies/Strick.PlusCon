@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Text;
 
 using Strick.PlusCon.Models;
 
@@ -42,8 +43,43 @@ internal class Program
 
 	private static void Menu()
 	{
-		Menu mainMenu = new Menu(BannerText, " ");
-		mainMenu.Options.Add(new MenuOption('d', "Show Doc Samples", ShowDocSamples));
+		TextStyle menuTitleStyle = new TextStyle()
+		{
+			BackColor = Color.DarkSlateGray,
+			Reverse = true
+		};
+		menuTitleStyle.SetGradientColors(Color.White, Color.Red, Color.White);
+
+		Menu samplesMenu = new Menu(BannerText, "Doc Samples");
+		samplesMenu.Title!.Style = menuTitleStyle;
+		samplesMenu.Subtitle!.Style = menuTitleStyle;
+		samplesMenu.Add(new MenuOption("Show All", 'a', () => { DocSamples.Show(new Size(43, 10), true); }));
+		samplesMenu.Add(new MenuSeperator("-"));
+		char key = 'b';
+		foreach (var docSample in DocSamples.Samples)
+		{
+			samplesMenu.Add(new($"{docSample.Header.Replace("Example - ", "")} ({docSample.Name})", key++, () => { DocSamples.Show(docSample.Name, true); }));
+		}
+
+		Menu testMenu = new(BannerText, "Test Menu");
+		testMenu.Title!.Style = menuTitleStyle;
+		testMenu.Subtitle!.Style = menuTitleStyle;
+		testMenu.OptionsStyle = new TextStyle() { ForeColor = Color.White };
+		testMenu.Add(new("show greens", 'G', ShowGreens));
+		testMenu.Options[0].Style = new TextStyle() { ForeColor = Color.Lime };
+		testMenu.Add(new("TextStyle tests", 'T', TextStyleTests));
+		testMenu.Add(new MenuBackOption("back", 'X'));
+
+		Menu mainMenu = new Menu(BannerText, "M a i n  M e n u");
+		mainMenu.Title!.Style = menuTitleStyle;
+		mainMenu.Subtitle!.Style = menuTitleStyle;
+		mainMenu.Prompt!.Style.ForeColor = Color.White;
+		mainMenu.OptionsStyle = mainMenu.Prompt.Style;
+
+		mainMenu.Options.Add(new MenuSeperator("-"));
+		mainMenu.Options.Add(new MenuOption("Show Doc Samples", 'S', samplesMenu));
+		mainMenu.Options.Add(new MenuOption("Test Menu", 'T', testMenu));
+		mainMenu.Options.Add(new MenuSeperator("-"));
 		mainMenu.Show();
 	}
 
@@ -52,13 +88,47 @@ internal class Program
 		DocSamples.Show(new Size(43, 10), true);
 	}
 
-	private static void Banner() => WL(BannerText);
-	private static string BannerText => "   S t r i c k . P l u s C o n   ".Gradient(Color.White, Color.Red, Color.White).Colorize(null, Color.DarkSlateGray).Reverse();
+
+	private static void Banner() => WL(BannerText.Gradient(Color.White, Color.Red, Color.White).Colorize(null, Color.DarkSlateGray).Reverse());
+	private static string BannerText => "   S t r i c k . P l u s C o n   ";
 
 	private static void SetConsoleSize(int width, int height)
 	{
 		Console.SetWindowSize(width, height);
 		Console.SetBufferSize(width, height);
+	}
+
+
+	private static void TextStyleTests()
+	{
+		TextStyle style = new TextStyle();
+		string text = "foobar";
+
+		CLS();
+		WL(style.StyleText(text));
+
+		style.ForeColor = Color.White;
+		WL(style.StyleText(text));
+
+		style.BackColor = Color.DarkGray;
+		WL(style.StyleText(text));
+		
+		style.Underline = true;
+		WL(style.StyleText(text));
+
+		style.Underline = false;
+		WL(style.StyleText(text));
+
+		style.Reverse = true;
+		WL(style.StyleText(text));
+
+		style.Reverse = false;
+		WL(style.StyleText(text));
+
+		style.SetGradientColors(Color.Turquoise, Color.BlueViolet);
+		WL(style.StyleText(text));
+		
+		RK();
 	}
 
 	private static void ShowGreens()
@@ -81,6 +151,7 @@ internal class Program
 		ShowColors(fc, Color.SeaGreen);
 		ShowColors(fc, Color.SpringGreen);
 		ShowColors(fc, Color.YellowGreen);
+		RK();
 	}
 
 	private static void ShowColors(Color fore, Color back) => WL($"Foobar {fore.Name}/{back.Name}", fore, back);

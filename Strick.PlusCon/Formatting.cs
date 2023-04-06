@@ -1,5 +1,8 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Text;
 
 
@@ -143,5 +146,33 @@ public static class Formatting
 		string v1 = value[..(l / 2)];
 		string v2 = value[v1.Length..];
 		return v1.Gradient(start, middle) + v2.Gradient(middle, end);
+	}
+
+
+	/// <summary>
+	/// Returns a string of <paramref name="width"/> characters, with <paramref name="value"/> "Centered" (padded on the left and right with <paramref name="fillChar"/>) within the string. 
+	/// <para>If <paramref name="value"/> cannot be centered evenly, the extraneous <paramref name="fillChar"/> is on the right of the result.</para>
+	/// <para>If <paramref name="value"/> is null, or an empty string, a string consisting of <paramref name="width"/> <paramref name="fillChar"/> characters is returned.</para>
+	/// <para><b>Note:</b> if the length of <paramref name="value"/> is greater than, or equal to <paramref name="width"/>, <paramref name="value"/> is returned unchanged.</para>
+	/// <para><b>If <paramref name="width"/> is less than 1, an <see cref="ArgumentOutOfRangeException"/> is thrown.</b></para>
+	/// </summary>
+	/// <param name="value"></param>
+	/// <param name="width"></param>
+	/// <param name="fillChar"></param>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
+	public static string Center(this string value, int width, char fillChar = ' ')
+	{
+		if (width <= 0)
+		{ throw new ArgumentOutOfRangeException(nameof(width), "Must be > 0"); }
+
+		if (string.IsNullOrEmpty(value))
+		{ return new string(fillChar, width); }
+
+		if (value.Length >= width)
+		{ return value; }
+
+		var l = (width - value.Length) / 2;
+		//return new string(fillChar, l) + value + new string(fillChar, width - value.Length - l);
+		return value.PadLeft(l + value.Length, fillChar).PadRight(width, fillChar);
 	}
 }
