@@ -144,6 +144,8 @@ The `Reverse` method wraps a string with reverse text (foreground and background
 string reversed = "foo".Reverse();
 WL(reversed);
 WL("Hello World!".Reverse());
+WL(reversed, Color.LimeGreen, Color.White);
+WL(reversed, Color.White, Color.LimeGreen);
 ```
 
 ![Example - Reverse 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_reverse_1.png)
@@ -162,6 +164,36 @@ WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 
 ```
 
 ![Example - Gradient 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_gradient_1.png)
+
+Use the `ColorUtilities.GetGradientColors` method to get a sequence of colors for a gradient, 
+which can be used in ways limited only by your imagination.
+
+```c#
+var colors = ColorUtilities.GetGradientColors(Color.SkyBlue, Color.Orange, Console.WindowHeight).ToList();
+string spaces = new(' ', Console.WindowWidth);
+foreach (var color in colors)
+{ W(spaces, Color.White, color); }
+
+Console.SetCursorPosition(0, 0);
+W("Sunrise", Color.White, colors[0]);
+```
+
+![Example - Gradient 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_gradient_2.png)
+
+```c#
+int top = Console.WindowHeight / 2;
+int bottom = Console.WindowHeight - top;
+var colors = ColorUtilities.GetGradientColors(Color.FromArgb(145, 193, 255), Color.FromArgb(3, 240, 165), top).ToList();
+colors.AddRange(ColorUtilities.GetGradientColors(Color.FromArgb(3, 240, 165), Color.SandyBrown, bottom));
+string spaces = new(' ', Console.WindowWidth);
+foreach (var color in colors)
+{ W(spaces, Color.White, color); }
+
+Console.SetCursorPosition(0, Console.WindowHeight - 2);
+W("Down on the beach", Color.White, colors[^2]);
+```
+
+![Example - Gradient 3](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_gradient_3.png)
 
 #### Combining
 The various formatting methods can be combined to create additional effects.

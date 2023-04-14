@@ -16,10 +16,10 @@ internal class Program
 		ConsoleUtilities.EnableVirtualTerminal();
 		Console.Title = BannerText.Trim();
 
+		//SetConsoleSize(43, 10);
 		Menu();
 
 		//Banner(); WL();
-		//SetConsoleSize(43, 10);
 		//DocSamples.Show(new Size(43, 10), true);
 		//DocSamples.Show("cls1", true);
 
@@ -59,7 +59,7 @@ internal class Program
 		char key = 'b';
 		foreach (var docSample in DocSamples.Samples)
 		{
-			samplesMenu.Add(new($"{docSample.Header.Replace("Example - ", "")} ({docSample.Name})", key++, () => { DocSamples.Show(docSample.Name, true); }));
+			samplesMenu.Add(new($"{docSample.Header.Text.Replace("Example - ", "")} ({docSample.Name})", key++, () => { DocSamples.Show(docSample.Name, true); }));
 		}
 
 		Menu testMenu = new(BannerText, "Test Menu");

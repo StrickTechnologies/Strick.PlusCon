@@ -25,7 +25,9 @@ internal static class DocSamples
 			new DocSample("colorize2", "Example - Colorize (2)", Ex_colorize_2),
 			new DocSample("underline1", "Example - Underline", Ex_underline_1),
 			new DocSample("reverse1", "Example - Reverse", Ex_reverse_1),
-			new DocSample("gradient1", "Example - Gradient", Ex_gradient_1),
+			new DocSample("gradient1", "Example - Gradient (1)", Ex_gradient_1),
+			new DocSample("gradient2", "Example - Gradient (2)", Ex_gradient_2),
+			new DocSample("gradient3", "Example - Gradient (3)", Ex_gradient_3),
 			new DocSample("combo1", "Example - Combinations", Ex_combo_1),
 			new DocSample("notes1", "Example - Other Notes", Ex_notes_1),
 			new DocSample("textstyle1", "Example - TextStyle", Ex_TextStyle_1),
@@ -178,6 +180,8 @@ internal static class DocSamples
 		string reversed = "foo".Reverse();
 		WL(reversed);
 		WL("Hello World!".Reverse());
+		WL(reversed, Color.LimeGreen, Color.White);
+		WL(reversed, Color.White, Color.LimeGreen);
 	}
 
 	private static void Ex_gradient_1()
@@ -189,7 +193,34 @@ internal static class DocSamples
 		WL("--=gradients=--".Gradient(Color.White, Color.BlueViolet, Color.White));
 		WL("***fade-out***".Gradient(Color.White, Color.Black));
 		WL("***fade-in!***".Gradient(Color.Black, Color.White));
-		WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)));
+		WL("-- ** down on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)));
+	}
+
+	private static void Ex_gradient_2()
+	{
+		//Example **GRADIENT 2
+		var colors = ColorUtilities.GetGradientColors(Color.SkyBlue, Color.Orange, Console.WindowHeight).ToList();
+		string spaces = new(' ', Console.WindowWidth);
+		foreach (var color in colors)
+		{ W(spaces, Color.White, color); }
+
+		Console.SetCursorPosition(0, 0);
+		W("Sunrise", Color.White, colors[0]);
+	}
+
+	private static void Ex_gradient_3()
+	{
+		//Example **GRADIENT 3
+		int top = Console.WindowHeight / 2;
+		int bottom = Console.WindowHeight - top;
+		var colors = ColorUtilities.GetGradientColors(Color.FromArgb(145, 193, 255), Color.FromArgb(3, 240, 165), top).ToList();
+		colors.AddRange(ColorUtilities.GetGradientColors(Color.FromArgb(3, 240, 165), Color.SandyBrown, bottom));
+		string spaces = new(' ', Console.WindowWidth);
+		foreach (var color in colors)
+		{ W(spaces, Color.White, color); }
+
+		Console.SetCursorPosition(0, Console.WindowHeight - 2);
+		W("On the beach", Color.White, colors[^2]);
 	}
 
 	private static void Ex_combo_1()
@@ -199,8 +230,8 @@ internal static class DocSamples
 		WL($"Hello {"cruel".Underline()} World!", Color.Red);
 		WL("***fade-out***".Gradient(Color.Black, Color.White).Colorize(null, Color.White));
 		WL("***fade-in!***".Gradient(Color.White, Color.Black).Colorize(null, Color.White));
-		WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Reverse());
-		WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Underline());
+		WL("-- ** down on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Reverse());
+		WL("-- ** down on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Underline());
 	}
 
 	private static void Ex_notes_1()
@@ -240,11 +271,11 @@ internal static class DocSamples
 		ts.BackColor = null;
 		ts.Reverse = true;
 		ts.SetGradientColors(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255));
-		WL(ts.StyleText("-- ** on the beach ** --"));
+		WL(ts.StyleText("-- ** down on the beach ** --"));
 
 		ts.Reverse = false;
 		ts.Underline = true;
-		W(ts.StyleText("-- ** on the beach ** --"));
+		W(ts.StyleText("-- ** down on the beach ** --"));
 	}
 
 	private static void Ex_StyledText_1()
@@ -367,11 +398,16 @@ internal static class DocSamples
 
 	internal class DocSample
 	{
-		public DocSample(string name, string header, Action action)
+		public DocSample(string name, string header, Action action) : this(name, header, null, action) { }
+
+		public DocSample(string name, string header, TextStyle? headerStyle, Action action)
 		{
 			Name = name;
-			Header = header;
 			Action = action;
+
+			if (headerStyle == null)
+			{ headerStyle = new TextStyle(docHdFore, docHdBack); }
+			Header = new StyledText(header, headerStyle);
 		}
 
 
@@ -381,7 +417,7 @@ internal static class DocSamples
 
 		public string Name { get; }
 
-		public string Header { get; }
+		public StyledText Header { get; }
 
 		public Action Action { get; }
 
@@ -394,10 +430,9 @@ internal static class DocSamples
 				CLS();
 			}
 
-			ShowHd();
-
 			Action();
-			WL();
+
+			ShowHd();
 
 			if (wait)
 			{ RK(); }
@@ -405,8 +440,8 @@ internal static class DocSamples
 
 		private void ShowHd()
 		{
-			WL($"* {Header} *".Colorize(docHdFore, docHdBack));
-			WL();
+			Console.SetCursorPosition(Console.WindowWidth - Header.Text.Length, 0);
+			W(Header.TextStyled);
 		}
 	}
 }
