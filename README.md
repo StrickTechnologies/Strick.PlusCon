@@ -323,6 +323,17 @@ A menu can have multiple `ExitKeys` associated with it. An "Exit Key" is a key t
 The default `ExitKeys` for a menu are: *0 (the digit zero)*, *Space (" ")*, *Escape*, *Enter*, and *Backspace*. 
 These can be overridden via the `ExitKeys` property.
 
+If a prompt is not desired, set the `Prompt` property to null (as opposed to setting Prompt.Text).
+```c#
+Menu myMenu = new("Example Menu");
+...
+myMenu.Prompt = null; //remove the prompt
+
+//these don't work
+myMenu.Prompt.Text = null; //results in an exception
+myMenu.Prompt.Text = ""; //results in an exception
+```
+
 ### Key collisions
 If an option in a menu's `Options` collection contains a key in its `Keys` collection that is also 
 contained in the menu's `ExitKeys` collection, the menu option takes precedent.

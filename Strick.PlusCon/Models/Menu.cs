@@ -225,6 +225,9 @@ public class Menu
 		{
 			var l = Options.Max(o => o.Caption.Length + 3);
 
+			if (Prompt != null)
+			{ l = Math.Max(l, Prompt.Text.Length); }
+
 			return Math.Max(l, Math.Max(TitleLength, SubTitleLength));
 		}
 	}
