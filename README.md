@@ -160,7 +160,7 @@ WL("Hello-World!".Gradient(Color.Red, Color.White));
 WL("--=gradients=--".Gradient(Color.White, Color.BlueViolet, Color.White));
 WL("***fade-out***".Gradient(Color.White, Color.Black));
 WL("***fade-in!***".Gradient(Color.Black, Color.White));
-WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)));
+WL("-- ** down on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)));
 ```
 
 ![Example - Gradient 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_gradient_1.png)
@@ -190,7 +190,7 @@ foreach (var color in colors)
 { W(spaces, Color.White, color); }
 
 Console.SetCursorPosition(0, Console.WindowHeight - 2);
-W("Down on the beach", Color.White, colors[^2]);
+W("On the beach", Color.White, colors[^2]);
 ```
 
 ![Example - Gradient 3](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_gradient_3.png)
@@ -203,8 +203,8 @@ WL($"Hello World!".Underline(), Color.Red);
 WL($"Hello {"cruel".Underline()} World!", Color.Red);
 WL("***fade-out***".Gradient(Color.Black, Color.White).Colorize(null, Color.White));
 WL("***fade-in!***".Gradient(Color.White, Color.Black).Colorize(null, Color.White));
-WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Reverse());
-WL("-- ** on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Underline());
+WL("-- ** down on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Reverse());
+WL("-- ** down on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Underline());
 ```
 
 ![Example - Combinations 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_combo_1.png)
@@ -263,11 +263,11 @@ WL(ts.StyleText("***fade-in!***"));
 ts.BackColor = null;
 ts.Reverse = true;
 ts.SetGradientColors(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255));
-WL(ts.StyleText("-- ** on the beach ** --"));
+WL(ts.StyleText("-- ** down on the beach ** --"));
 
 ts.Reverse = false;
 ts.Underline = true;
-W(ts.StyleText("-- ** on the beach ** --"));
+W(ts.StyleText("-- ** down on the beach ** --"));
 ```
 
 ![Example - TextStyle 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_textStyle_1.png)
