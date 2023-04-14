@@ -53,7 +53,7 @@ public class TextStyle
 		GradientEnd = gradientEnd;
 	}
 
-	
+
 	/// <summary>
 	/// The foreground color to apply to the text
 	/// </summary>
@@ -116,6 +116,16 @@ public class TextStyle
 		GradientStart = start;
 		GradientMiddle = middle;
 		GradientEnd = end;
+	}
+
+	/// <summary>
+	/// Sets <see cref="GradientStart"/>, <see cref="GradientMiddle"/>, and <see cref="GradientEnd"/> to null.
+	/// </summary>
+	public void ClearGradient()
+	{
+		GradientStart = null;
+		GradientMiddle = null;
+		GradientEnd = null;
 	}
 
 

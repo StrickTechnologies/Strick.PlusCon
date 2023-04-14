@@ -82,6 +82,9 @@ public class TextStyleTests
 		ts.BackColor = green;
 		TestTextStyleState(ts, null, green, red, white, blue, false, true);
 
+		ts.ClearGradient();
+		TestTextStyleState(ts, null, green, null, null, null, false, true);
+
 		//...there are other combinations that could be tested
 	}
 

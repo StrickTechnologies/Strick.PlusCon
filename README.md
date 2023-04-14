@@ -204,6 +204,73 @@ One solution is to run the application from [Windows Terminal](https://apps.micr
 ## `TextStyle` and `StyledText` classes
 The `TextStyle` and `StyledText` classes provide a number of ways to more easily apply combinations of styling to any text.
 
+The `TextStyle` class provides methods and properties to apply foreground and background colors, 
+color gradients, reverse and underline styling to text. Set the various properties as desired, 
+then use the `StyleText` method to apply the styling to any text.
+
+```c#
+TextStyle ts = new(Color.White, Color.DodgerBlue, Color.White);
+//same style, different content
+foreach (string s in new[] { "content 1", "level 2" })
+{ WL(ts.StyleText(s)); }
+
+ts.ForeColor = Color.Red;
+ts.Underline = true;
+ts.ClearGradient();
+WL(ts.StyleText("Hello World!"));
+
+ts.Underline = false;
+ts.ForeColor = null;
+ts.BackColor = Color.White;
+ts.SetGradientColors(Color.Black, Color.White);
+WL(ts.StyleText("***fade-out***"));
+
+ts.SetGradientColors(Color.White, Color.Black);
+WL(ts.StyleText("***fade-in!***"));
+
+ts.BackColor = null;
+ts.Reverse = true;
+ts.SetGradientColors(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255));
+WL(ts.StyleText("-- ** on the beach ** --"));
+
+ts.Reverse = false;
+ts.Underline = true;
+W(ts.StyleText("-- ** on the beach ** --"));
+```
+
+![Example - TextStyle 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_textStyle_1.png)
+
+The `StyledText` class combines text content with a `TextStyle` object. 
+For flexibility, both the `Text` and `Style` properties are read/write, 
+and a `StyleText` method allows the styling to be applied to any text.
+
+```c#
+StyledText st = new("Hello World!", new(Color.Blue));
+
+//same content, different styling
+foreach (Color c in ColorUtilities.GetGradientColors(Color.FromArgb(0, 255, 0), Color.FromArgb(0, 128, 0), 4))
+{
+	st.Style.BackColor = c;
+	WL(st.TextStyled);
+}
+//same styling, alternate content
+WL(st.StyleText("Blue in Green"));
+
+//back to default
+st.Style = new();
+st.Text = "Default styling";
+WL(st.TextStyled);
+
+//different content, different styling
+st.Style.BackColor = Color.DarkGray;
+st.Style.ForeColor = Color.White;
+st.Text = "(not) " + st.Text;
+W(st.TextStyled);
+```
+
+![Example - TextStyle 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_styledText_1.png)
+
+
 ## `Menu`, `MenuOption` classes
 The `Menu` and `MenuOption` classes provide a way to create a simple menu structure for a console app. 
 
@@ -224,12 +291,13 @@ A menu can have multiple `ExitKeys` associated with it. An "Exit Key" is a key t
 The default `ExitKeys` for a menu are: *0 (the digit zero)*, *Space (" ")*, *Escape*, *Enter*, and *Backspace*. 
 These can be overridden via the `ExitKeys` property.
 
-If an option in the a menu's `Options` collection contains a key in its `Keys` collection that is also 
+### Key collisions
+If an option in a menu's `Options` collection contains a key in its `Keys` collection that is also 
 contained in the menu's `ExitKeys` collection, the menu option takes precedent.
-If two (or more) options in the a menu's `Options` collection contain the same key a key in their `Keys` collections, 
-the option with the lowest index within the collection will take precedent.
+If two (or more) options in the a menu's `Options` collection contain the same key in their `Keys` collection, 
+the option with the lowest index within the `Options` collection will take precedent.
 
-```
+```c#
 Menu subMenu = new("Example Submenu");
 //lambda
 subMenu.Add(new MenuOption("Option 1", '1', () =>
@@ -278,9 +346,11 @@ private static void ExampleMenuOption2()
 Colors for menu titles and menu options can easily be set. 
 At the menu level, both titles (`Title`, `Subtitle`) and `Prompt` have `Style` properties.
 The menu has an `OptionsStyle` property, which sets the style for ALL menu options.
-An individual option can override the menu-level style via its `Style` property.
+Individual options can override the menu-level style via their `Style` property.
 
-```
+The `Style` properties are all [`TextStyle` objects](#textstyle-and-styledtext-classes).
+
+```c#
 Menu subMenu = new("Example Submenu", "-");
 subMenu.Title!.Style.SetGradientColors(Color.Silver, Color.SlateGray, Color.Silver);
 subMenu.Title!.Style.BackColor = Color.White;

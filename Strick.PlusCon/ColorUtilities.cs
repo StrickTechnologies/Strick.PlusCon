@@ -14,6 +14,7 @@ public static class ColorUtilities
 	/// <summary>
 	/// Returns a sequence consisting of <paramref name="steps"/> <see cref="Color"/> objects.
 	/// <para>To create the individual colors, each component of the color (Red, Green, Blue, Alpha) is varied an equal amount for each step.</para>
+	/// <para><b>Note:</b> Although the Alpha value is included in the calculations here, the console (at least on Windows) does not support alpha transparency.</para>
 	/// </summary>
 	/// <param name="start">The starting color of the gradient.</param>
 	/// <param name="end">The ending color of the gradient.</param>

@@ -13,7 +13,8 @@ internal class Program
 {
 	static void Main()
 	{
-		//ConsoleUtilities.EnableVirtualTerminal();
+		ConsoleUtilities.EnableVirtualTerminal();
+		Console.Title = BannerText.Trim();
 
 		Menu();
 
