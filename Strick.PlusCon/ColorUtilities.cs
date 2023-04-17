@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-
+using System.Runtime.CompilerServices;
 
 namespace Strick.PlusCon;
 
@@ -63,4 +63,53 @@ public static class ColorUtilities
 
 	private static decimal GetGradientStep(int colorComponentStart, int colorComponentEnd, int steps)
 	{ return (colorComponentEnd - colorComponentStart) / (decimal)(steps - 1); }
+
+
+	/// <summary>
+	/// Returns a new color object which is created by increasing the "brightness" of <paramref name="baseColor"/>. 
+	/// The components (<see cref="Color.R"/>, <see cref="Color.G"/>, <see cref="Color.B"/>) of the new color are calculated 
+	/// by adding <paramref name="adjustment"/> to the value of each of color's components (Note: the Alpha component [<see cref="Color.A"/>] is NOT changed).
+	/// </summary>
+	/// <param name="baseColor"></param>
+	/// <param name="adjustment">An integer value between 0 and 255.</param>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
+	public static Color Brighten(this Color baseColor, int adjustment)
+	{
+		if (adjustment == 0)
+		{ return baseColor; }
+
+		if (adjustment > 255 || adjustment < 0)
+		{ throw new ArgumentOutOfRangeException(nameof(adjustment), "Allowable range is 0 - 255"); }
+
+		return baseColor.AdjustBrightness(adjustment);
+	}
+
+	public static Color Darken(this Color baseColor, int adjustment)
+	{
+		if (adjustment == 0)
+		{ return baseColor; }
+
+		if (adjustment > 255 || adjustment < 0)
+		{ throw new ArgumentOutOfRangeException(nameof(adjustment), "Allowable range is 0 - 255"); }
+
+		return baseColor.AdjustBrightness(-adjustment);
+	}
+
+	public static Color AdjustBrightness(this Color baseColor, int adjustment)
+	{ return Color.FromArgb(baseColor.A, GetAdjustedColorComponent(baseColor.R, adjustment), GetAdjustedColorComponent(baseColor.G, adjustment), GetAdjustedColorComponent(baseColor.B, adjustment)); }
+
+	private static int GetAdjustedColorComponent(int component, int adjustment)
+	{
+		if (adjustment == 0)
+		{ return component; }
+
+		if (adjustment > 255 || adjustment < -255)
+		{ throw new ArgumentOutOfRangeException(nameof(adjustment), "Allowable range is -255 - 255"); }
+
+		if (adjustment < 0)
+		{ return Math.Max(0, component + adjustment); }
+		else
+		{ return Math.Min(255, component + adjustment); }
+	}
+
 }
