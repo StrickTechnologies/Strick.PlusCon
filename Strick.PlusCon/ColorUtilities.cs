@@ -66,11 +66,11 @@ public static class ColorUtilities
 
 
 	/// <summary>
-	/// Returns a new color object which is created by increasing the "brightness" of <paramref name="baseColor"/>. 
+	/// Returns a new color object which is created by brightening (increasing the "brightness" or intensity of) <paramref name="baseColor"/>. 
 	/// The components (<see cref="Color.R"/>, <see cref="Color.G"/>, <see cref="Color.B"/>) of the new color are calculated 
 	/// by adding <paramref name="adjustment"/> to the value of each of color's components (Note: the Alpha component [<see cref="Color.A"/>] is NOT changed).
 	/// </summary>
-	/// <param name="baseColor"></param>
+	/// <param name="baseColor"><inheritdoc cref="AdjustBrightness(Color, int)" path="/param[@name='baseColor']"/></param>
 	/// <param name="adjustment">An integer value between 0 and 255.</param>
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public static Color Brighten(this Color baseColor, int adjustment)
@@ -84,6 +84,14 @@ public static class ColorUtilities
 		return baseColor.AdjustBrightness(adjustment);
 	}
 
+	/// <summary>
+	/// Returns a new color object which is created by darkening (decreasing the "brightness" or intensity of) <paramref name="baseColor"/>. 
+	/// The components (<see cref="Color.R"/>, <see cref="Color.G"/>, <see cref="Color.B"/>) of the new color are calculated 
+	/// by subtracting <paramref name="adjustment"/> from the value of each of color's components (Note: the Alpha component [<see cref="Color.A"/>] is NOT changed).
+	/// </summary>
+	/// <param name="baseColor"><inheritdoc cref="AdjustBrightness(Color, int)" path="/param[@name='baseColor']"/></param>
+	/// <param name="adjustment">An integer value between 0 and 255.</param>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public static Color Darken(this Color baseColor, int adjustment)
 	{
 		if (adjustment == 0)
@@ -95,6 +103,16 @@ public static class ColorUtilities
 		return baseColor.AdjustBrightness(-adjustment);
 	}
 
+	/// <summary>
+	/// Returns a new color object which is created by brightening or darkening (increasing or decreasing the "brightness" or intensity of) <paramref name="baseColor"/>. 
+	/// The components (<see cref="Color.R"/>, <see cref="Color.G"/>, <see cref="Color.B"/>) of the new color are calculated 
+	/// by add <paramref name="adjustment"/> from the value of each of color's components (Note: the Alpha component [<see cref="Color.A"/>] is NOT changed).
+	/// </summary>
+	/// <param name="baseColor">The color to adjust</param>
+	/// <param name="adjustment">An integer value between -255 and 255. 
+	/// Values &lt;0 serve to <b>decrease</b> <paramref name="baseColor"/>'s brightness. 
+	/// Values &gt;0 serve to <b>increase</b> <paramref name="baseColor"/>'s brightness</param>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public static Color AdjustBrightness(this Color baseColor, int adjustment)
 	{ return Color.FromArgb(baseColor.A, GetAdjustedColorComponent(baseColor.R, adjustment), GetAdjustedColorComponent(baseColor.G, adjustment), GetAdjustedColorComponent(baseColor.B, adjustment)); }
 
@@ -111,5 +129,4 @@ public static class ColorUtilities
 		else
 		{ return Math.Min(255, component + adjustment); }
 	}
-
 }
