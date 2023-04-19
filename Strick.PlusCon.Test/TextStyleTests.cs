@@ -21,18 +21,42 @@ public class TextStyleTests
 
 		ts = new();
 		TestTextStyleState(ts, null, null, null, null, null, false, false);
+		TextStyle ts2 = new(ts);
+		TestTextStyleState(ts2, null, null, null, null, null, false, false);
+		Assert.IsFalse(ReferenceEquals(ts, ts2));
 
 		ts = new(red);
 		TestTextStyleState(ts, red, null, null, null, null, false, false);
+		ts2 = new(ts);
+		TestTextStyleState(ts2, red, null, null, null, null, false, false);
+		Assert.IsFalse(ReferenceEquals(ts, ts2));
 
 		ts = new(red, white);
 		TestTextStyleState(ts, red, white, null, null, null, false, false);
+		ts2 = new(ts);
+		TestTextStyleState(ts2, red, white, null, null, null, false, false);
+		Assert.IsFalse(ReferenceEquals(ts, ts2));
 
 		ts = new(red, null, blue);
 		TestTextStyleState(ts, null, null, red, null, blue, false, false);
+		ts2 = new(ts);
+		TestTextStyleState(ts2, null, null, red, null, blue, false, false);
+		Assert.IsFalse(ReferenceEquals(ts, ts2));
 
 		ts = new(red, white, blue);
 		TestTextStyleState(ts, null, null, red, white, blue, false, false);
+		ts2 = new(ts);
+		TestTextStyleState(ts2, null, null, red, white, blue, false, false);
+		Assert.IsFalse(ReferenceEquals(ts, ts2));
+
+		ts2 = new(ts);
+		TestTextStyleState(ts2, null, null, red, white, blue, false, false);
+		Assert.IsFalse(ReferenceEquals(ts, ts2));
+		
+		ts = null!;
+		ts2 = new(ts);
+		TestTextStyleState(ts2, null, null, null, null, null, false, false);
+		Assert.IsFalse(ReferenceEquals(ts, ts2));
 	}
 
 	[TestMethod]

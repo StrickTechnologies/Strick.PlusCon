@@ -53,6 +53,25 @@ public class TextStyle
 		GradientEnd = gradientEnd;
 	}
 
+	/// <summary>
+	/// Creates a new instance with the same property values as <paramref name="sourceStyle"/>. 
+	/// <para>If <paramref name="sourceStyle"/> is null, a new instance is created with default property values.</para>
+	/// </summary>
+	/// <param name="sourceStyle"></param>
+	public TextStyle(TextStyle sourceStyle)
+	{
+		if (sourceStyle != null)
+		{
+			ForeColor = sourceStyle.ForeColor;
+			BackColor = sourceStyle.BackColor;
+			GradientStart = sourceStyle.GradientStart;
+			GradientMiddle = sourceStyle.GradientMiddle;
+			GradientEnd = sourceStyle.GradientEnd;
+			Reverse = sourceStyle.Reverse;
+			Underline = sourceStyle.Underline;
+		}
+	}
+
 
 	/// <summary>
 	/// The foreground color to apply to the text
