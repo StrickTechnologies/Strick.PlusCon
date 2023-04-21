@@ -175,4 +175,37 @@ public static class Formatting
 		//return new string(fillChar, l) + value + new string(fillChar, width - value.Length - l);
 		return value.PadLeft(l + value.Length, fillChar).PadRight(width, fillChar);
 	}
+
+
+	/// <summary>
+	/// Intersperses (inserts) a space character (' ') between each of the characters of <paramref name="value"/> and returns the resulting string. 
+	/// </summary>
+	/// <param name="value">The string to insert spaces into. 
+	/// If <paramref name="value"/> is null or empty, <paramref name="value"/> is returned.</param>
+	public static string SpaceOut(this string value) => value.Intersperse(' ');
+
+	/// <summary>
+	/// Intersperses (inserts) a <paramref name="ch"/> character between each of the characters of <paramref name="value"/> and returns the resulting string. 
+	/// </summary>
+	/// <param name="value">The string to insert <paramref name="ch"/> into. 
+	/// If <paramref name="value"/> is null or empty, <paramref name="value"/> is returned.</param>
+	/// <param name="ch">The character to insert into <paramref name="value"/></param>
+	public static string Intersperse(this string value, char ch)
+	{
+		if (string.IsNullOrEmpty(value))
+		{ return value; }
+
+		bool first = true;
+		StringBuilder sb = new();
+		foreach (char c in value)
+		{
+			if (first)
+			{ first = false; }
+			else
+			{ sb.Append(ch); }
+			sb.Append(c);
+		}
+
+		return sb.ToString();
+	}
 }

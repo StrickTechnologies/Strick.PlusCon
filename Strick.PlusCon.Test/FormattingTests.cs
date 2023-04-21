@@ -171,7 +171,7 @@ public class FormattingTests
 		src = "1";
 		TestCenter(src);
 		TestCenter(src, '-');
-		
+
 		src = "12";
 		TestCenter(src);
 		TestCenter(src, '-');
@@ -179,10 +179,34 @@ public class FormattingTests
 		src = "123";
 		TestCenter(src);
 		TestCenter(src, '-');
-		
+
 		src = "1234567890";
 		TestCenter(src);
 		TestCenter(src, '-');
+	}
+
+	[TestMethod]
+	public void IntersperseTests()
+	{
+		string? src = null;
+
+		Assert.AreEqual(null, src!.Intersperse('-'));
+		src = "";
+		Assert.AreEqual("", src.Intersperse('-'));
+
+		src = "foo";
+		Assert.AreEqual("f-o-o", src.Intersperse('-'));
+		Assert.AreEqual("f.o.o", src.Intersperse('.'));
+		Assert.AreEqual("f o o", src.Intersperse(' '));
+		Assert.AreEqual("f o o", src.SpaceOut());
+
+		src = "bar";
+		Assert.AreEqual("b-a-r", src.Intersperse('-'));
+
+		src = "foo bar";
+		Assert.AreEqual("f-o-o- -b-a-r", src.Intersperse('-'));
+		Assert.AreEqual("f o o   b a r", src.Intersperse(' '));
+		Assert.AreEqual("f o o   b a r", src.SpaceOut());
 	}
 
 
