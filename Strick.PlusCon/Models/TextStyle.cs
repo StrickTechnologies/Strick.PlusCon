@@ -54,7 +54,7 @@ public class TextStyle
 	}
 
 	/// <summary>
-	/// Creates a new instance with the same property values as <paramref name="sourceStyle"/>. 
+	/// Creates a clone of <paramref name="sourceStyle"/> -- a new instance having the same property values as <paramref name="sourceStyle"/>. 
 	/// <para>If <paramref name="sourceStyle"/> is null, a new instance is created with default property values.</para>
 	/// </summary>
 	/// <param name="sourceStyle"></param>

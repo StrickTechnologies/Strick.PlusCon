@@ -30,6 +30,9 @@ public class TextStyleTests
 		ts2 = new(ts);
 		TestTextStyleState(ts2, red, null, null, null, null, false, false);
 		Assert.IsFalse(ReferenceEquals(ts, ts2));
+		ts.ForeColor = blue;
+		TestTextStyleState(ts, blue, null, null, null, null, false, false);
+		TestTextStyleState(ts2, red, null, null, null, null, false, false);
 
 		ts = new(red, white);
 		TestTextStyleState(ts, red, white, null, null, null, false, false);
