@@ -55,7 +55,7 @@ public class TextStyleTests
 		ts2 = new(ts);
 		TestTextStyleState(ts2, null, null, red, white, blue, false, false);
 		Assert.IsFalse(ReferenceEquals(ts, ts2));
-		
+
 		ts = null!;
 		ts2 = new(ts);
 		TestTextStyleState(ts2, null, null, null, null, null, false, false);
@@ -192,6 +192,22 @@ public class TextStyleTests
 			{ FormattingTests.TestGResult(src, res, expectedGStart.Value, expectedGEnd.Value); }
 			else
 			{ FormattingTests.TestGResult(src, res, expectedGStart.Value, expectedGMid.Value, expectedGEnd.Value); }
+		}
+	}
+
+	internal static void CheckTextStyleEquality(TextStyle? style, TextStyle? expectedStyle)
+	{
+		if (!ReferenceEquals(style, expectedStyle))
+		{
+			Assert.IsNotNull(style);
+			Assert.IsNotNull(expectedStyle);
+			Assert.AreEqual(expectedStyle.BackColor, style.BackColor);
+			Assert.AreEqual(expectedStyle.ForeColor, style.ForeColor);
+			Assert.AreEqual(expectedStyle.GradientStart, style.GradientStart);
+			Assert.AreEqual(expectedStyle.GradientMiddle, style.GradientMiddle);
+			Assert.AreEqual(expectedStyle.GradientEnd, style.GradientEnd);
+			Assert.AreEqual(expectedStyle.Underline, style.Underline);
+			Assert.AreEqual(expectedStyle.Reverse, style.Reverse);
 		}
 	}
 }
