@@ -19,14 +19,6 @@ internal class Program
 		ConsoleUtilities.EnableVirtualTerminal();
 		Console.Title = BannerText.Trim();
 
-		Console.CursorTop = 5;
-		W("X");
-		Console.CursorLeft = 15;
-		W("X");
-		Console.CursorTop++;
-		W("X");
-		RK();
-
 		//SetConsoleSize(43, 10);
 		Menu();
 

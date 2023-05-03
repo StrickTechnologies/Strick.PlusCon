@@ -39,83 +39,6 @@ public class Grid
 	/// </summary>
 	public int ColumnCount => Columns.Count;
 
-	///// <summary>
-	///// Backer field for the <see cref="Columns"/> property.
-	///// </summary>
-	//protected List<GridColumn> Cols;
-
-	///// <summary>
-	///// The columns of the grid. Readonly.
-	///// <para>Use <see cref="AddColumn()"/> and <see cref="RemoveColumn(int)"/> to add or remove columns from the grid.</para>
-	///// </summary>
-	//public IReadOnlyList<GridColumn> Columns2 => Cols;
-
-	///// <summary>
-	///// Adds a column to the grid's <see cref="Columns"/> collection and returns the newly added <see cref="GridColumn"/> object.
-	///// </summary>
-	///// <returns>The newly added <see cref="GridColumn"/> object.</returns>
-	//public GridColumn AddColumn() => Columns.Add();
-
-	///// <summary>
-	///// <inheritdoc cref="AddColumn()"/>
-	///// </summary>
-	///// <param name="headerText">The text to display in the column header.</param>
-	///// <returns><inheritdoc cref="AddColumn()"/></returns>
-	//public GridColumn AddColumn(string headerText) => Columns.Add(headerText);
-
-	///// <summary>
-	///// <inheritdoc cref="AddColumn()"/>
-	///// </summary>
-	///// <param name="headerText">The text to display in the column header.</param>
-	///// <param name="alignment">The <see cref="HorizontalAlignment"/> for the column. Applies to both the cell content and the column header.</param>
-	///// <returns><inheritdoc cref="AddColumn()"/></returns>
-	//public GridColumn AddColumn(string headerText, HorizontalAlignment alignment) => Columns.Add(headerText, alignment);
-	//{
-	//	if (Rows != null && Rows.Count > 0)
-	//	{ throw new InvalidOperationException($"Cannot add columns when the grid has rows. Add columns before rows, or clear the {nameof(Rows)} collection before adding columns."); }
-
-	//	var c = new GridColumn(this, headerText, alignment);
-	//	Cols.Add(c);
-	//	return c;
-	//}
-
-	///// <summary>
-	///// Removes the specified column from the <see cref="Columns"/> collection. 
-	///// If <paramref name="col"/> is null, or not found in the <see cref="Columns"/> collection, an exception is thrown.
-	///// </summary>
-	///// <param name="col"></param>
-	///// <exception cref="ArgumentNullException"></exception>
-	///// <exception cref="ArgumentException"></exception>
-	//public bool RemoveColumn(GridColumn col) => Columns.Remove(col);
-	//{
-	//	if (col == null)
-	//	{ throw new ArgumentNullException(nameof(col)); }
-
-	//	var x = Cols.IndexOf(col);
-	//	if (x == -1)
-	//	{ throw new ArgumentException("Column is not found in this grid.", nameof(col)); }
-
-	//	RemoveColumn(x);
-	//}
-
-	///// <summary>
-	///// Removes the column at the index specified by <paramref name="index"/> from the <see cref="Columns"/> collection. 
-	///// <para>An exception is thrown if the grid has any rows.</para>
-	///// </summary>
-	///// <param name="index">The zero based index of the column to be removed.</param>
-	///// <exception cref="InvalidOperationException"></exception>
-	///// <exception cref="ArgumentOutOfRangeException"></exception>
-	//public void RemoveColumn(int index) => Columns.RemoveAt(index);
-	//{
-	//	if (Rows != null && Rows.Count > 0)
-	//	{ throw new InvalidOperationException("Cannot remove columns when the grid has rows."); }
-
-	//	if (index < 0 || index > (Columns.Count - 1))
-	//	{ throw new ArgumentOutOfRangeException(); }
-
-	//	Cols.RemoveAt(index);
-	//}
-
 	#endregion COLUMNS
 
 
@@ -283,7 +206,7 @@ public class Grid
 		{
 			foreach (GridColumn column in Columns)
 			{
-				if (column.Header != null)
+				if (column.Header != null && column.TotalWidth > 0)
 				{
 					W(column.Header.RenderedContent);
 					//System.Diagnostics.Debug.WriteLine($"col hd {column.Header.Content} r/c:{column.Header.RowIndex}/{column.Header.ColumnIndex}");
@@ -301,9 +224,12 @@ public class Grid
 			//CELLS
 			foreach (GridColumn column in Columns)
 			{
-				var cell = gRow.Cells[column.Index];
-				W(cell.RenderedContent);
-				//System.Diagnostics.Debug.WriteLine($"cell {cell.Content} r/c:{cell.RowIndex}/{cell.ColumnIndex}");
+				if (column.TotalWidth > 0)
+				{
+					var cell = gRow.Cells[column.Index];
+					W(cell.RenderedContent);
+					//System.Diagnostics.Debug.WriteLine($"cell {cell.Content} r/c:{cell.RowIndex}/{cell.ColumnIndex}");
+				}
 			}
 			Console.SetCursorPosition(col, ++row);
 		}

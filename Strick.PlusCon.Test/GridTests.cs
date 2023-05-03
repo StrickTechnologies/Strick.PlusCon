@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -278,6 +279,120 @@ public class GridTests
 		CheckCellState(r3.Cells[2], 0, 2, "r3-c3", g.CellStyle, g.CellContentStyle, g.Columns[2].CellLayout);
 	}
 
+	[TestMethod]
+	public void CellRendering()
+	{
+		Grid g = new Grid();
+		var col1 = g.Columns.Add();
+		col1.CellLayout.MarginLeft = 0;
+		col1.CellLayout.MarginRight = 0;
+		col1.CellLayout.PaddingLeft = 0;
+		col1.CellLayout.PaddingRight = 0;
+		CheckColumnState(col1, 0, "", 0, 0, 0);
+		CheckColHead(col1, 0, "", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "");
+		var r1 = g.AddRow();
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "", g.CellStyle, g.CellContentStyle, col1.CellLayout, "");
+		CheckColHead(col1, 0, "", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "");
+
+		col1.Header.Content = "X";
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "", g.CellStyle, g.CellContentStyle, col1.CellLayout, ForeColorWhite + " " + ForeColorReset);
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, Underline + ForeColorWhite + "X" + ForeColorReset + UnderlineReset);
+
+		r1.Cells[0].Content = "Y";
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "Y", g.CellStyle, g.CellContentStyle, col1.CellLayout, ForeColorWhite + "Y" + ForeColorReset);
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, Underline + ForeColorWhite + "X" + ForeColorReset + UnderlineReset);
+		r1.Cells[0].Content = "foo";
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, ForeColorWhite + "foo" + ForeColorReset);
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $"{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}  {ForeColorReset}{UnderlineReset}");
+		col1.CellLayout.MarginLeft = 1;
+		col1.CellLayout.MarginRight = 1;
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite}foo{ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}  {ForeColorReset}{UnderlineReset} ");
+		col1.CellLayout.PaddingLeft = 1;
+		col1.CellLayout.PaddingRight = 1;
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}   {ForeColorReset}{UnderlineReset} ");
+
+		var r2 = g.AddRow("longer");
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorWhite}    {ForeColorReset} ");
+		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset} ");
+
+		col1.CellLayout.HorizontalAlignment = HorizontalAlignment.Center;
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite}  {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorWhite}   {ForeColorReset} ");
+		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}   {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}    {ForeColorReset}{UnderlineReset} ");
+
+		col1.CellLayout.HorizontalAlignment = HorizontalAlignment.Right;
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite}    {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
+
+		r1.Cells[0].ContentStyle = new TextStyle(blue);
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, r1.Cells[0].ContentStyle!, col1.CellLayout, $" {ForeColorWhite}    {ForeColorReset}{ForeColorBlue}foo{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
+		r1.Cells[0].ContentStyle = null;
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite}    {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
+
+		col1.ContentStyle = new(blue);
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, col1.ContentStyle, col1.CellLayout, $" {ForeColorWhite}    {ForeColorReset}{ForeColorBlue}foo{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, col1.ContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorBlue}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
+		col1.ContentStyle = null;
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite}    {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
+
+		r1.Cells[0].CellStyle = new TextStyle(blue);
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", r1.Cells[0].CellStyle!, g.CellContentStyle, col1.CellLayout, $" {ForeColorBlue}    {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorBlue} {ForeColorReset} ");
+		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
+		r1.Cells[0].CellStyle = null;
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite}    {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
+
+		col1.CellStyle = new(blue);
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", col1.CellStyle!, g.CellContentStyle, col1.CellLayout, $" {ForeColorBlue}    {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorBlue} {ForeColorReset} ");
+		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", col1.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorBlue} {ForeColorReset}{ForeColorWhite}longer{ForeColorReset}{ForeColorBlue} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
+		col1.CellStyle = null;
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite}    {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
+
+		var col2 = g.Columns.Add("Y");
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite}    {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
+		CheckCellRendering(col2.Cells.ElementAt(0), 0, 1, "", g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col2.Cells.ElementAt(1), 1, 1, "", g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col2, 1, "Y", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col2.CellLayout, $" {Underline}{ForeColorWhite}Y{ForeColorReset}{UnderlineReset} ");
+
+		r2.ContentStyle = new(blue);
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite}    {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, r2.ContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorBlue}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
+		CheckCellRendering(col2.Cells.ElementAt(0), 0, 1, "", g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
+		//this doesn't seem right -- seems like it should be blue. however, the cell has no content and the entire cell is padding. white is the padding (cell) color.
+		CheckCellRendering(col2.Cells.ElementAt(1), 1, 1, "", g.CellStyle, r2.ContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
+		r2.Cells[1].Content = "Z";
+		CheckCellRendering(col2.Cells.ElementAt(1), 1, 1, "Z", g.CellStyle, r2.ContentStyle, col2.CellLayout, $" {ForeColorBlue}Z{ForeColorReset} ");
+		r2.Cells[1].Content = "";
+		CheckCellRendering(col2.Cells.ElementAt(1), 1, 1, "", g.CellStyle, r2.ContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col2, 1, "Y", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col2.CellLayout, $" {Underline}{ForeColorWhite}Y{ForeColorReset}{UnderlineReset} ");
+		r2.ContentStyle = null;
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite}    {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
+		CheckCellRendering(col2.Cells.ElementAt(0), 0, 1, "", g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col2.Cells.ElementAt(1), 1, 1, "", g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
+		CheckColHead(col2, 1, "Y", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col2.CellLayout, $" {Underline}{ForeColorWhite}Y{ForeColorReset}{UnderlineReset} ");
+	}
+
 	private static void CheckGridState(Grid g, int expectedColCount, int expectedRowCount)
 	{
 		Assert.IsNotNull(g);
@@ -333,15 +448,42 @@ public class GridTests
 		CheckLayoutEquality(expectedLayout, cell.LayoutI);
 
 		if (string.IsNullOrEmpty(expectedContent))
-		{ Assert.IsNull(cell.Content); }
+		{ Assert.IsTrue(string.IsNullOrEmpty(cell.Content)); }
 		else
 		{ Assert.AreEqual(expectedContent, cell.Content); }
 	}
 
-	private static void CheckCellRendering(GridCell cell, string? expectedContent, TextStyle expectedCellStyle, TextStyle expectedContentStyle, GridCellLayout expectedLayout)
+	private static void CheckCellRendering(GridCell cell, int expectedRowIndex, int expectedColIndex, string? expectedContent, TextStyle expectedCellStyle, TextStyle expectedContentStyle, GridCellLayout expectedLayout, string expectedRenderedContent)
 	{
-		Assert.IsNotNull(cell);
+		CheckCellState(cell, expectedRowIndex, expectedColIndex, expectedContent, expectedCellStyle, expectedContentStyle, expectedLayout);
+
 		int colW = cell.Column.TotalWidth;
+		if (colW == 0)
+		{ Assert.IsTrue(string.IsNullOrEmpty(expectedRenderedContent)); }
+		else
+		{ Assert.AreEqual(expectedRenderedContent, cell.RenderedContent); }
+	}
+
+	private static void CheckColHead(GridColumn col, int expectedColIndex, string? expectedContent, TextStyle expectedCellStyle, TextStyle expectedContentStyle, GridCellLayout expectedLayout, string expectedRenderedContent)
+	{
+		GridHeaderCell hd = col.Header;
+		int colW = col.TotalWidth;
+
+		Assert.IsNotNull(col);
+		Assert.AreEqual(expectedColIndex, hd.ColumnIndex);
+		TextStyleTests.CheckTextStyleEquality(hd.CellStyleI, expectedCellStyle);
+		TextStyleTests.CheckTextStyleEquality(hd.ContentStyleI, expectedContentStyle);
+		CheckLayoutEquality(expectedLayout, hd.LayoutI);
+
+		if (string.IsNullOrEmpty(expectedContent))
+		{ Assert.IsNull(hd.Content); }
+		else
+		{ Assert.AreEqual(expectedContent, hd.Content); }
+
+		if (colW == 0)
+		{ Assert.IsTrue(string.IsNullOrEmpty(expectedRenderedContent)); }
+		else
+		{ Assert.AreEqual(expectedRenderedContent, hd.RenderedContent); }
 	}
 
 	internal static void CheckLayoutEquality(GridCellLayout expectedLayout, GridCellLayout actualLayout)
