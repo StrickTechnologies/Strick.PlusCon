@@ -1,2 +1,2 @@
 # Grid
-[home](../Readme.md)
+[home](/README.md)
