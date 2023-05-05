@@ -492,7 +492,7 @@ internal class Program
 		//g.CellContentStyle.BackColor = Color.FromArgb(48, 48, 48);
 		g.Columns.Add("C-1").Header.HorizontalAlignment = HorizontalAlignment.Right;
 		g.Columns.Add("Column-2");
-		var col= g.Columns.Add("C-3", HorizontalAlignment.Right);
+		var col = g.Columns.Add("C-3", HorizontalAlignment.Right);
 		//col.Header.HorizontalAlignment = HorizontalAlignment.Center;
 		//g.Columns[2].CellLayout.PaddingLeft = 1;
 		//g.Columns[2].CellLayout.PaddingLeftChar = '[';
@@ -505,8 +505,12 @@ internal class Program
 		//g.Columns[0].CellLayout.MarginLeft = 0;
 		//g.Columns[0].CellLayout.PaddingLeft = 0;
 		//g.Columns[0].CellLayout.PaddingRight = 0;
-		//g.Columns[1].CellLayout.PaddingLeft = 1;
-		//g.Columns[1].CellLayout.PaddingRight = 1;
+		//g.Columns[2].CellLayout.PaddingLeft = 1;
+		//g.Columns[2].CellLayout.PaddingRight = 1;
+		//g.Columns[2].CellLayout.PaddingLeftChar = '/';
+		//g.Columns[2].CellLayout.PaddingRightChar = '\\';
+		//g.Columns[2].CellLayout.MarginLeftChar = '|';
+		//g.Columns[2].CellLayout.MarginRightChar = '|';
 
 		g.Rows.Add(new(g, "r1 - c1", "r1-c2", "r1-c3"));
 		g.Rows.Add(new(g, "r2-c1", "r2-c2", "row2-column3"));
