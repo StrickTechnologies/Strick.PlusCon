@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using static Strick.PlusCon.Helpers;
 
@@ -76,6 +73,22 @@ public class Grid
 	/// </summary>
 	/// <returns>The newly created <see cref="GridRow"/> object</returns>
 	public GridRow AddRow(params string?[] cellContent)
+	{
+		GridRow r = new(this, cellContent);
+		Rows.Add(r);
+		return r;
+	}
+
+	/// <summary>
+	/// Adds a new row to the grid. 
+	/// The <paramref name="cellContent"/> array maps to the <seealso cref="GridRow.Cells"/> of the row. 
+	/// Values in <paramref name="cellContent"/> that are not strings will be converted to strings using their <see cref="object.ToString"/> method. 
+	/// If the number of elements in <paramref name="cellContent"/> is less than the number of columns in the grid, the remaining cells default to having content = null. 
+	/// If the number of elements in <paramref name="cellContent"/> is more than the number of columns in the grid, an exception is thrown.
+	/// The newly created <see cref="GridRow"/> object is returned.
+	/// </summary>
+	/// <returns>The newly created <see cref="GridRow"/> object</returns>
+	public GridRow AddRow(params object?[] cellContent)
 	{
 		GridRow r = new(this, cellContent);
 		Rows.Add(r);

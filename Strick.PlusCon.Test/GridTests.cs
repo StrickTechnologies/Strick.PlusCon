@@ -87,6 +87,14 @@ public class GridTests
 		//CheckCellState(g.Rows[0].Cells[0], g.Rows[0].Cells[0].CellStyle!, g.Rows[0].Cells[0].ContentStyle!, g.Columns[0].CellLayout);
 		//g.Rows[0].Cells[0].Layout = new();
 		//CheckCellState(g.Rows[0].Cells[0], g.Rows[0].Cells[0].CellStyle!, g.Rows[0].Cells[0].ContentStyle!, g.Rows[0].Cells[0].Layout!);
+
+		//test object overload for adding row cells
+		var now = DateTime.Now;
+		var r = g.AddRow(1, now);
+		CheckGridState(g, 2, 3);
+		CheckRowState(r, 2, 2);
+		CheckCellState(r.Cells[0], 2, 0, "1", g.Columns[0].CellStyle!, g.Columns[0].ContentStyle!, g.Columns[0].CellLayout);
+		CheckCellState(r.Cells[1], 2, 1, now.ToString(), g.CellStyle!, g.CellContentStyle, g.Columns[1].CellLayout);
 	}
 
 	[TestMethod]

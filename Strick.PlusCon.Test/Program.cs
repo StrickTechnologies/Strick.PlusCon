@@ -545,6 +545,8 @@ internal class Program
 		//g.Rows[2].Cells[1].Layout.PaddingLeft = 0;
 		//g.Rows[2].Cells[1].Layout.PaddingRight = 0;
 
+		g.AddRow("r6-c1", DateTime.Now, 1);
+
 		g.Footer = new($"A total of {g.RowCount} fun items", new(Color.White, Color.Purple));
 
 		//g.AddColumn("empty");

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Strick.PlusCon.Models;
@@ -30,7 +25,7 @@ public class GridRow
 
 	/// <summary>
 	/// <inheritdoc cref="GridRow(Grid)"/>
-	/// The <paramref name="cellContent"/> array maps to the <seealso cref="GridRow.Cells"/> of the row. 
+	/// The <paramref name="cellContent"/> array maps to the <seealso cref="Cells"/> of the row. 
 	/// If the number of elements in <paramref name="cellContent"/> is less than the number of columns in the grid, the remaining cells default to having content = null. 
 	/// If the number of elements in <paramref name="cellContent"/> is more than the number of columns in the grid, an exception is thrown.
 	/// </summary>
@@ -45,6 +40,36 @@ public class GridRow
 		int col = 0;
 		foreach (string? val in cellContent)
 		{ Cells[col++].Content = val; }
+	}
+
+	/// <summary>
+	/// <inheritdoc cref="GridRow(Grid)"/>
+	/// The <paramref name="cellContent"/> array maps to the <seealso cref="Cells"/> of the row. 
+	/// Values in <paramref name="cellContent"/> that are not strings will be converted to strings using their <see cref="object.ToString"/> method. 
+	/// If the number of elements in <paramref name="cellContent"/> is less than the number of columns in the grid, the remaining cells default to having content = null. 
+	/// If the number of elements in <paramref name="cellContent"/> is more than the number of columns in the grid, an exception is thrown.
+	/// </summary>
+	/// <param name="grid"></param>
+	/// <param name="cellContent"></param>
+	/// <exception cref="ArgumentException"></exception>
+	public GridRow(Grid grid, params object?[] cellContent) : this(grid)
+	{
+		if (cellContent.Length > grid.Columns.Count)
+		{ throw new ArgumentException("Too many cells", nameof(cellContent)); }
+
+		int col = 0;
+		foreach (object? val in cellContent)
+		{
+			if (val == null)
+			{
+				//cell content defaults to null, no need to set it again
+				col++;
+			}
+			else if (val is string)
+			{ Cells[col++].Content = (string)val; }
+			else
+			{ Cells[col++].Content = val.ToString(); }
+		}
 	}
 
 	//not used. possible future development
