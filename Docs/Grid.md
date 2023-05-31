@@ -6,7 +6,7 @@ Each Column is sized automatically to fit its widest content.
 In addition to the rows and columns, grids can also have a `Title`, `Subtitle` and `Footer`. 
 The titles are centered above the rows/columns, the footer is centered beneath the rows/columns. 
 
-The appearance and layout of the grid's columns, rows, cells can be customized through the 
+The appearance and layout of the grid's columns, rows, and cells can be customized through the 
 use of properties available at the various levels. 
 The styling for the titles and footer can also be customized. 
 
@@ -18,7 +18,7 @@ Calling the `Show` method if the grid does not have at least one column and one 
 result in an exception being thrown. After all, it is somewhat pointless to display a grid 
 without both.
 
-Styling for all the grid's cells can be set via the `CellStyle`, `CellContentStyle` properties. 
+Styling for all the grid's cells can be set via the `CellStyle`, and `CellContentStyle` properties. 
 These styles can be overridden at the column, row, and cell level.
 
 Styling for all the grid's column headers can be set via the `ColumnHeaderCellStyle`, and `ColumnHeaderContentStyle` properties. 
@@ -80,7 +80,8 @@ however the styling can be overridden for an individual cell using the cell's
 
 A cell's layout is inherited from the column (`GridColumn.CellLayout`). 
 The horizontal alignment of an individual cell can be overridden via the 
-cell's `HorizontalAlignment` property.
+cell's `HorizontalAlignment` property. The cell's other layout properties (margins, padding) 
+cannot be overridden.
 
 A cell has readonly properties for `Column`, `ColumnIndex`, `Row`, and `RowIndex`. 
 These return information regarding the cell's position within the grid.

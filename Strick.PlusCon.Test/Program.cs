@@ -54,9 +54,7 @@ internal class Program
 		};
 		menuTitleStyle.SetGradientColors(Color.White, Color.Red, Color.White);
 
-		Menu samplesMenu = new Menu(BannerText, "Doc Samples");
-		samplesMenu.Title!.Style = menuTitleStyle;
-		samplesMenu.Subtitle!.Style = menuTitleStyle;
+		Menu samplesMenu = NewMenu(BannerText, "Doc Samples", menuTitleStyle);
 		samplesMenu.Add(new MenuOption("Show All", 'a', () => { DocSamples.Show(new Size(43, 10), true); }));
 		samplesMenu.Add(new MenuSeperator("-"));
 		char key = 'b';
@@ -65,26 +63,17 @@ internal class Program
 			samplesMenu.Add(new($"{docSample.Header.Text.Replace("Example - ", "")} ({docSample.Name})", key++, () => { DocSamples.Show(docSample.Name, true); }));
 		}
 
-		Menu testMenu = new(BannerText, "Test Menu");
-		testMenu.Title!.Style = menuTitleStyle;
-		testMenu.Subtitle!.Style = menuTitleStyle;
-		testMenu.OptionsStyle = new TextStyle() { ForeColor = Color.White };
-		testMenu.Add(new("show greens", 'G', ShowGreens));
+		Menu testMenu = NewMenu(BannerText, "Test Menu", menuTitleStyle);
+		testMenu.Add(new("Show Named Greens  ", 'G', ShowGreens));
 		testMenu.Add(new MenuOption("color lighten/darken", 'c', BrightenDarkenColors));
-		testMenu.Options[0].Style = new TextStyle() { ForeColor = Color.Lime };
+		testMenu.Options[0].Style = new TextStyle(Color.LightGreen, null, Color.DarkGreen) { BackColor = Color.White, Reverse = true };
 		testMenu.Add(new("TextStyle tests", 'T', TextStyleTests));
 		testMenu.Add(new MenuBackOption("back", 'X'));
 
-		Menu gridMenu = new(BannerText, "Grid Menu");
-		gridMenu.Title!.Style = menuTitleStyle;
-		gridMenu.Subtitle!.Style = menuTitleStyle;
+		Menu gridMenu = NewMenu(BannerText, "Grid Menu", menuTitleStyle);
 		gridMenu.Options.Add(new("Show test grid", 'G', GridTest));
 
-		Menu mainMenu = new Menu(BannerText, "M a i n  M e n u");
-		mainMenu.Title!.Style = menuTitleStyle;
-		mainMenu.Subtitle!.Style = menuTitleStyle;
-		mainMenu.Prompt!.Style.ForeColor = Color.White;
-		mainMenu.OptionsStyle = mainMenu.Prompt.Style;
+		Menu mainMenu = NewMenu(BannerText, "Main Menu", menuTitleStyle);
 
 		mainMenu.Options.Add(new MenuSeperator("-"));
 		mainMenu.Options.Add(new MenuOption("Show Doc Samples", 'S', samplesMenu));
@@ -92,6 +81,18 @@ internal class Program
 		mainMenu.Options.Add(new MenuOption("Grid Menu", 'G', gridMenu));
 		mainMenu.Options.Add(new MenuSeperator("-"));
 		mainMenu.Show();
+	}
+
+	private static Menu NewMenu(string title, string subTitle, TextStyle menuTitleStyle)
+	{
+		Menu m = new Menu()
+		{
+			Title = new(title, menuTitleStyle),
+			Subtitle = new(subTitle.SpaceOut(), menuTitleStyle),
+			OptionsStyle = new(Color.White),
+		};
+		m.Prompt!.Style = new(Color.LightGreen);
+		return m;
 	}
 
 	private static void ShowDocSamples()
@@ -144,6 +145,8 @@ internal class Program
 
 	private static void ShowGreens()
 	{
+		CLS();
+		WL("Named Green Colors", Color.White);
 		var fc = Color.Blue;
 		ShowColors(fc, Color.Green);
 		ShowColors(fc, Color.GreenYellow);
