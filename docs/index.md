@@ -11,5 +11,3 @@ Utilities that make working with console apps in .Net easier and more useful.
 4. [`TextStyle` and `StyledText` classes](textStyle.md)
 5. [Menus](menu.md)
 6. [Grid](grid.md)
-7. [Background and Inspiration](#background-and-inspiration)
-
