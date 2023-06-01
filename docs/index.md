@@ -1,3 +1,7 @@
+---
+permalink: /
+---
+
 Utilities that make working with console apps in .Net easier and more useful.
 
 ## Contents
