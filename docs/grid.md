@@ -1,5 +1,5 @@
 # Grid
-[home](index)
+[home](index.md)
 
 A `Grid` consists of rows and columns of data that is displayed in a tabular format. 
 Each Column is sized automatically to fit its widest content. 
