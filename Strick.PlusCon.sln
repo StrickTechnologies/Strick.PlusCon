@@ -10,13 +10,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
-		docs\Grid.md = docs\Grid.md
-		docs\index.md = docs\index.md
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Strick.PlusCon.Test", "Strick.PlusCon.Test\Strick.PlusCon.Test.csproj", "{8BA98DF6-AA9F-4B97-AE46-95541986F121}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{F27B2819-BE42-4410-A503-DC878DDF84F5}"
+	ProjectSection(SolutionItems) = preProject
+		docs\grid.md = docs\grid.md
+		docs\index.md = docs\index.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

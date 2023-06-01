@@ -10,6 +10,6 @@ Utilities that make working with console apps in .Net easier and more useful.
 3. [Other Utilities](#other-utilities)
 4. [`TextStyle` and `StyledText` classes](#textstyle-and-styledtext-classes)
 5. [`Menu`, `MenuOption` classes](#menu-menuoption-classes)
-6. [Grid](Docs/Grid.md)
+6. [Grid](docs/grid.md)
 7. [Background and Inspiration](#background-and-inspiration)
 
