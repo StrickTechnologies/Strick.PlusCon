@@ -35,6 +35,7 @@ contained in the menu's `ExitKeys` collection, the menu option takes precedent.
 If two (or more) options in the a menu's `Options` collection contain the same key in their `Keys` collection, 
 the option with the lowest index within the `Options` collection will take precedent.
 
+## Examples
 ```c#
 Menu subMenu = new("Example Submenu");
 //lambda

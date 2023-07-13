@@ -1,11 +1,14 @@
 ## Other Formatting for Console Output
-*Strick.PlusCon* includes several `string` extension methods that can be used to format information for console output.
+*Strick.PlusCon* includes several `string` extension methods that can be used to 
+format information for console output.
 
-These methods work by wrapping the string in escape sequences to enable the specific console formatting.
+These methods work by wrapping the string in escape sequences to enable the 
+specific console formatting.
 
 
 #### Colorize
-The `Colorize` method wraps a string with foreground and/or background color escape sequences.
+The `Colorize` method wraps a string with foreground and/or background color 
+escape sequences.
 
 ```c#
 string colorized = "foo".Colorize(Color.Red);
@@ -17,7 +20,8 @@ WL("Hello World!".Colorize(Color.Red, Color.White));
 
 ![Example - Colorize 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_colorize_1.png)
 
-You can also wrap your colorized string with pre- and post-values. The pre- and post-values can also, optionally, be rendered with their own colors.
+You can also wrap your colorized string with pre- and post-values. 
+The pre- and post-values can also, optionally, be rendered with their own colors.
 
 ```c#
 string wrapped = "foo".Colorize(Color.Red, null, "**[", "]**");
@@ -127,3 +131,11 @@ WL($"{"Hello".Colorize(Color.Red)} {"cruel".Colorize(Color.Lime).Underline()} {"
 
 ![Example - Other Notes 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_notes_1.png)
 
+#### Other Color Utilities
+These methods in the `ColorUtilities` static class work with the `System.Drawing.Color` structure.
+
+`Brighten` `Color` extension method
+
+`Darken` `Color` extension method
+
+`AdjustBrightness` `Color` extension method

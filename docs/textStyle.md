@@ -1,7 +1,8 @@
 ## `TextStyle` and `StyledText` classes
 The `TextStyle` and `StyledText` classes provide a number of ways to more easily apply combinations of styling to any text.
 
-The `TextStyle` class provides methods and properties to apply foreground and background colors, 
+### `TextStyle` class 
+Provides methods and properties to apply foreground and background colors, 
 color gradients, reverse and underline styling to text. Set the various properties as desired, 
 then use the `StyleText` method to apply the styling to any text.
 
@@ -37,7 +38,8 @@ W(ts.StyleText("-- ** down on the beach ** --"));
 
 ![Example - TextStyle 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_textStyle_1.png)
 
-The `StyledText` class combines text content with a `TextStyle` object. 
+### `StyledText` class 
+Combines text content with a `TextStyle` object. 
 For flexibility, both the `Text` and `Style` properties are read/write, 
 and a `StyleText` method allows the styling to be applied to any text.
 

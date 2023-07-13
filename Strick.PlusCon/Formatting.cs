@@ -156,9 +156,9 @@ public static class Formatting
 	/// <para><b>Note:</b> if the length of <paramref name="value"/> is greater than, or equal to <paramref name="width"/>, <paramref name="value"/> is returned unchanged.</para>
 	/// <para><b>If <paramref name="width"/> is less than 1, an <see cref="ArgumentOutOfRangeException"/> is thrown.</b></para>
 	/// </summary>
-	/// <param name="value"></param>
-	/// <param name="width"></param>
-	/// <param name="fillChar"></param>
+	/// <param name="value">The value to center</param>
+	/// <param name="width">The total width of the resulting string</param>
+	/// <param name="fillChar">The character used to pad <paramref name="value"/> on the left and right.</param>
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public static string Center(this string value, int width, char fillChar = ' ')
 	{

@@ -8,9 +8,9 @@
 public class MenuSeperator : MenuOption
 {
 	/// <summary>
-	/// Creates an instance with the object's <see cref="MenuOption.Caption"/> property set to <paramref name="caption"/>.
+	/// <inheritdoc cref="MenuOption(string)"/>
 	/// </summary>
-	/// <param name="caption"></param>
+	/// <param name="caption"><inheritdoc cref="MenuOption(string)" path="/param[@name='caption']"/></param>
 	public MenuSeperator(string caption) : base(caption) { }
 
 	/// <summary>

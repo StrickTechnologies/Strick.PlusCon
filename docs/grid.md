@@ -1,4 +1,4 @@
-# Grid
+# Grids
 [home](index.md)
 
 A `Grid` consists of rows and columns of data that is displayed in a tabular format. 
@@ -14,25 +14,20 @@ The styling for the titles and footer can also be customized.
 To create a grid, use the `Grid` class. Add columns and rows. 
 Then use the `Show` method to display the grid.
 
-Calling the `Show` method if the grid does not have at least one column and one row will 
-result in an exception being thrown. After all, it is somewhat pointless to display a grid 
-without both.
-
 Styling for all the grid's cells can be set via the `CellStyle`, and `CellContentStyle` properties. 
 These styles can be overridden at the column, row, and cell level.
 
 Styling for all the grid's column headers can be set via the `ColumnHeaderCellStyle`, and `ColumnHeaderContentStyle` properties. 
 These styles can be overridden for each column.
 
+*Note: Calling the `Show` method if the grid does not have at least one column and one row will 
+result in an exception being thrown. After all, it is somewhat pointless to display a grid 
+without at least one of each.*
+
 ## `GridColumn` Class
 Represents a column in a grid.
 
-A column always has a `Cells` collection, which always contains the same number of 
-`GridCell` objects as the grid's `Rows` collection (even if zero). 
-The `HasCells` property returns a boolean indicating whether or not the column has any cells 
-(i.e. whether or not the grid has any rows).
-
-A column also has a `Header` property that returns a `GridHeaderCell` object for its header cell. 
+A column has a `Header` property that returns a `GridHeaderCell` object for its header cell. 
 The various properties of the `Header` object can be used to control the content, appearance and layout 
 of the column's header.
 
@@ -41,6 +36,12 @@ the `Header` cell.
 
 The styling for a column's cells can be set through its `CellStyle` and `ContentStyle` properties. 
 Setting these styles will override the styles inherited from the grid.
+
+A column always has a `Cells` collection, which always contains the same number of 
+`GridCell` objects as the grid's `Rows` collection (even if zero). 
+The `HasCells` property returns a boolean indicating whether or not the column has any cells 
+(i.e. whether or not the grid has any rows). *The `Cells` sequence is readonly -- to add rows
+to a grid, use the `Rows` collection, or one of the `AddRow` methods of the `Grid` object.*
 
 ## `GridColumns` Class
 The `GridColumns` class represents a collection of `GridColumn` objects for a grid (`Grid.Columns`). 
@@ -60,7 +61,9 @@ A row always has a `Cells` collection, which always contains the same number of
 The `HasCells` property returns a boolean indicating whether or not the row has any cells 
 (i.e. whether or not the grid has any columns).
 If a column is added to the grid, cells are automatically added to each row. 
-If a column is removed from the grid, the corresponding cell is automatically removed from each row.
+If a column is removed from the grid, the corresponding cell is automatically removed from each row. 
+*The `Cells` sequence is readonly -- to add columns to a grid, use the `Columns` 
+collection of the `Grid` object.*
 
 The styling for a row's cells can be set through its `CellStyle` and `ContentStyle` properties. 
 Setting these styles will override the styles inherited from the column or grid.

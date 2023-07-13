@@ -11,7 +11,7 @@ namespace Strick.PlusCon.Models;
 public class MenuOption
 {
 	/// <summary>
-	/// Partial...
+	/// Creates an instance with the object's <see cref="MenuOption.Caption"/> property set to <paramref name="caption"/>.
 	/// </summary>
 	/// <param name="caption">The caption that will be displayed for the <see cref="MenuOption"/></param>
 	protected MenuOption(string caption)
@@ -20,7 +20,9 @@ public class MenuOption
 	}
 
 	/// <summary>
-	/// Partial...
+	/// Creates an instance of the <see cref="MenuOption"/> class 
+	/// with its <see cref="Caption"/> property set to <paramref name="caption"/>, and
+	/// its <see cref="Keys"/> property set to <paramref name="key"/>.
 	/// </summary>
 	/// <param name="caption"><inheritdoc cref="MenuOption(string)" path="/param[@name='caption']"/></param>
 	/// <param name="key">The key that can be used to invoke the <see cref="MenuOption"/></param>

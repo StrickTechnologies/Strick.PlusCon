@@ -1,5 +1,6 @@
 ## Console shortcuts
-*Strick.PlusCon* includes several shortcuts or "wrappers" for commonly used Console methods. Documentation on the underlying console methods is beyond the scope of this document, but you can see the linked documentaion for information on how the methods work.
+*Strick.PlusCon* includes several shortcuts or "wrappers" for commonly used 
+Console methods. 
 
 
 Shortcut|Console Equivalent|Notes
@@ -22,9 +23,13 @@ RK("Press any key to continue ");
 ### Overloads
 
 #### W and WL
-There are a few different overloads of the `W` and `WL` methods that allow values to be output to the console with colors. ***Note:** The `WL` overloads are the same as the `W` overloads. The only difference is that `WL` appends the current line terminator to the output.*
+There are a few different overloads of the `W` and `WL` methods that allow 
+values to be output to the console with colors. 
+***Note:** The `WL` overloads are the same as the `W` overloads. 
+The only difference is that `WL` appends the current line terminator to the output.*
 
-Supply foreground and background colors (`System.Drawing.Color`) to display messages in the console using those colors.
+Supply foreground and background colors (`System.Drawing.Color`) to display 
+messages in the console using those colors.
 
 ```c#
 WL("Hello World!", Color.Red);

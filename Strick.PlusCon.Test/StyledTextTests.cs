@@ -114,4 +114,16 @@ public class StyledTextTests
 		FormattingTests.TestColorizedString(st.Text, st.TextStyled, red, null);
 		FormattingTests.TestColorizedString("foobar", st.StyleText("foobar"), red, null);
 	}
+
+
+	internal static void TestStyledTextEquality(StyledText? styledText, StyledText? expectedStyledText)
+	{
+		if (!ReferenceEquals(styledText, expectedStyledText))
+		{
+			Assert.IsNotNull(styledText);
+			Assert.IsNotNull(expectedStyledText);
+			Assert.AreEqual(expectedStyledText.Text, styledText.Text);
+			TextStyleTests.CheckTextStyleEquality(styledText.Style, expectedStyledText.Style);
+		}
+	}
 }

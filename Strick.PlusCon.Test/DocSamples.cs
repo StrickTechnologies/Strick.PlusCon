@@ -15,12 +15,15 @@ internal static class DocSamples
 	{
 		Samples = new List<DocSample>()
 		{
+			new DocSample("esc1", "Example - Escape Sequences (1)", Ex_EscapeSeq_1),
+
 			new DocSample("wwl1", "Example - W/WL (1)", Ex_wwl_1),
 			new DocSample("wwl2", "Example - W/WL (2)", Ex_wwl_2),
 			new DocSample("wwl3", "Example - W/WL (3)", Ex_wwl_3),
 			new DocSample("wwl4", "Example - W/WL (4)", Ex_wwl_4),
 			new DocSample("cls1", "Example - CLS (1)", Ex_cls_1),
 			new DocSample("cls2", "Example - CLS (2)", Ex_cls_2),
+
 			new DocSample("colorize1", "Example - Colorize (1)", Ex_colorize_1),
 			new DocSample("colorize2", "Example - Colorize (2)", Ex_colorize_2),
 			new DocSample("underline1", "Example - Underline", Ex_underline_1),
@@ -30,10 +33,13 @@ internal static class DocSamples
 			new DocSample("gradient3", "Example - Gradient (3)", Ex_gradient_3),
 			new DocSample("combo1", "Example - Combinations", Ex_combo_1),
 			new DocSample("notes1", "Example - Other Notes", Ex_notes_1),
+
 			new DocSample("textstyle1", "Example - TextStyle", Ex_TextStyle_1),
 			new DocSample("styledtext1", "Example - StyledText", Ex_StyledText_1),
+
 			new DocSample("menu1", "Example - Menu (1)", Ex_Menu_1),
 			new DocSample("menu2", "Example - Menu (2)", Ex_Menu_2),
+
 			new DocSample("grid1", "Example - Grid (1)", Ex_Grid_1),
 			new DocSample("grid2", "Example - Grid (2)", Ex_Grid_2),
 		};
@@ -409,7 +415,7 @@ internal static class DocSamples
 		g.AddRow("row2-column1", "row2-col2", "r2-col3");
 		g.AddRow("r3-col1", "row3-column2", "r3-c3");
 
-		g.Footer = new("Total Count 3");
+		g.Footer = new($"Total Count {g.RowCount}");
 		g.Show();
 		RK();
 	}
@@ -450,6 +456,18 @@ internal static class DocSamples
 		g.Footer = new("Total Count 3");
 		g.Show();
 		RK();
+	}
+
+
+	private static void Ex_EscapeSeq_1()
+	{
+		Color color = Color.Red;
+		string clrES = EscapeCodes.Color;
+		string ESRedFore = clrES.Replace("{cs}", ColorSpace.fore.ToString("D"))
+			.Replace("{r}", color.R.ToString())
+			.Replace("{g}", color.G.ToString())
+			.Replace("{b}", color.B.ToString());
+		WL($"{ESRedFore}Red Hot{EscapeCodes.ColorReset_Fore}");
 	}
 
 	#endregion EXAMPLE FUNCTIONS

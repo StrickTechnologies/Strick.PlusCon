@@ -1,20 +1,30 @@
 # Strick.PlusCon
 Utilities that make working with console apps in .Net easier and more useful.
 
-
 ## Contents
-1. [Docs](https://stricktechnologies.github.io/Strick.PlusCon/)
-2. [Console shortcuts](#console-shortcuts)
-3. [Other Formatting for Console Output](#other-formatting-for-console-output)
-4. [Other Utilities](#other-utilities)
-5. [`TextStyle` and `StyledText` classes](#textstyle-and-styledtext-classes)
-6. [`Menu`, `MenuOption` classes](#menu-menuoption-classes)
-7. [Grid](Docs/Grid.md)
-8. [Background and Inspiration](#background-and-inspiration)
+1. [Console shortcuts](#console-shortcuts)
+1. [Other Formatting for Console Output](#other-formatting-for-console-output)
+1. [Other Utilities](#other-utilities)
+1. [`TextStyle` and `StyledText` classes](#textstyle-and-styledtext-classes)
+1. [`Menu`, `MenuOption` classes](#menu-menuoption-classes)
+1. [Grid](Docs/Grid.md)
+1. [Background and Inspiration](#background-and-inspiration)
 
-## Console shortcuts
-*Strick.PlusCon* includes several shortcuts or "wrappers" for commonly used Console methods. Documentation on the underlying console methods is beyond the scope of this document, but you can see the linked documentaion for information on how the methods work.
 
+## Quick Start
+Get the package from NuGet  
+[NuGet](https://www.nuget.org/packages/Strick.PlusCon)  
+![NuGet](https://img.shields.io/nuget/dt/Strick.PlusCon.svg) 
+![NuGet](https://img.shields.io/nuget/v/Strick.PlusCon.svg)
+
+.Net CLI: `dotnet add package Strick.PlusCon --version 1.0.0`  
+Package Manager: `NuGet\Install-Package Strick.PlusCon -Version 1.0.0`
+
+[See the full docs](https://stricktechnologies.github.io/Strick.PlusCon/)  
+
+### Console shortcuts
+*Strick.PlusCon* includes several shortcuts or "wrappers" for commonly used 
+Console methods. 
 
 Shortcut|Console Equivalent|Notes
 -|-|-
@@ -33,48 +43,6 @@ WL("Hello World!");
 RK("Press any key to continue ");
 ```
 
-### Overloads
-
-#### W and WL
-There are a few different overloads of the `W` and `WL` methods that allow values to be output to the console with colors. ***Note:** The `WL` overloads are the same as the `W` overloads. The only difference is that `WL` appends the current line terminator to the output.*
-
-Supply foreground and background colors (`System.Drawing.Color`) to display messages in the console using those colors.
-
-```c#
-WL("Hello World!", Color.Red);
-WL("Hello World!", Color.Red, Color.White);
-```
-
-![Example - W/WL 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_wwl_1.png)
-
-To hightlight only a portion of the text, enclose it in square brackets ([, ]).
-
-```c#
-WL("Hello [World]!", Color.Red);
-WL("Hello [World]!", Color.Red, Color.White);
-```
-
-![Example - W/WL 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_wwl_2.png)
-
-To show the brackets (this can be useful if a particular value might be an empty string).
-
-```c#
-WL("Hello [World]!", Color.Red, null, true);
-WL("Hello [World]!", Color.Red, Color.White, true);
-```
-
-![Example - W/WL 3](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_wwl_3.png)
-
-To specify the colors of the brackets
-
-```c#
-WL("Hello [World]!", Color.Red, null, Color.Red);
-WL("Hello [World]!", Color.Red, Color.White, Color.Blue, Color.White);
-```
-
-![Example - W/WL 4](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_wwl_4.png)
-
-
 #### CLS
 Use the CLS method to clear the console screen. Pass background and/or foreground colors to set the console screen to those colors.
 ```c#
@@ -85,34 +53,17 @@ WL("Blue in Green");
 ![Example - CLS 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_cls_1.png)
 
 
-Note that the colors set in CLS will remain in effect until a color reset sequence is sent to the console.
-This would happen, for example, by using the `Colorize`, or `WL` methods (and others), as shown below.
-To set the colors back to the desired colors, you can send a color escape sequence (without a reset sequence) to the console.
-
-```c#
-CLS(Color.LimeGreen, Color.Blue);
-WL("Blue in Green");
-//colors reset by the line below
-WL("Kind Of Blue", Color.White, Color.Blue);
-//back to default console colors here
-WL("No longer blue");
-//set to desired colors again
-W(EscapeCodes.GetBackColorSequence(Color.LimeGreen) + EscapeCodes.GetForeColorSequence(Color.Blue));
-WL("Blue once more");
-WL("All Blues");
-```
-
-![Example - CLS 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_cls_2.png)
-
-
 ## Other Formatting for Console Output
-*Strick.PlusCon* includes several `string` extension methods that can be used to format information for console output.
+*Strick.PlusCon* includes several `string` extension methods that can be used to 
+format information for console output.
 
-These methods work by wrapping the string in escape sequences to enable the specific console formatting.
+These methods work by wrapping the string in escape sequences to enable the 
+specific console formatting.
 
 
 #### Colorize
-The `Colorize` method wraps a string with foreground and/or background color escape sequences.
+The `Colorize` method wraps a string with foreground and/or background color 
+escape sequences.
 
 ```c#
 string colorized = "foo".Colorize(Color.Red);
@@ -123,19 +74,6 @@ WL("Hello World!".Colorize(Color.Red, Color.White));
 ```
 
 ![Example - Colorize 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_colorize_1.png)
-
-You can also wrap your colorized string with pre- and post-values. The pre- and post-values can also, optionally, be rendered with their own colors.
-
-```c#
-string wrapped = "foo".Colorize(Color.Red, null, "**[", "]**");
-WL(wrapped);
-wrapped = "foo".Colorize(Color.Red, null, "**[", "]**", Color.Lime, Color.White);
-WL(wrapped);
-wrapped = "cruel".Colorize(Color.Red, null, "*", "*", Color.Lime);
-WL($"Hello {wrapped} World!");
-```
-
-![Example - Colorize 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_colorize_2.png)
 
 #### Underline
 The `Underline` method wraps a string with underlining escape sequences.
@@ -149,7 +87,8 @@ WL("Hello World!".Underline());
 ![Example - Underline 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_underline_1.png)
 
 #### Reverse
-The `Reverse` method wraps a string with reverse text (foreground and background colors are swapped, or "reversed") escape sequences.
+The `Reverse` method wraps a string with reverse text (foreground and background 
+colors are swapped, or "reversed") escape sequences.
 
 ```c#
 string reversed = "foo".Reverse();
@@ -162,7 +101,8 @@ WL(reversed, Color.White, Color.LimeGreen);
 ![Example - Reverse 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_reverse_1.png)
 
 #### Gradient
-The `Gradient` method inserts escape sequences into a string to vary the foreground color of each character in the string.
+The `Gradient` method inserts escape sequences into a string to vary the 
+foreground color of each character in the string.
 
 ```c#
 string grad = "foo-bar".Gradient(Color.White, Color.BlueViolet);
@@ -176,35 +116,6 @@ WL("-- ** down on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 
 
 ![Example - Gradient 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_gradient_1.png)
 
-Use the `ColorUtilities.GetGradientColors` method to get a sequence of colors for a gradient, 
-which can be used in ways limited only by your imagination.
-
-```c#
-var colors = ColorUtilities.GetGradientColors(Color.SkyBlue, Color.Orange, Console.WindowHeight).ToList();
-string spaces = new(' ', Console.WindowWidth);
-foreach (var color in colors)
-{ W(spaces, Color.White, color); }
-
-Console.SetCursorPosition(0, 0);
-W("Sunrise", Color.White, colors[0]);
-```
-
-![Example - Gradient 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_gradient_2.png)
-
-```c#
-int top = Console.WindowHeight / 2;
-int bottom = Console.WindowHeight - top;
-var colors = ColorUtilities.GetGradientColors(Color.FromArgb(145, 193, 255), Color.FromArgb(3, 240, 165), top).ToList();
-colors.AddRange(ColorUtilities.GetGradientColors(Color.FromArgb(3, 240, 165), Color.SandyBrown, bottom));
-string spaces = new(' ', Console.WindowWidth);
-foreach (var color in colors)
-{ W(spaces, Color.White, color); }
-
-Console.SetCursorPosition(0, Console.WindowHeight - 2);
-W("On the beach", Color.White, colors[^2]);
-```
-
-![Example - Gradient 3](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_gradient_3.png)
 
 #### Combining
 The various formatting methods can be combined to create additional effects.
@@ -220,19 +131,6 @@ WL("-- ** down on the beach ** --".Gradient(Color.SandyBrown, Color.FromArgb(3, 
 
 ![Example - Combinations 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_combo_1.png)
 
-Note that nesting colors (either foreground or background) is NOT supported.  
-
-```c#
-Console.ForegroundColor = ConsoleColor.Red;
-WL($"Hello {"cruel".Colorize(Color.Lime).Underline()} World!");
-Console.ResetColor();
-WL($"Hello {"cruel".Colorize(Color.Lime).Underline()} World!", Color.Red);
-WL($"Hello [cruel] World!".Colorize(Color.Red), Color.Lime);
-//You have to use something more like this...
-WL($"{"Hello".Colorize(Color.Red)} {"cruel".Colorize(Color.Lime).Underline()} {"World!".Colorize(Color.Red)}");
-```
-
-![Example - Other Notes 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_notes_1.png)
 
 ## Other Utilities
 ### Virtual Terminal
@@ -462,6 +360,21 @@ private static void ExampleMenuOption2()
 ```
 ![Example - Menu 2 (main menu)](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_2-1.png)
 ![Example - Menu 2 (sub menu)](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_2-2.png)
+
+## Grid
+
+A `Grid` consists of rows and columns of data that is displayed in a tabular format. 
+Each Column is sized automatically to fit its widest content. 
+In addition to the rows and columns, grids can also have a `Title`, `Subtitle` and `Footer`. 
+The titles are centered above the rows/columns, the footer is centered beneath the rows/columns. 
+
+The appearance and layout of the grid's columns, rows, and cells can be customized through the 
+use of properties available at the various levels. 
+The styling for the titles and footer can also be customized. 
+
+To create a grid, use the `Grid` class. Add columns and rows. 
+Then use the `Show` method to display the grid.
+
 
 ## Background and Inspiration
 Some of the things in this utility (`W` and `WL` in particular) are things I've dragged around from project to project for years -- just generally copy/pasting into a new project whenever I finally tired of typing "Console.WriteLine" (intellisense notwithstanding) over and over. These things are generally used informally for basic testing, and to aid in creating and debugging unit tests.
