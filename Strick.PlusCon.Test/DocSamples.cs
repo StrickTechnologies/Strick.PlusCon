@@ -15,6 +15,8 @@ internal static class DocSamples
 	{
 		Samples = new List<DocSample>()
 		{
+			new DocSample("qs1", "Example - Quick Start (1)", Ex_qs_1),
+
 			new DocSample("esc1", "Example - Escape Sequences (1)", Ex_EscapeSeq_1),
 
 			new DocSample("wwl1", "Example - W/WL (1)", Ex_wwl_1),
@@ -105,6 +107,31 @@ internal static class DocSamples
 
 
 	#region EXAMPLE FUNCTIONS
+
+	private static void Ex_qs_1()
+	{
+		//using static Strick.PlusCon.Helpers;
+		//...
+
+		WL("Blue In Green", Color.Blue, Color.LimeGreen);
+		WL("Page [49] of [237]", Color.Lime);
+
+		TextStyle onTheBeach = new(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255));
+		onTheBeach.Reverse = true;
+		WL(onTheBeach.StyleText(" Down On The Beach ".SpaceOut()));
+		WL(" Down On The Beach ".SpaceOut().Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Reverse());
+
+		Grid g = new();
+		g.Columns.Add("Qty", HorizontalAlignment.Right);
+		g.Columns.Add("Product");
+		g.Columns.Add("Price", HorizontalAlignment.Right);
+
+		g.AddRow(3, "Small Widet", 1.25M);
+		g.AddRow(1, "Medium Widet", 2.33M);
+		g.AddRow(2, "Large Widet", 3.49M);
+
+		g.Show();
+	}
 
 	private static void Ex_wwl_1()
 	{
