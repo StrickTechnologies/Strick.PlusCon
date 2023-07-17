@@ -33,6 +33,7 @@ internal static class DocSamples
 			new DocSample("gradient3", "Example - Gradient (3)", Ex_gradient_3),
 			new DocSample("combo1", "Example - Combinations", Ex_combo_1),
 			new DocSample("notes1", "Example - Other Notes", Ex_notes_1),
+			new DocSample("colorUtil1", "Example - Color Utilities (1)", Ex_ColorUtil_1),
 
 			new DocSample("textstyle1", "Example - TextStyle", Ex_TextStyle_1),
 			new DocSample("styledtext1", "Example - StyledText", Ex_StyledText_1),
@@ -483,6 +484,31 @@ internal static class DocSamples
 		WL($"{EscapeCodes.Reverse}Reverse{EscapeCodes.ReverseReset}\r\n{EscapeCodes.Underline}Underline{EscapeCodes.UnderlineReset}");
 		
 		WL($"{EscapeCodes.Underline}{ESHotFore}{ESBlueBack}  Combo  {EscapeCodes.ColorReset_Back}{EscapeCodes.ColorReset_Fore}{EscapeCodes.UnderlineReset}");
+	}
+
+
+	private static void Ex_ColorUtil_1()
+	{
+		Color b = Color.FromArgb(255, 0, 0);
+		Color d = Color.FromArgb(255, 0, 0);
+		int adjustment = 40;
+
+		WL();
+		WL();
+		WL($"{ShowColor(b)}  {ShowColor(d)}");
+		do
+		{
+			b = b.Brighten(adjustment);
+			d = d.Darken(adjustment);
+			WL($"{ShowColor(b)}  {ShowColor(d)}");
+		} while ((d.R > 0 || d.G > 0 || d.B > 0) || (b.R < 255 || b.G < 255 || b.B < 255));
+	}
+	private static string ShowColor(Color color)
+	{
+		string text;
+		text = $"R:{color.R:D3} G:{color.G:D3} B:{color.B:D3}";
+
+		return text.Colorize(null, color);
 	}
 
 	#endregion EXAMPLE FUNCTIONS

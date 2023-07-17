@@ -132,10 +132,35 @@ WL($"{"Hello".Colorize(Color.Red)} {"cruel".Colorize(Color.Lime).Underline()} {"
 ![Example - Other Notes 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_notes_1.png)
 
 #### Other Color Utilities
-These methods in the `ColorUtilities` static class work with the `System.Drawing.Color` structure.
-
 `Brighten` `Color` extension method
 
 `Darken` `Color` extension method
 
 `AdjustBrightness` `Color` extension method
+
+These methods in the `ColorUtilities` static class work with the `System.Drawing.Color` structure 
+to adjust -- brighten (toward white) or darken (toward black) a given color.
+
+```c#
+Color b = Color.FromArgb(255, 0, 0);
+Color d = Color.FromArgb(255, 0, 0);
+int adjustment = 40;
+
+WL($"{ShowColor(b)}  {ShowColor(d)}");
+do
+{
+	b = b.Brighten(adjustment);
+	d = d.Darken(adjustment);
+	WL($"{ShowColor(b)}  {ShowColor(d)}");
+} while ((d.R > 0 || d.G > 0 || d.B > 0) || (b.R < 255 || b.G < 255 || b.B < 255));
+
+private static string ShowColor(Color color)
+{
+	string text;
+	text = $"R:{color.R:D3} G:{color.G:D3} B:{color.B:D3}";
+
+	return text.Colorize(null, color);
+}
+```
+
+![Example - Color Utilities 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_colorutil_1.png)
