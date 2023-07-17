@@ -35,6 +35,8 @@ internal static class DocSamples
 			new DocSample("notes1", "Example - Other Notes", Ex_notes_1),
 			new DocSample("colorUtil1", "Example - Color Utilities (1)", Ex_ColorUtil_1),
 
+			new DocSample("formatUtil1", "Example - Format Utilities (1)", Ex_FormatUtil_1),
+
 			new DocSample("textstyle1", "Example - TextStyle", Ex_TextStyle_1),
 			new DocSample("styledtext1", "Example - StyledText", Ex_StyledText_1),
 
@@ -509,6 +511,22 @@ internal static class DocSamples
 		text = $"R:{color.R:D3} G:{color.G:D3} B:{color.B:D3}";
 
 		return text.Colorize(null, color);
+	}
+
+	private static void Ex_FormatUtil_1()
+	{
+		string nl = "----*----1";
+		WL();
+		WL(nl);
+		WL("A".Center(nl.Length));
+		WL("AB".Center(nl.Length));
+		WL("ABC".Center(nl.Length, '-'));
+		WL("ABCD".Center(nl.Length));
+		WL("ABCDEFGHIJ".Center(nl.Length));
+		WL("ABCDEFGHIJ-Longer".Center(nl.Length));
+
+		WL("Spaced out".SpaceOut());
+		WL("dashed".Intersperse('-'));
 	}
 
 	#endregion EXAMPLE FUNCTIONS

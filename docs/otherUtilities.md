@@ -36,3 +36,18 @@ between each of the characters of a string value and returns the resulting strin
 #### `Intersperse` 
 This `string` extension method intersperses (inserts) a specified character between 
 each of the characters of a string value and returns the resulting string. 
+
+```c#
+string nl = "----*----1";
+WL(nl);
+WL("A".Center(nl.Length));
+WL("AB".Center(nl.Length));
+WL("ABC".Center(nl.Length, '-'));
+WL("ABCD".Center(nl.Length));
+WL("ABCDEFGHIJ".Center(nl.Length));
+WL("ABCDEFGHIJ-Longer".Center(nl.Length));
+
+WL("Spaced out".SpaceOut());
+WL("dashed".Intersperse('-'));
+```
+![Example - Formatting Utilities 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_formatutil_1.png)
