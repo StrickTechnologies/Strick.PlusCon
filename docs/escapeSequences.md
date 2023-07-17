@@ -23,16 +23,6 @@ can replace with color values to make a complete color escape sequence.
 `{g}`. The Green component of the color (a value between 0 and 255, inclusive).  
 `{b}`. The Blue component of the color (a value between 0 and 255, inclusive).
 
-```
-Color color = Color.Red;
-string clrES = EscapeCodes.Color;
-string ESRedFore = clrES.Replace("{cs}", ColorSpace.fore.ToString("D"))
-	.Replace("{r}", color.R.ToString())
-	.Replace("{g}", color.G.ToString())
-	.Replace("{b}", color.B.ToString());
-WL($"{ESRedFore}Red Hot{EscapeCodes.ColorReset_Fore}");
-```
-
 
 #### `ColorReset_Fore`, `ColorReset_Back`
 These properties return escape sequences to reset the console's foreground or 
@@ -67,3 +57,28 @@ The color is passed as an argument to the method in the form of a
 
 
 ### Examples
+```c#
+Color hot = Color.Red;
+Color grn = Color.LimeGreen;
+string clrES = EscapeCodes.Color;
+string ESHotFore = clrES.Replace("{cs}", ColorSpace.fore.ToString("D"))
+	.Replace("{r}", hot.R.ToString())
+	.Replace("{g}", hot.G.ToString())
+	.Replace("{b}", hot.B.ToString());
+string ESCoolFore = EscapeCodes.GetForeColorSequence(Color.DodgerBlue);
+WL($"{ESHotFore}Red Hot\r\n{ESCoolFore}Cool To The Touch{EscapeCodes.ColorReset_Fore}\r\nBoring");
+
+string ESGBack = clrES.Replace("{cs}", ColorSpace.back.ToString("D"))
+	.Replace("{r}", grn.R.ToString())
+	.Replace("{g}", grn.G.ToString())
+	.Replace("{b}", grn.B.ToString());
+ESCoolFore = EscapeCodes.GetForeColorSequence(Color.Blue);
+string ESBlueBack = EscapeCodes.GetBackColorSequence(Color.Blue);
+WL($"{ESCoolFore}{ESGBack}Blue In Green{EscapeCodes.ColorReset_Back}{EscapeCodes.ColorReset_Fore}");
+
+WL($"{EscapeCodes.Reverse}Reverse{EscapeCodes.ReverseReset}\r\n{EscapeCodes.Underline}Underline{EscapeCodes.UnderlineReset}");
+		
+WL($"{EscapeCodes.Underline}{ESHotFore}{ESBlueBack}  Combo  {EscapeCodes.ColorReset_Back}{EscapeCodes.ColorReset_Fore}{EscapeCodes.UnderlineReset}");
+```
+
+![Example - Escape Sequences](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_esc_1.png)
