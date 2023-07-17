@@ -407,6 +407,7 @@ internal static class DocSamples
 		Grid g = new();
 		g.Title = new("Grid".SpaceOut());
 		g.Subtitle = new("Example 1");
+
 		g.Columns.Add("C 1");
 		g.Columns.Add("Column 2", HorizontalAlignment.Center);
 		g.Columns.Add("Col 3", HorizontalAlignment.Right);
@@ -432,7 +433,7 @@ internal static class DocSamples
 		g.ColumnHeaderContentStyle.Underline = false;
 		g.ColumnHeaderCellStyle.Underline = false;
 
-		var col = g.Columns.Add("C 1");
+		GridColumn col = g.Columns.Add("C 1");
 		col.Header.HorizontalAlignment = HorizontalAlignment.Center; //override column header alignment
 
 		col = g.Columns.Add("Column 2", HorizontalAlignment.Center);
@@ -442,12 +443,12 @@ internal static class DocSamples
 		g.Columns.Add("Col 3", HorizontalAlignment.Right);
 
 		g.AddRow("r1-c1", "row1-c2", "row1-column3");
-		var row = g.AddRow("row2-column1", "row2-column2", "r2-col3");
+		GridRow row = g.AddRow("row2-column1", "row2-column2", "r2-col3");
 		//override styling for row
 		row.CellStyle = new(Color.White, Color.SlateGray);
 		row.ContentStyle = new(Color.White, Color.SlateGray);
 		//override styling for specific cell
-		var cell = row.Cells[2];
+		GridCell cell = row.Cells[2];
 		cell.ContentStyle = new(Color.Red, Color.White);
 		cell.CellStyle = new(Color.White, Color.SlateGray);
 
