@@ -44,6 +44,7 @@ internal static class DocSamples
 
 			new DocSample("menu1", "Example - Menu (1)", Ex_Menu_1),
 			new DocSample("menu2", "Example - Menu (2)", Ex_Menu_2),
+			new DocSample("menu3", "Example - Menu Events (3)", Ex_Menu_3),
 
 			new DocSample("grid1", "Example - Grid (1)", Ex_Grid_1),
 			new DocSample("grid2", "Example - Grid (2)", Ex_Grid_2),
@@ -431,6 +432,64 @@ internal static class DocSamples
 		RK("press a key to return to the menu...");
 	}
 
+	private static void Ex_Menu_3()
+	{
+		Menu myMenu = new("Example Menu - Events", " ");
+		myMenu.Add(new MenuOption("Option 2", '2', ExampleMenuOption2));
+		myMenu.Add(new MenuSeperator(""));
+		//BeforeShow event for menu option
+		myMenu.Options.Last().BeforeShow += MenuCount_BeforeShow;
+
+		myMenu.ExitKeys.Remove(' '); //space
+		myMenu.Prompt!.Text = $"{myMenu.Prompt!.Text.Trim()}, or space to refresh ";
+
+		//BeforeShow event for menu
+		myMenu.BeforeShow += Menu_BeforeShow;
+
+		myMenu.Show();
+	}
+
+	//Event handler for menu
+	private static void Menu_BeforeShow(object? sender, EventArgs e)
+	{
+		if (sender is null) return;
+
+		Menu m = (Menu)sender;
+		var st = m.Subtitle;
+		if (st == null)
+		{
+			st = new(" ");
+			m.Subtitle = st;
+		}
+		var t = DateTime.Now;
+		st.Text = $"Last refreshed {t.ToString("G")}";
+		if (t.Second > 29)
+		{ st.Style.ForeColor = Color.Red; }
+		else
+		{ st.Style.ForeColor = Color.Lime; }
+
+		//you can dynamically manipulate the options
+		if (m.Options.Count > 2)
+		{ m.Options.RemoveAt(0); }
+		else
+		{ m.Options.Insert(0, new MenuOption("Option 1", '1', ExampleMenuOption1)); }
+	}
+
+	//Event handler for menu option
+	private static void MenuCount_BeforeShow(object? sender, EventArgs e)
+	{
+		if (sender is null) return;
+
+		MenuOption opt = (MenuOption)sender;
+
+		int count = 1;
+		if (!string.IsNullOrWhiteSpace(opt.Caption))
+		{
+			count = int.Parse(opt.Caption.Split(' ')[1]) + 1;
+		}
+		opt.Caption = $"(refreshed {count} times)";
+	}
+
 
 	private static void Ex_Grid_1()
 	{
@@ -511,7 +570,7 @@ internal static class DocSamples
 		WL($"{ESCoolFore}{ESGBack}Blue In Green{EscapeCodes.ColorReset_Back}{EscapeCodes.ColorReset_Fore}");
 
 		WL($"{EscapeCodes.Reverse}Reverse{EscapeCodes.ReverseReset}\r\n{EscapeCodes.Underline}Underline{EscapeCodes.UnderlineReset}");
-		
+
 		WL($"{EscapeCodes.Underline}{ESHotFore}{ESBlueBack}  Combo  {EscapeCodes.ColorReset_Back}{EscapeCodes.ColorReset_Fore}{EscapeCodes.UnderlineReset}");
 	}
 
