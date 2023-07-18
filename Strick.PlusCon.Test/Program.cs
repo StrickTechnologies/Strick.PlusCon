@@ -75,11 +75,15 @@ internal class Program
 
 		Menu mainMenu = NewMenu(BannerText, "Main Menu", menuTitleStyle);
 
+		mainMenu.Options.Add(new MenuSeperator("time"));
+		var clock = mainMenu.Options.Last();
+		clock.BeforeShow += MainMenuClock_BeforeShow;
 		mainMenu.Options.Add(new MenuSeperator("-"));
 		mainMenu.Options.Add(new MenuOption("Show Doc Samples", 'S', samplesMenu));
 		mainMenu.Options.Add(new MenuOption("Test Menu", 'T', testMenu));
 		mainMenu.Options.Add(new MenuOption("Grid Menu", 'G', gridMenu));
 		mainMenu.Options.Add(new MenuSeperator("-"));
+		//mainMenu.BeforeShow += Menu_BeforeShow;
 		mainMenu.Show();
 	}
 
@@ -93,6 +97,22 @@ internal class Program
 		};
 		m.Prompt!.Style = new(Color.LightGreen);
 		return m;
+	}
+
+	private static void MainMenuClock_BeforeShow(object? sender, EventArgs e)
+	{
+		if(sender is null) return;
+
+		MenuOption clock = (MenuOption)sender;
+		clock.Caption = DateTime.Now.ToString("G");
+	}
+
+	private static void Menu_BeforeShow(object? sender, EventArgs e)
+	{
+		if(sender is null) return;
+
+		Menu m = (Menu)sender;
+		m.Options[0].Caption = DateTime.Now.ToString("g");
 	}
 
 	private static void ShowDocSamples()

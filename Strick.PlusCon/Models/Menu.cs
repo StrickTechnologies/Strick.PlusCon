@@ -149,6 +149,8 @@ public class Menu
 		var w = Width;
 		do
 		{
+			OnBeforeShow(new()); //raise event
+
 			CLS();
 
 			//show titles
@@ -187,6 +189,8 @@ public class Menu
 
 	private void ShowOption(MenuOption opt, int width)
 	{
+		opt.OnBeforeShow(new()); //raise event
+
 		if (string.IsNullOrEmpty(opt.Caption))
 		{ WL(opt.GetText(width)); }
 
@@ -231,4 +235,23 @@ public class Menu
 			return Math.Max(l, Math.Max(TitleLength, SubTitleLength));
 		}
 	}
+
+
+	#region EVENTS
+
+	/// <summary>
+	/// Occurs <b>before</b> the menu is shown.
+	/// </summary>
+	public event EventHandler? BeforeShow;
+
+	/// <summary>
+	/// Invokes the <see cref="BeforeShow"/> event
+	/// </summary>
+	/// <param name="e"></param>
+	internal protected virtual void OnBeforeShow(EventArgs e)
+	{ 
+		BeforeShow?.Invoke(this, e);
+	}
+
+	#endregion EVENTS
 }

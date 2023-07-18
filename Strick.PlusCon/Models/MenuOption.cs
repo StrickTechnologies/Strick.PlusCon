@@ -110,4 +110,23 @@ public class MenuOption
 
 		return $"{Keys[0]}. {Caption}";
 	}
+
+
+	#region EVENTS
+
+	/// <summary>
+	/// Occurs <b>before</b> the menu option is shown.
+	/// </summary>
+	public event EventHandler? BeforeShow;
+
+	/// <summary>
+	/// Invokes the <see cref="BeforeShow"/> event
+	/// </summary>
+	/// <param name="e"></param>
+	internal protected virtual void OnBeforeShow(EventArgs e)
+	{
+		BeforeShow?.Invoke(this, e);
+	}
+
+	#endregion EVENTS
 }
