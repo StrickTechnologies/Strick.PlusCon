@@ -1,5 +1,6 @@
 ﻿using System.Data.Common;
 using System.Drawing;
+using System.Runtime.Versioning;
 using System.Text;
 
 using Newtonsoft.Json.Linq;
@@ -82,6 +83,7 @@ internal class Program
 		mainMenu.Options.Add(new MenuOption("Show Doc Samples", 'S', samplesMenu));
 		mainMenu.Options.Add(new MenuOption("Test Menu", 'T', testMenu));
 		mainMenu.Options.Add(new MenuOption("Grid Menu", 'G', gridMenu));
+		mainMenu.Options.Add(new MenuOption("Show Version Info", 'V', ShowVersionInfo));
 		mainMenu.Options.Add(new MenuSeperator("-"));
 		//mainMenu.BeforeShow += Menu_BeforeShow;
 		mainMenu.Show();
@@ -115,6 +117,13 @@ internal class Program
 		m.Options[0].Caption = DateTime.Now.ToString("g");
 	}
 
+	private static void ShowVersionInfo()
+	{
+		CLS();
+		WL($"{About.ProductName} version {About.Version}");
+		RK();
+	}
+
 	private static void ShowDocSamples()
 	{
 		DocSamples.Show(new Size(43, 10), true);
@@ -122,7 +131,7 @@ internal class Program
 
 
 	private static void Banner() => WL(BannerText.Gradient(Color.White, Color.Red, Color.White).Colorize(null, Color.DarkSlateGray).Reverse());
-	private static string BannerText => "   S t r i c k . P l u s C o n   ";
+	private static string BannerText => $" {About.ProductName} ".SpaceOut();
 
 	private static void SetConsoleSize(int width, int height)
 	{
