@@ -26,6 +26,8 @@ public static class EscapeCodes
 	public static string ResetAll => $"{Escape}[0m";
 
 
+	#region COLORS/STYLING
+
 	/// <summary>
 	/// Returns a string containing a template for a color escape sequence. The template contains the following placeholders:
 	/// <list type="bullet">
@@ -108,6 +110,41 @@ public static class EscapeCodes
 		.Replace("{r}", color.R.ToString())
 		.Replace("{g}", color.G.ToString())
 		.Replace("{b}", color.B.ToString());
+
+	#endregion COLORS/STYLING
+
+
+	#region CURSOR SIZE/SHAPE
+
+	/// <summary>
+	/// Returns a string containing an escape sequence to show the cursor.
+	/// </summary>
+	public static string Cursor_Show => $"{Escape}[?25h";
+
+	/// <summary>
+	/// Returns a string containing an escape sequence to hide the cursor.
+	/// </summary>
+	public static string Cursor_Hide => $"{Escape}[?25l";
+
+	/// <summary>
+	/// Returns a string containing an escape sequence to start blinking the cursor.
+	/// </summary>
+	public static string Cursor_Blink => $"{Escape}[?12h";
+
+	/// <summary>
+	/// Returns a string containing an escape sequence to stop blinking the cursor.
+	/// </summary>
+	public static string Cursor_Steady => $"{Escape}[?12l";
+
+	/// <summary>
+	/// Returns a string containing a template for a cursor shape escape sequence. The template contains the following placeholders:
+	/// <list type="bullet">
+	/// <item><c>{shape}</c>. The cursor shape. Replace with a value from the <see cref="CursorShape"/> enum.</item>
+	/// </list>
+	/// </summary>
+	public static string Cursor_Shape => Escape + "[{shape} q";
+
+	#endregion CURSOR SIZE/SHAPE
 }
 
 
