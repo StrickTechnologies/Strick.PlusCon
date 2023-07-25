@@ -272,7 +272,7 @@ public class Grid
 	}
 
 
-	private void MoveToStartOfNextRow(int left)
+	private static void MoveToStartOfNextRow(int left)
 	{
 		Cursor.MoveDown();
 		Console.CursorLeft = left;
