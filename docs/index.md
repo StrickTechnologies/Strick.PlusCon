@@ -12,4 +12,5 @@ Utilities that make working with console apps in .Net easier and more useful.
 1. [`TextStyle` and `StyledText` classes](textStyle.md)
 1. [Menus](menu.md)
 1. [Grid](grid.md)
+1. [Cursor utilities](cursor.md)
 1. [See the Repo on Github](https://github.com/StrickTechnologies/Strick.PlusCon)

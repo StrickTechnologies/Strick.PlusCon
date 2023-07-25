@@ -5,7 +5,8 @@ forms of styling.
 
 ## `EscapeCodes` class
 The `EscapeCodes` static class contains a number of helpful properties and 
-methods that allow you to do custom things with colors and other formatting.
+methods that allow you to do custom things with colors, other formatting and 
+cursor movement, shape & visibility.
 
 ### Properties
 
@@ -43,6 +44,21 @@ Returns a `string` containing an escape sequence to reset reverse text.
 
 #### ResetAll
 Returns a `string` containing the escape sequence to reset all formatting
+
+#### Cursor_Show, Cursor_Hide
+These escape sequences control cursor visibility.
+
+#### Cursor_Blink, Cursor_Steady
+These escape sequences control cursor appearance -- either blinking or steady.
+
+#### Cursor_Shape
+This property returns an escape sequence "template", which has placeholders 
+that you can replace with values to make a complete escape sequence to 
+control the curor's shape.
+
+**Placeholders**  
+`{shape}`. The cursor shape. Replace with a value from the `CursorShape` enum.  
+
 
 ### Methods
 #### GetForeColorSequence(System.Drawing.Color)
