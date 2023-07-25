@@ -206,12 +206,12 @@ public class Grid
 		if (Title != null)
 		{
 			ShowTitle(Title);
-			Console.SetCursorPosition(col, ++row);
+			MoveToStartOfNextRow(col);
 		}
 		if (Subtitle != null)
 		{
 			ShowTitle(Subtitle);
-			Console.SetCursorPosition(col, ++row);
+			MoveToStartOfNextRow(col);
 		}
 
 		//COLUMN HEADERS
@@ -225,10 +225,15 @@ public class Grid
 					//System.Diagnostics.Debug.WriteLine($"col hd {column.Header.Content} r/c:{column.Header.RowIndex}/{column.Header.ColumnIndex}");
 				}
 				else
-				{ Console.SetCursorPosition(Console.GetCursorPosition().Left + column.TotalWidth, row); }
+				{
+					//Console.SetCursorPosition(Console.GetCursorPosition().Left + column.TotalWidth, row);
+					//Console.CursorLeft = Console.GetCursorPosition().Left + column.TotalWidth;
+					//W($"{EscapeCodes.Escape}[{column.TotalWidth}C"); //does not wrap at the end of line
+					W(new string(' ', column.TotalWidth));
+				}
 
 			}
-			Console.SetCursorPosition(col, ++row);
+			MoveToStartOfNextRow(col);
 		}
 
 		//ROWS
@@ -244,14 +249,14 @@ public class Grid
 					//System.Diagnostics.Debug.WriteLine($"cell {cell.Content} r/c:{cell.RowIndex}/{cell.ColumnIndex}");
 				}
 			}
-			Console.SetCursorPosition(col, ++row);
+			MoveToStartOfNextRow(col);
 		}
 
 		//FOOTER
 		if (Footer != null)
 		{
 			ShowTitle(Footer);
-			Console.SetCursorPosition(col, ++row);
+			MoveToStartOfNextRow(col);
 		}
 	}
 
@@ -264,5 +269,12 @@ public class Grid
 		{ WL(title.StyleText(new string(title.Text[0], Width))); }
 		else
 		{ WL(title.StyleText(title.Text.Center(Width))); }
+	}
+
+
+	private void MoveToStartOfNextRow(int left)
+	{
+		Cursor.MoveDown();
+		Console.CursorLeft = left;
 	}
 }
