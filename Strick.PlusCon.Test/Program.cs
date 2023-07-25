@@ -6,6 +6,7 @@ using System.Text;
 using Newtonsoft.Json.Linq;
 
 using Strick.PlusCon.Models;
+using Strick.Utility;
 
 using static Strick.PlusCon.Helpers;
 
@@ -19,7 +20,13 @@ internal class Program
 	{
 		ConsoleUtilities.EnableVirtualTerminal();
 		Console.Title = BannerText.Trim();
-
+		for (int i = 0; i < 5; i++)
+		{
+			Console.CursorLeft = Console.BufferWidth - 2;
+			//W($"{i}{EscapeCodes.Escape}[{5}C{i}");
+			W("1234");
+		}
+		//RK();
 		//SetConsoleSize(43, 10);
 		Menu();
 
@@ -74,6 +81,20 @@ internal class Program
 		Menu gridMenu = NewMenu(BannerText, "Grid Menu", menuTitleStyle);
 		gridMenu.Options.Add(new("Show test grid", 'G', GridTest));
 
+		Menu cursorMenu = NewMenu(BannerText, "Cursor Menu", menuTitleStyle);
+		cursorMenu.Options.Add(new("Default", '0', () => { Cursor.Shape(CursorShape.Default); }));
+		cursorMenu.Options.Add(new("Blinking Block", '1', () => { Cursor.Shape(CursorShape.Block_Blink); }));
+		cursorMenu.Options.Add(new("Steady Block", '2', () => { Cursor.Shape(CursorShape.Block_Steady); }));
+		cursorMenu.Options.Add(new("Blinking Underline", '3', () => { Cursor.Shape(CursorShape.Underline_Blink); }));
+		cursorMenu.Options.Add(new("Steady Underline", '4', () => { Cursor.Shape(CursorShape.Underline_Steady); }));
+		cursorMenu.Options.Add(new("Blinking Bar", '5', () => { Cursor.Shape(CursorShape.Bar_Blink); }));
+		cursorMenu.Options.Add(new("Steady Bar", '6', () => { Cursor.Shape(CursorShape.Bar_Steady); }));
+		cursorMenu.Options.Add(new("No-Blink (Steady)", 'N', () => { Cursor.Steady(); }));
+		cursorMenu.Options.Add(new("Blink", 'B', () => { Cursor.Blink(); }));
+		cursorMenu.Options.Add(new("Show", 'S', () => { Cursor.Show(); }));
+		cursorMenu.Options.Add(new("Hide", 'H', () => { Cursor.Hide(); }));
+		//cursorMenu.Options.Add(new("Size", 'Z', PromptCursorSize));
+
 		Menu mainMenu = NewMenu(BannerText, "Main Menu", menuTitleStyle);
 
 		mainMenu.Options.Add(new MenuSeperator("time"));
@@ -81,6 +102,7 @@ internal class Program
 		clock.BeforeShow += MainMenuClock_BeforeShow;
 		mainMenu.Options.Add(new MenuSeperator("-"));
 		mainMenu.Options.Add(new MenuOption("Show Doc Samples", 'S', samplesMenu));
+		mainMenu.Options.Add(new MenuOption("Cursor Settings", 'C', cursorMenu));
 		mainMenu.Options.Add(new MenuOption("Test Menu", 'T', testMenu));
 		mainMenu.Options.Add(new MenuOption("Grid Menu", 'G', gridMenu));
 		mainMenu.Options.Add(new MenuOption("Show Version Info", 'V', ShowVersionInfo));
@@ -103,15 +125,16 @@ internal class Program
 
 	private static void MainMenuClock_BeforeShow(object? sender, EventArgs e)
 	{
-		if(sender is null) return;
+		if (sender is null) return;
 
 		MenuOption clock = (MenuOption)sender;
-		clock.Caption = DateTime.Now.ToString("G");
+		//clock.Caption = DateTime.Now.ToString("G");
+		clock.Caption = DateTime.Now.ToString("G").Center(50, '*');
 	}
 
 	private static void Menu_BeforeShow(object? sender, EventArgs e)
 	{
-		if(sender is null) return;
+		if (sender is null) return;
 
 		Menu m = (Menu)sender;
 		m.Options[0].Caption = DateTime.Now.ToString("g");
@@ -124,6 +147,28 @@ internal class Program
 		RK();
 	}
 
+	//private static void PromptCursorSize()
+	//{
+	//	WL();
+	//	string? sz = RL("Enter the cursor size (percentage, 1-100):");
+	//	if (string.IsNullOrWhiteSpace(sz))
+	//	{ return; }
+
+	//	if (sz.IsAllDigits())
+	//	{
+	//		if (int.TryParse(sz, out int pct))
+	//		{
+	//			if (pct.Between(1, 100))
+	//			{
+	//				Cursor.Size(pct);
+	//				return;
+	//			}
+	//		}
+	//	}
+
+	//	RK("That's not a valid percentage...".Colorize(Color.Red));
+	//}
+
 	private static void ShowDocSamples()
 	{
 		DocSamples.Show(new Size(43, 10), true);
@@ -133,12 +178,66 @@ internal class Program
 	private static void Banner() => WL(BannerText.Gradient(Color.White, Color.Red, Color.White).Colorize(null, Color.DarkSlateGray).Reverse());
 	private static string BannerText => $" {About.ProductName} ".SpaceOut();
 
+	private static ConsoleSize GetConsoleSize()
+	{
+		return new ConsoleSize()
+		{
+			WindowSize = new Size(Console.WindowWidth, Console.WindowHeight),
+			BufferSize = new Size(Console.BufferWidth, Console.BufferHeight)
+		};
+	}
+
+	private static void SetConsoleSize(ConsoleSize size)
+	{
+		Console.SetWindowSize(size.WindowSize.Width, size.WindowSize.Height);
+		Console.SetBufferSize(size.BufferSize.Width, size.BufferSize.Height);
+	}
+
 	private static void SetConsoleSize(int width, int height)
 	{
 		Console.SetWindowSize(width, height);
 		Console.SetBufferSize(width, height);
 	}
 
+
+	private static void CursorTests()
+	{
+		Console.SetWindowSize(20, 10);
+		CLS();
+		for (int i = 1; i <= Console.BufferHeight; i++)
+		{
+			W(i.ToString("D2"));
+			if (i < Console.BufferHeight)
+			{ Cursor.MoveDown(); }
+			Console.CursorLeft = 0;
+		}
+		for (int i = 1; i <= Console.BufferHeight; i++)
+		{
+			Console.CursorLeft = 5;
+			W(i.ToString());
+			Cursor.MoveUp();
+		}
+
+		Cursor.MoveTop();
+		RK();
+
+		for (int i = 1; i <= Console.BufferHeight + 2; i++)
+		{
+			Console.CursorLeft = 9;
+			W(i.ToString("D2"));
+			Cursor.MoveDown();
+		}
+		W("foo");
+
+		//SetConsoleSize(55, 40);
+		//Console.CursorLeft = 5;
+		//RK("5");
+		//Console.CursorLeft = 15;
+		//RK("15");
+		//Console.CursorLeft = 35;
+		//RK("35");
+		RK("");
+	}
 
 	private static void TextStyleTests()
 	{
@@ -592,4 +691,10 @@ internal class Program
 		g.Show();
 		RK();
 	}
+}
+
+public class ConsoleSize
+{
+	public Size WindowSize { get; set; }
+	public Size BufferSize { get; set; }
 }
