@@ -146,11 +146,16 @@ public class Menu
 		if (Options == null || !Options.Any())
 		{ throw new InvalidOperationException("Cannot display a menu with no options. Add options to the menu before displaying..."); }
 
-		var w = Width;
 		do
 		{
-			OnBeforeShow(new()); //raise event
+			//raise OnBeforeShow events for menu and each option
+			//  this is done before the width is calculated, so that any
+			//  mods to the options are included in the width calc
+			OnBeforeShow(new());
+			foreach (MenuOption opt in Options)
+			{ opt.OnBeforeShow(new()); }
 
+			var w = Width;
 			CLS();
 
 			//show titles
@@ -189,8 +194,6 @@ public class Menu
 
 	private void ShowOption(MenuOption opt, int width)
 	{
-		opt.OnBeforeShow(new()); //raise event
-
 		if (string.IsNullOrEmpty(opt.Caption))
 		{ WL(opt.GetText(width)); }
 
@@ -249,7 +252,7 @@ public class Menu
 	/// </summary>
 	/// <param name="e"></param>
 	internal protected virtual void OnBeforeShow(EventArgs e)
-	{ 
+	{
 		BeforeShow?.Invoke(this, e);
 	}
 
