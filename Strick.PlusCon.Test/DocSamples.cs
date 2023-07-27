@@ -28,6 +28,7 @@ internal static class DocSamples
 
 			new DocSample("colorize1", "Example - Colorize (1)", Ex_colorize_1),
 			new DocSample("colorize2", "Example - Colorize (2)", Ex_colorize_2),
+			new DocSample("colorize3", "Example - Colorize (3)", Ex_colorize_3),
 			new DocSample("underline1", "Example - Underline", Ex_underline_1),
 			new DocSample("reverse1", "Example - Reverse", Ex_reverse_1),
 			new DocSample("gradient1", "Example - Gradient (1)", Ex_gradient_1),
@@ -196,6 +197,34 @@ internal static class DocSamples
 		WL(wrapped);
 		wrapped = "cruel".Colorize(Color.Red, null, "*", "*", Color.Lime);
 		WL($"Hello {wrapped} World!");
+	}
+
+	private static void Ex_colorize_3()
+	{
+		//Example **COLORIZE 3
+		string stick = "Peppermint-stick";
+		List<Color> colors = new List<Color>();
+		colors.Add(Color.Red);
+		colors.Add(Color.White);
+		WL(stick.Colorize(colors));
+		
+		colors = ColorUtilities.GetGradientColors(Color.Red, Color.White, 5).ToList();
+		WL(stick.Colorize(colors));
+
+		colors = ColorUtilities.GetGradientColors(Color.Red, Color.White, stick.Length).ToList();
+		WL(stick.Colorize(colors));
+
+		colors.Clear();
+		colors.Add(Color.SaddleBrown);
+		colors.Add(Color.White);
+		colors.Add(Color.Blue);
+		WL("Peppermint-Pattie".Colorize(colors).Colorize(null, Color.LightGray));
+
+		colors.Clear();
+		colors.Add(Color.FromArgb(171, 96, 0)); //brown
+		colors.Add(Color.FromArgb(57, 168, 53)); //green
+		colors.Add(Color.FromArgb(2, 85, 166)); //blue
+		WL("Peppermint-Patty".Colorize(colors).Colorize(null,Color.LightGray));
 	}
 
 
