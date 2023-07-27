@@ -90,6 +90,45 @@ public class FormattingTests
 	}
 
 	[TestMethod]
+	public void ColorizeTests2()
+	{
+		//tests the "string Colorize(string value, IEnumerable<Color> colors)" overload
+		List<Color> colors = null!;
+		string empty = "";
+		string foo = "foo";
+		string foobar = "foobar";
+
+		Assert.AreEqual(empty, empty.Colorize(colors!));
+		Assert.AreEqual(foo, foo.Colorize(colors!));
+		Assert.AreEqual(foobar, foobar.Colorize(colors!));
+
+		colors = new();
+		Assert.AreEqual(empty, empty.Colorize(colors!));
+		Assert.AreEqual(foo, foo.Colorize(colors!));
+		Assert.AreEqual(foobar, foobar.Colorize(colors!));
+
+		colors.Add(Expectations.red);
+		Assert.AreEqual(empty, empty.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}{foo}{ForeColorReset}", foo.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}{foobar}{ForeColorReset}", foobar.Colorize(colors));
+
+		colors.Add(Expectations.white);
+		Assert.AreEqual(empty, empty.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}f{ForeColorReset}{ForeColorWhite}o{ForeColorReset}{ForeColorRed}o{ForeColorReset}", foo.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}f{ForeColorReset}{ForeColorWhite}o{ForeColorReset}{ForeColorRed}o{ForeColorReset}{ForeColorWhite}b{ForeColorReset}{ForeColorRed}a{ForeColorReset}{ForeColorWhite}r{ForeColorReset}", foobar.Colorize(colors));
+
+		colors.Add(Expectations.blue);
+		Assert.AreEqual(empty, empty.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}f{ForeColorReset}{ForeColorWhite}o{ForeColorReset}{ForeColorBlue}o{ForeColorReset}", foo.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}f{ForeColorReset}{ForeColorWhite}o{ForeColorReset}{ForeColorBlue}o{ForeColorReset}{ForeColorRed}b{ForeColorReset}{ForeColorWhite}a{ForeColorReset}{ForeColorBlue}r{ForeColorReset}", foobar.Colorize(colors));
+
+		colors.Add(Expectations.green);
+		Assert.AreEqual(empty, empty.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}f{ForeColorReset}{ForeColorWhite}o{ForeColorReset}{ForeColorBlue}o{ForeColorReset}", foo.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}f{ForeColorReset}{ForeColorWhite}o{ForeColorReset}{ForeColorBlue}o{ForeColorReset}{ForeColorGreen}b{ForeColorReset}{ForeColorRed}a{ForeColorReset}{ForeColorWhite}r{ForeColorReset}", foobar.Colorize(colors));
+	}
+
+	[TestMethod]
 	public void GradientTests()
 	{
 		string val = "";

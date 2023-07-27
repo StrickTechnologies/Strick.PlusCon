@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 using System.Text;
 
 
@@ -68,6 +67,47 @@ public static class Formatting
 		return sb.ToString();
 	}
 
+	/// <summary>
+	/// Returns a string with escape sequences to vary the foreground color of each character in the <paramref name="value"/> argument 
+	/// with the colors from the <paramref name="colors"/> argument.
+	/// <para>If the <paramref name="colors"/> argument is null or has no elements, <paramref name="value"/> is returned unchanged.</para>
+	/// <para>If the <paramref name="colors"/> argument has only a single element, the entire <paramref name="value"/> is colorized with that color.</para>
+	/// <para>If the length of the <paramref name="value"/> argument is 1, its color will be set to the first color in the <paramref name="colors"/> sequence. 
+	/// If the length of <paramref name="value"/> is &gt; the number of elements in the <paramref name="colors"/> sequence, 
+	/// the colors in the sequence will be repeated.
+	/// </para>
+	/// </summary>
+	/// <param name="value"><inheritdoc cref="Colorize(string, Color?, Color?)" path="/param[@name='value']"/></param>
+	/// <param name="colors">The sequence of colors to apply to the <paramref name="value"/> argument.</param>
+	public static string Colorize(this string value, IEnumerable<Color> colors)
+	{
+		//  the gradient method can call this and pass the text and colors
+
+		if (string.IsNullOrEmpty(value))
+		{ return ""; }
+
+		if (colors == null || colors.Count() == 0)
+		{ return value; }
+
+		if (value.Length == 1 || colors.Count() < 2)
+		{ return value.Colorize(colors.ElementAt(0)); }
+
+
+		var sb = new StringBuilder();
+
+		int c = 0;
+		for (int i = 0; i < value.Length; i++)
+		{
+			sb.Append(value[i].ToString().Colorize(colors.ElementAt(c)));
+			if (c >= colors.Count() - 1)
+			{ c = 0; }
+			else
+			{ c++; }
+		}
+
+		return sb.ToString();
+	}
+
 
 	/// <summary>
 	/// <para>Returns a string containing <paramref name="value"/> wrapped with the escape 
@@ -105,14 +145,8 @@ public static class Formatting
 		if (value.Length == 1)
 		{ return value.Colorize(start); }
 
-
-		var sb = new StringBuilder();
 		var colors = ColorUtilities.GetGradientColors(start, end, value.Length);
-
-		for (int i = 0; i < value.Length; i++)
-		{ sb.Append(value[i].ToString().Colorize(colors.ElementAt(i))); }
-
-		return sb.ToString();
+		return value.Colorize(colors);
 	}
 
 	/// <summary>
@@ -208,4 +242,5 @@ public static class Formatting
 
 		return sb.ToString();
 	}
+
 }
