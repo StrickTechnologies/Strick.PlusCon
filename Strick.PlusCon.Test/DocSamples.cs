@@ -62,11 +62,11 @@ internal static class DocSamples
 
 	public static void Show(Size? conSz = null, bool wait = false)
 	{
-		Size? sz = null;
+		ConsoleSize? sz = null;
 		if (conSz.HasValue)
 		{
-			sz = GetConsoleSize();
-			SetConsoleSize(conSz.Value);
+			sz = new ConsoleSize();
+			ConsoleSize.Set(conSz.Value);
 		}
 
 		foreach (DocSample sample in Samples)
@@ -75,7 +75,7 @@ internal static class DocSamples
 		}
 
 		if (sz != null)
-		{ SetConsoleSize(sz.Value); }
+		{ sz.SetConsoleSize(); }
 	}
 
 	public static void Show(string sampleName, bool wait = false)
@@ -89,22 +89,16 @@ internal static class DocSamples
 		var ex = Samples.Where(s => s.Name.Equals(sampleName, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 		if (ex != null)
 		{
-			var sz = GetConsoleSize();
-			SetConsoleSize(SampleSize);
+			var sz = new ConsoleSize();
+			CLS();
+			Console.SetCursorPosition(0, 0);
+			ConsoleSize.Set(SampleSize);
 			ex.Show(wait, wait);
-			SetConsoleSize(sz);
+			sz.SetConsoleSize();
 		}
 		else
 		{ WL($"The doc sample [{sampleName}] was not found.", ErrColor, null, ErrColor); }
 	}
-
-	private static void SetConsoleSize(Size conSz)
-	{
-		Console.SetWindowSize(conSz.Width, conSz.Height);
-		Console.SetBufferSize(conSz.Width, conSz.Height);
-	}
-
-	private static Size GetConsoleSize() => new Size(Console.WindowWidth, Console.WindowHeight);
 
 
 	#region EXAMPLE FUNCTIONS
