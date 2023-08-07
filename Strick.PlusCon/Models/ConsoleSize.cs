@@ -69,6 +69,7 @@ public class ConsoleSize
 			Console.SetBufferSize(size.BufferSize.Width, size.BufferSize.Height);
 		}
 	}
+
 	/// <summary>
 	/// Sets the the height and width of the console window and buffer to the values specified by the 
 	/// <paramref name="size"/> parameter.

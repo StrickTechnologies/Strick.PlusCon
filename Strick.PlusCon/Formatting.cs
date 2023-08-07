@@ -78,15 +78,15 @@ public static class Formatting
 	/// </para>
 	/// </summary>
 	/// <param name="value"><inheritdoc cref="Colorize(string, Color?, Color?)" path="/param[@name='value']"/></param>
-	/// <param name="colors">The sequence of colors to apply to the <paramref name="value"/> argument.</param>
-	public static string Colorize(this string value, IEnumerable<Color> colors)
+	/// <param name="colors">The sequence of colors to apply to the <paramref name="value"/> argument. 
+	/// If null or an empty sequence, the <paramref name="value"/> argument is returned unchanged.
+	/// </param>
+	public static string Colorize(this string value, IEnumerable<Color>? colors)
 	{
-		//  the gradient method can call this and pass the text and colors
-
 		if (string.IsNullOrEmpty(value))
 		{ return ""; }
 
-		if (colors == null || colors.Count() == 0)
+		if (!colors.HasAny())
 		{ return value; }
 
 		if (value.Length == 1 || colors.Count() < 2)
