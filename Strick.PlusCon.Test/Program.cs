@@ -20,14 +20,7 @@ internal class Program
 	{
 		ConsoleUtilities.EnableVirtualTerminal();
 		Console.Title = BannerText.Trim();
-		for (int i = 0; i < 5; i++)
-		{
-			Console.CursorLeft = Console.BufferWidth - 2;
-			//W($"{i}{EscapeCodes.Escape}[{5}C{i}");
-			W("1234");
-		}
-		//RK();
-		//SetConsoleSize(43, 10);
+
 		Menu();
 
 		//Banner(); WL();
@@ -53,6 +46,9 @@ internal class Program
 		//W("foo bar");
 	}
 
+	private static void Banner() => WL(BannerText.Gradient(Color.White, Color.Red, Color.White).Colorize(null, Color.DarkSlateGray).Reverse());
+	private static string BannerText => $" {About.ProductName} ".SpaceOut();
+
 	private static void Menu()
 	{
 		TextStyle menuTitleStyle = new TextStyle()
@@ -76,6 +72,7 @@ internal class Program
 		testMenu.Add(new MenuOption("color lighten/darken", 'c', BrightenDarkenColors));
 		testMenu.Options[0].Style = new TextStyle(Color.LightGreen, null, Color.DarkGreen) { BackColor = Color.White, Reverse = true };
 		testMenu.Add(new("TextStyle tests", 'T', TextStyleTests));
+		testMenu.Add(new("Ruler tests", 'R', RulerTests));
 		testMenu.Add(new MenuBackOption("back", 'X'));
 
 		Menu gridMenu = NewMenu(BannerText, "Grid Menu", menuTitleStyle);
@@ -175,30 +172,39 @@ internal class Program
 	}
 
 
-	private static void Banner() => WL(BannerText.Gradient(Color.White, Color.Red, Color.White).Colorize(null, Color.DarkSlateGray).Reverse());
-	private static string BannerText => $" {About.ProductName} ".SpaceOut();
-
-	private static ConsoleSize GetConsoleSize()
+	private static void RulerTests()
 	{
-		return new ConsoleSize()
-		{
-			WindowSize = new Size(Console.WindowWidth, Console.WindowHeight),
-			BufferSize = new Size(Console.BufferWidth, Console.BufferHeight)
-		};
-	}
+		CLS();
+		Ruler.Colors.Clear();
+		//Ruler.chars[4] = '┼';
+		//Ruler.chars[4] = '*';
+		//Ruler.five.Text = "┼";
+		//WL(Ruler.Get1(Console.WindowWidth));
+		//WL(Ruler.Get1(Console.WindowWidth - 3));
+		WL(Ruler.Get());
+		WL(Ruler.Get(Console.WindowWidth - 3));
+		Ruler.Colors = null!;
+		WL(Ruler.Get(Console.WindowWidth - 3));
+		WL(Ruler.Get(Console.WindowWidth - 3).Gradient(Color.White, Color.Red));
+		Ruler.Colors = ColorUtilities.GetGradientColors(Color.White, Color.Red, 10).ToList();
+		WL(Ruler.Get(Console.WindowWidth - 3));
+		WL(Ruler.Get(Console.WindowWidth - 3).Reverse());
+		Ruler.Colors = ColorUtilities.GetGradientColors(Color.White, Color.Silver, 10).ToList();
+		WL(Ruler.Get(Console.WindowWidth - 3));
+		WL(Ruler.Get(Console.WindowWidth - 3).Reverse());
+		WL(Ruler.Get(Console.WindowWidth - 3).Colorize(null, Color.Blue).Reverse());
+		Ruler.Colors = ColorUtilities.GetGradientColors(Color.Gray, Color.White, 10).ToList();
+		WL(Ruler.Get(Console.WindowWidth - 3).Reverse());
+		WL(Ruler.Get(Console.WindowWidth - 3).Colorize(null, Color.Blue).Reverse());
+		WL(Ruler.Get(Console.WindowWidth - 3));
 
-	private static void SetConsoleSize(ConsoleSize size)
-	{
-		Console.SetWindowSize(size.WindowSize.Width, size.WindowSize.Height);
-		Console.SetBufferSize(size.BufferSize.Width, size.BufferSize.Height);
+		//NumberLine.chars = new char[] { '┌', '─', '┬', '─', '┼', '─', '┬', '─', '┐', };
+		//Ruler.chars = new char[] { '-', '┬', '-', '┼', '─', '┬', '─', '┐', };
+		WL("123456789012345678901234567890".Colorize(new[] { Color.Red, Color.White }));
+		WL("123456789012345678901234567890".Colorize(ColorUtilities.GetGradientColors(Color.White, Color.Gray, 10)));
+		WL(Ruler.Get(30));
+		RK();
 	}
-
-	private static void SetConsoleSize(int width, int height)
-	{
-		Console.SetWindowSize(width, height);
-		Console.SetBufferSize(width, height);
-	}
-
 
 	private static void CursorTests()
 	{
@@ -565,22 +571,22 @@ internal class Program
 	private static void Boxes()
 	{
 		//https://en.wikipedia.org/wiki/Code_page_437
-		//WL("╡╢║│─┐└─┘┌┌╔═╗╚╝█▄▌▐▀■");
-		WL("╔═╗");
-		WL("║X║");
-		WL("╠═╣");
-		WL("║W║");
-		WL("╚═╝");
-		WL("┌─┐");
-		WL("│X│");
-		WL("├─┤");
-		WL("│W│");
-		WL("└─┘");
-		WL("▄▄▄");
-		WL("▌X▐");
-		WL("███");
-		WL("▌W▐");
-		WL("▀▀▀");
+		//WL("╡╢║│─┐└─┘┌┌┴┬┼╔═╗╚╝╩╦╬█▄▌▐▀■");
+		WL("╔═╦═╗");
+		WL("║X║X║");
+		WL("╠═╬═╣");
+		WL("║W║W║");
+		WL("╚═╩═╝");
+		WL("┌─┬─┐");
+		WL("│X│X│");
+		WL("├─┼─┤");
+		WL("│W│W│");
+		WL("└─┴─┘");
+		WL("▄▄▄▄▄");
+		WL("▌X█X▐");
+		WL("█████");
+		WL("▌W█W▐");
+		WL("▀▀▀▀▀");
 	}
 
 	private static void RkTest()
@@ -691,10 +697,4 @@ internal class Program
 		g.Show();
 		RK();
 	}
-}
-
-public class ConsoleSize
-{
-	public Size WindowSize { get; set; }
-	public Size BufferSize { get; set; }
 }
