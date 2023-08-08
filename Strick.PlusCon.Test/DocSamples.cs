@@ -124,9 +124,9 @@ internal static class DocSamples
 		g.Columns.Add("Product");
 		g.Columns.Add("Price", HorizontalAlignment.Right);
 
-		g.AddRow(3, "Small Widet", 1.25M);
-		g.AddRow(1, "Medium Widet", 2.33M);
-		g.AddRow(2, "Large Widet", 3.49M);
+		g.AddRow(3, "Small Widget", 1.25M);
+		g.AddRow(1, "Medium Widget", 2.33M);
+		g.AddRow(2, "Large Widget", 3.49M);
 
 		g.Show();
 	}
