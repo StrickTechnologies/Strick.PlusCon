@@ -185,7 +185,7 @@ public static class Formatting
 
 	/// <summary>
 	/// Returns a string of <paramref name="width"/> characters, with <paramref name="value"/> "Centered" (padded on the left and right with <paramref name="fillChar"/>) within the string. 
-	/// <para>If <paramref name="value"/> cannot be centered evenly, the extraneous <paramref name="fillChar"/> is on the right of the result.</para>
+	/// <para>If <paramref name="value"/> cannot be centered evenly, the extraneous character is on the right of the result.</para>
 	/// <para>If <paramref name="value"/> is null, or an empty string, a string consisting of <paramref name="width"/> <paramref name="fillChar"/> characters is returned.</para>
 	/// <para><b>Note:</b> if the length of <paramref name="value"/> is greater than, or equal to <paramref name="width"/>, <paramref name="value"/> is returned unchanged.</para>
 	/// <para><b>If <paramref name="width"/> is less than 1, an <see cref="ArgumentOutOfRangeException"/> is thrown.</b></para>
