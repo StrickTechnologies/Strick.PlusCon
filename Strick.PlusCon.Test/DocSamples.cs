@@ -49,6 +49,8 @@ internal static class DocSamples
 
 			new DocSample("grid1", "Example - Grid (1)", Ex_Grid_1),
 			new DocSample("grid2", "Example - Grid (2)", Ex_Grid_2),
+			
+			new DocSample("ruler1", "Example - Ruler (1)", Ex_Ruler_1),
 		};
 	}
 
@@ -624,18 +626,38 @@ internal static class DocSamples
 
 	private static void Ex_FormatUtil_1()
 	{
-		string nl = "----*----1";
+		int len = 10;
+		string ruler = Ruler.Get(len);
 		WL();
-		WL(nl);
-		WL("A".Center(nl.Length));
-		WL("AB".Center(nl.Length));
-		WL("ABC".Center(nl.Length, '-'));
-		WL("ABCD".Center(nl.Length));
-		WL("ABCDEFGHIJ".Center(nl.Length));
-		WL("ABCDEFGHIJ-Longer".Center(nl.Length));
+		WL(ruler);
+		WL("A".Center(len));
+		WL("AB".Center(len));
+		WL("ABC".Center(len, '-'));
+		WL("ABCD".Center(len));
+		WL("ABCDEFGHIJ".Center(len));
+		WL("ABCDEFGHIJ-Longer".Center(len));
 
 		WL("Spaced out".SpaceOut());
 		WL("dashed".Intersperse('-'));
+	}
+
+
+	private static void Ex_Ruler_1()
+	{
+		WL(Ruler.Get(10));
+		WL("Default");
+
+		W(Ruler.Get());
+		WL("console width");
+
+		WL(Ruler.Get(30).Reverse());
+		WL("reverse");
+
+		WL(Ruler.Get(30, "----*----"));
+		WL("change characters");
+
+		WL(Ruler.Get(30, new[] { Color.Red, Color.White }));
+		WL("change colors");
 	}
 
 	#endregion EXAMPLE FUNCTIONS

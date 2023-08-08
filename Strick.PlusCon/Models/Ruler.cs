@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Strick.PlusCon.Models;
@@ -14,7 +13,8 @@ namespace Strick.PlusCon.Models;
 /// To create Rulers...
 /// A ruler is made up of "segments" of ten characters. 
 /// The first nine characters of each segment are specified by the <see cref="Segment"/> property. 
-/// The tenth character of each segment is the "tens" counter (1 for 10, 2 for 20, etc.).
+/// The tenth character of each segment is the "tens" counter (1 for 10, 2 for 20, etc.). 
+/// The "tens" counter resets to zero at each hundred (100, 200).
 /// </summary>
 public static class Ruler
 {
@@ -31,6 +31,8 @@ public static class Ruler
 	/// which represent the digits 1-9 in the segment of the ruler.
 	/// <para>The segment can be set to any characters, but it must be exactly 9 characters in length 
 	/// (otherwise, an exception is thrown).</para>
+	/// Setting this property changes the default segment. Some overloads of the <see cref="Get()"/> 
+	/// method also include a segment parameter, which will override this default value for only that call.
 	/// </summary>
 	/// <inheritdoc cref="Get(int, IEnumerable{Color}?, string)" path="/exception"/>
 	public static string Segment
@@ -47,9 +49,12 @@ public static class Ruler
 
 	/// <summary>
 	/// A sequence of colors to use for the ruler. 
-	/// Note: null or an empty sequence is acceptable and will result in the ruler having no color sequences.
+	/// A null value or an empty sequence is acceptable, and will result in the ruler having no embeded color sequences.
+	/// <para>The colors default to a ten-color gradient from <see cref="Color.Gray"/> to <see cref="Color.White"/>.</para>
 	/// <para>See <see cref="Formatting.Colorize(string, IEnumerable{Color})"/> for more 
 	/// information on how the colors are applied to characters in the ruler.</para>
+	/// Setting this property changes the default colors. Some overloads of the <see cref="Get()"/> 
+	/// method also include a colors parameter, which will override this default value for only that call.
 	/// </summary>
 	public static List<Color>? Colors { get; set; }
 
@@ -90,13 +95,17 @@ public static class Ruler
 	/// using the colors and segment specified by the <paramref name="colors"/> 
 	/// and <paramref name="segment"/> arguments, respectively.
 	/// </summary>
+
 	/// <param name="width">The width of the ruler to create</param>
+
 	/// <param name="colors">A sequence of colors to use for the ruler. This overrides the default
 	/// colors specified in the <see cref="Colors"/> property. 
-	/// Note: null or an empty sequence is acceptable and will result in the ruler having no color sequences.</param>
+	/// A null value or an empty sequence is acceptable, and will result in the ruler having no color sequences.</param>
+
 	/// <param name="segment">The string used to construct each segment of the ruler. 
 	/// This overrides the default segment string specified in the <see cref="Segment"/> property.
 	/// <para>Note: the same rules apply to this argument as the property.</para></param>
+
 	/// <exception cref="ArgumentNullException"></exception>
 	/// <exception cref="ArgumentException"></exception>
 	public static string Get(int width, IEnumerable<Color>? colors, string segment)
