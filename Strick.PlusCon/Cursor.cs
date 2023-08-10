@@ -126,9 +126,37 @@ public static class Cursor
 	public static void Show() => W(EscapeCodes.Cursor_Show);
 
 	/// <summary>
+	/// Shows or Hides the cursor based on the value of the <paramref name="show"/> argument.
+	/// </summary>
+	/// <param name="show">A boolean value indicating whether or not to show the cursor. 
+	/// true=show, false=hide</param>
+	public static void Show(bool show)
+	{
+		if (show)
+		{ Show(); }
+		else
+		{ Hide(); }
+	}
+
+
+	/// <summary>
 	/// Hides the cursor
 	/// </summary>
 	public static void Hide() => W(EscapeCodes.Cursor_Hide);
+
+	/// <summary>
+	/// Hides or Shows the cursor based on the value of the <paramref name="hide"/> argument.
+	/// </summary>
+	/// <param name="hide">A boolean value indicating whether or not to hide the cursor. 
+	/// true=hide, false=show</param>
+	public static void Hide(bool hide)
+	{
+		if (hide)
+		{ Hide(); }
+		else
+		{ Show(); }
+	}
+
 
 	/// <summary>
 	/// Starts blinking the cursor
@@ -136,9 +164,36 @@ public static class Cursor
 	public static void Blink() => W(EscapeCodes.Cursor_Blink);
 
 	/// <summary>
+	/// Starts or stops blinking the cursor based on the value of the <paramref name="blink"/> argument.
+	/// </summary>
+	/// <param name="blink">A boolean value indicating whether or not to blink the cursor. 
+	/// true=blink, false=do not blink (steady)</param>
+	public static void Blink(bool blink)
+	{
+		if (blink)
+		{ Blink(); }
+		else
+		{ Steady(); }
+	}
+
+
+	/// <summary>
 	/// Stops blinking the cursor
 	/// </summary>
 	public static void Steady() => W(EscapeCodes.Cursor_Steady);
+
+	/// <summary>
+	/// Stops or starts blinking the cursor based on the value of the <paramref name="steady"/> argument.
+	/// </summary>
+	/// <param name="steady">A boolean value indicating whether or not to blink the cursor. 
+	/// true=do not blink (steady), false=blink</param>
+	public static void Steady(bool steady)
+	{
+		if (steady)
+		{ Steady(); }
+		else
+		{ Blink(); }
+	}
 
 
 	/// <summary>
