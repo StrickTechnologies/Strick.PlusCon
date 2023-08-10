@@ -70,7 +70,7 @@ colors.Clear();
 colors.Add(Color.FromArgb(171, 96, 0)); //brown
 colors.Add(Color.FromArgb(57, 168, 53)); //green
 colors.Add(Color.FromArgb(2, 85, 166)); //blue
-WL("Peppermint-Patty".Colorize(colors).Colorize(null,Color.LightGray));
+WL("Peppermint-Patty".Colorize(colors).Colorize(null, Color.LightGray));
 ```
 
 ![Example - Colorize 3](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_colorize_3.png)
