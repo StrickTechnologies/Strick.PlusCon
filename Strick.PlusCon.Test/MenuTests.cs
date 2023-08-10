@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -67,6 +68,46 @@ public class MenuTests
 		m.ExitKeys.Add('a');
 		keys2.Add('a');
 		TestMenuState(m, null, null, defaultPrompt, defaultOptions, keys2);
+	}
+
+	[TestMethod]
+	public void WidthTests()
+	{
+		Menu m = new("title", "subtitle");
+		Assert.IsNotNull(m);
+
+		MenuSeperator fbb = new MenuSeperator("foo bar baz");
+		MenuOption f = new MenuOption("foo", 'f', () => { });
+		MenuOption b = new MenuOption("bar", 'b', () => { });
+		MenuOption z = new MenuBackOption("baz", 'z');
+		m.Add(fbb);
+		m.Add(f);
+		m.Add(b);
+		m.Add(z);
+		Assert.IsNotNull(m.Options);
+		Assert.AreEqual(4, m.Options.Count);
+
+		Assert.AreEqual(defaultPrompt.Text.Length, m.Width);
+
+		m.Title.Text = new string(' ', 20);
+		Assert.AreEqual(20, m.Width);
+
+		m.Subtitle.Text = new string(' ', 21);
+		Assert.AreEqual(21, m.Width);
+
+		m.Title.Text = "title";
+		m.Subtitle.Text = "subtitle";
+		Assert.AreEqual(defaultPrompt.Text.Length, m.Width);
+
+		m.Prompt.Text = "short";
+		Assert.AreEqual(11, m.Width);
+
+		f.Caption = "foo bar baz";
+		Assert.AreEqual(14, m.Width);
+
+		f.Caption = "foo";
+		z.Caption = "foo bar baz";
+		Assert.AreEqual(14, m.Width);
 	}
 
 

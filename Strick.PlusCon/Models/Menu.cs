@@ -230,7 +230,7 @@ public class Menu
 	{
 		get
 		{
-			var l = Options.Max(o => o.Caption.Length + 3);
+			var l = Options.Max(o => o.Width);
 
 			if (Prompt != null)
 			{ l = Math.Max(l, Prompt.Text.Length); }

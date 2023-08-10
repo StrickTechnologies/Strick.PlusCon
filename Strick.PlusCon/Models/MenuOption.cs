@@ -111,6 +111,8 @@ public class MenuOption
 		return $"{Keys[0]}. {Caption}";
 	}
 
+	internal int Width => GetText(1).Length;
+
 
 	#region EVENTS
 
