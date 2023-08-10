@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.VisualBasic.FileIO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Strick.PlusCon.Models;
+﻿using Strick.PlusCon.Models;
 
 
 namespace Strick.PlusCon.Test;
