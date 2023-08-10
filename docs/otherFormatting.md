@@ -34,6 +34,48 @@ WL($"Hello {wrapped} World!");
 
 ![Example - Colorize 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_colorize_2.png)
 
+Another `Colorize` overload takes a sequence of `Color` structures, and 
+returns a string with escape sequences to vary the foreground color of 
+each character in the value with the colors from the sequence of colors.
+
+If the colors sequence is null or has no elements, the value is returned unchanged.
+
+If the colors sequence has only a single element, the entire value is colorized with that color.
+
+If the length of the value is 1, its color will be set to the first color in the colors sequence. 
+
+If the length of the value is &gt; the number of elements in the colors sequence, 
+the colors in the sequence will be repeated.
+
+```c#
+string stick = "Peppermint-stick";
+List<Color> colors = new List<Color>();
+colors.Add(Color.Red);
+colors.Add(Color.White);
+WL(stick.Colorize(colors));
+		
+colors = ColorUtilities.GetGradientColors(Color.Red, Color.White, 5).ToList();
+WL(stick.Colorize(colors));
+
+colors = ColorUtilities.GetGradientColors(Color.Red, Color.White, stick.Length).ToList();
+WL(stick.Colorize(colors));
+
+colors.Clear();
+colors.Add(Color.SaddleBrown);
+colors.Add(Color.White);
+colors.Add(Color.Blue);
+WL("Peppermint-Pattie".Colorize(colors).Colorize(null, Color.LightGray));
+
+colors.Clear();
+colors.Add(Color.FromArgb(171, 96, 0)); //brown
+colors.Add(Color.FromArgb(57, 168, 53)); //green
+colors.Add(Color.FromArgb(2, 85, 166)); //blue
+WL("Peppermint-Patty".Colorize(colors).Colorize(null,Color.LightGray));
+```
+
+![Example - Colorize 3](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_colorize_3.png)
+
+
 #### Underline
 The `Underline` method wraps a string with underlining escape sequences.
 
