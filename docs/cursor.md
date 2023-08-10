@@ -44,16 +44,28 @@ bottom of the buffer, the console is scrolled up by the appropriate number of ro
 ### Shape, visibility, appearance 
 
 #### Show
-Makes the cursor visible.
+Shows the cursor.
+
+#### Show(bool)
+Shows or Hides the cursor based on the boolean argument.
 
 #### Hide
 Hides the cursor.
 
+#### Hide(bool)
+Hides or Shows the cursor based on the boolean argument.
+
 #### Blink
 Starts blinking the cursor.
 
+#### Blink(bool)
+Starts or stops blinking the cursor based on the boolean argument.
+
 #### Steady
 Stops blinking the cursor.
+
+#### Steady(bool)
+Stops or starts blinking the cursor based on the boolean argument.
 
 #### Shape
 Sets the cursor to the shape specifed by the "shape" argument. 
