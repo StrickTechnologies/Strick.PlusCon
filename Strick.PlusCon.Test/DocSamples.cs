@@ -49,7 +49,7 @@ internal static class DocSamples
 
 			new DocSample("grid1", "Example - Grid (1)", Ex_Grid_1),
 			new DocSample("grid2", "Example - Grid (2)", Ex_Grid_2),
-			
+
 			new DocSample("ruler1", "Example - Ruler (1)", Ex_Ruler_1),
 		};
 	}
@@ -59,6 +59,7 @@ internal static class DocSamples
 
 	private static readonly Color ErrColor = Color.Red;
 
+	//note: font s/b Cascadia Mono SemiLight, 18pt
 	private static readonly Size SampleSize = new Size(43, 10);
 
 	public static void Show(bool wait = false) => Show((Size?)null, wait);
@@ -112,12 +113,19 @@ internal static class DocSamples
 		//...
 
 		WL("Blue In Green", Color.Blue, Color.LimeGreen);
-		WL("Page [49] of [237]", Color.Lime);
 
-		TextStyle onTheBeach = new(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255));
+		int currPg = 49;
+		int lastPg = 237;
+		WL($"Page [{currPg}] of [{lastPg}]", Color.Lime);
+
+		string chillin = " Down On The Beach ".SpaceOut();
+		Color sand = Color.SandyBrown;
+		Color surf = Color.FromArgb(3, 240, 165);
+		Color sky = Color.FromArgb(145, 193, 255);
+		TextStyle onTheBeach = new(sand, surf, sky);
 		onTheBeach.Reverse = true;
-		WL(onTheBeach.StyleText(" Down On The Beach ".SpaceOut()));
-		WL(" Down On The Beach ".SpaceOut().Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Reverse());
+		WL(onTheBeach.StyleText(chillin));
+		WL(chillin.Gradient(sand, surf, sky).Reverse());
 
 		Grid g = new();
 		g.Columns.Add("Qty", HorizontalAlignment.Right);
@@ -209,7 +217,7 @@ internal static class DocSamples
 		colors.Add(Color.Red);
 		colors.Add(Color.White);
 		WL(stick.Colorize(colors));
-		
+
 		colors = ColorUtilities.GetGradientColors(Color.Red, Color.White, 5).ToList();
 		WL(stick.Colorize(colors));
 
@@ -226,7 +234,7 @@ internal static class DocSamples
 		colors.Add(Color.FromArgb(171, 96, 0)); //brown
 		colors.Add(Color.FromArgb(57, 168, 53)); //green
 		colors.Add(Color.FromArgb(2, 85, 166)); //blue
-		WL("Peppermint-Patty".Colorize(colors).Colorize(null,Color.LightGray));
+		WL("Peppermint-Patty".Colorize(colors).Colorize(null, Color.LightGray));
 	}
 
 
@@ -657,7 +665,7 @@ internal static class DocSamples
 		WL("change characters");
 
 		WL(Ruler.Get(30, new[] { Color.Red, Color.White }));
-		WL("change colors");
+		W("change colors");
 	}
 
 	#endregion EXAMPLE FUNCTIONS

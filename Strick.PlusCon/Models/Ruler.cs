@@ -49,7 +49,7 @@ public static class Ruler
 
 	/// <summary>
 	/// A sequence of colors to use for the ruler. 
-	/// A null value or an empty sequence is acceptable, and will result in the ruler having no embeded color sequences.
+	/// A null value or an empty sequence is acceptable, and will result in rulers having no embeded color sequences.
 	/// <para>The colors default to a ten-color gradient from <see cref="Color.Gray"/> to <see cref="Color.White"/>.</para>
 	/// <para>See <see cref="Formatting.Colorize(string, IEnumerable{Color})"/> for more 
 	/// information on how the colors are applied to characters in the ruler.</para>

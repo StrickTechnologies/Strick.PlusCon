@@ -19,13 +19,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{F27B2819-BE42-4410-A503-DC878DDF84F5}"
 	ProjectSection(SolutionItems) = preProject
 		docs\consoleShortcuts.md = docs\consoleShortcuts.md
-		cursor.md = cursor.md
+		docs\consoleSize.md = docs\consoleSize.md
+		docs\cursor.md = docs\cursor.md
 		docs\escapeSequences.md = docs\escapeSequences.md
 		docs\grid.md = docs\grid.md
 		docs\index.md = docs\index.md
 		docs\menu.md = docs\menu.md
 		docs\otherFormatting.md = docs\otherFormatting.md
 		docs\otherUtilities.md = docs\otherUtilities.md
+		docs\ruler.md = docs\ruler.md
 		docs\textStyle.md = docs\textStyle.md
 	EndProjectSection
 EndProject

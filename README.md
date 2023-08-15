@@ -16,16 +16,22 @@ Package Manager: `NuGet\Install-Package Strick.PlusCon -Version 1.1.0`
 
 ```c#
 using static Strick.PlusCon.Helpers;
-
 ...
 
 WL("Blue In Green", Color.Blue, Color.LimeGreen);
-WL("Page [49] of [237]", Color.Lime);
 
-TextStyle onTheBeach = new(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255));
+int currPg = 49;
+int lastPg = 237;
+WL($"Page [{currPg}] of [{lastPg}]", Color.Lime);
+
+string chillin = " Down On The Beach ".SpaceOut();
+Color sand = Color.SandyBrown;
+Color surf = Color.FromArgb(3, 240, 165);
+Color sky = Color.FromArgb(145, 193, 255);
+TextStyle onTheBeach = new(sand, surf, sky);
 onTheBeach.Reverse = true;
-WL(onTheBeach.StyleText(" Down On The Beach ".SpaceOut()));
-WL(" Down On The Beach ".SpaceOut().Gradient(Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255)).Reverse());
+WL(onTheBeach.StyleText(chillin));
+WL(chillin.Gradient(sand, surf, sky).Reverse());
 
 Grid g = new();
 g.Columns.Add("Qty", HorizontalAlignment.Right);

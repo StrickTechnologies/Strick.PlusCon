@@ -55,9 +55,9 @@ public class ConsoleSize
 
 
 	/// <summary>
-	/// Sets the the height and width of the console window to the values specified by the 
+	/// Sets the the width and height of the console window to the values specified by the 
 	/// <see cref="WindowSize"/> property of the <paramref name="size"/> parameter, and
-	/// sets the the height and width of the console buffer to the values specified by the 
+	/// sets the the width and height of the console buffer to the values specified by the 
 	/// <see cref="BufferSize"/> property of the <paramref name="size"/> parameter.
 	/// <para><b>Note: This only works on Windows. It has no effect on other platforms at this time.</b></para>
 	/// </summary>
@@ -71,23 +71,30 @@ public class ConsoleSize
 	}
 
 	/// <summary>
-	/// Sets the the height and width of the console window and buffer to the values specified by the 
-	/// <paramref name="size"/> parameter.
+	/// Sets the the width and height of the console window and buffer to the values specified by the 
+	/// <paramref name="size"/> argument.
 	/// <para><b>Note: This only works on Windows. It has no effect on other platforms at this time.</b></para>
 	/// </summary>
-	public static void Set(Size size)
+	public static void Set(Size size) => Set(size.Width, size.Height);
+
+	/// <summary>
+	/// Sets the the width and height of the console window and buffer to the values specified by the 
+	/// <paramref name="width"/> and <paramref name="height"/> arguments, respectively.
+	/// <para><b>Note: This only works on Windows. It has no effect on other platforms at this time.</b></para>
+	/// </summary>
+	public static void Set(int width, int height)
 	{
 		if (OperatingSystem.IsWindows())
 		{
-			Console.SetWindowSize(size.Width, size.Height);
-			Console.SetBufferSize(size.Width, size.Height);
+			Console.SetWindowSize(width, height);
+			Console.SetBufferSize(width, height);
 		}
 	}
 
 	/// <summary>
-	/// Sets the the height and width of the console window to the values specified by the 
+	/// Sets the the width and height of the console window to the values specified by the 
 	/// <see cref="WindowSize"/> property, and
-	/// sets the the height and width of the console buffer to the values specified by the 
+	/// sets the the width and height of the console buffer to the values specified by the 
 	/// <see cref="BufferSize"/> property.
 	/// <para><b>Note: This only works on Windows. It has no effect on other platforms at this time.</b></para>
 	/// </summary>
