@@ -83,13 +83,10 @@ public static class Formatting
 	/// </param>
 	public static string Colorize(this string value, IEnumerable<Color>? colors)
 	{
-		if (string.IsNullOrEmpty(value))
-		{ return ""; }
-
 		if (!colors.HasAny())
 		{ return value; }
 
-		if (value.Length == 1 || colors.Count() < 2)
+		if (string.IsNullOrEmpty(value) || value.Length == 1 || colors.Count() < 2)
 		{ return value.Colorize(colors.ElementAt(0)); }
 
 

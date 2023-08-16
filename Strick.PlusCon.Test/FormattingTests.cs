@@ -13,9 +13,13 @@ public class FormattingTests
 	[TestMethod]
 	public void ColorizeTests()
 	{
+		string n = null!;
+		string empty = "";
 		string test = "test";
 
-		Assert.AreEqual(test, test.Colorize(null));
+		TestColorizedString(n, n.Colorize(red, white), red, white);
+		TestColorizedString(empty, empty.Colorize(red, white), red, white);
+		Assert.AreEqual(test, test.Colorize(fore: null));
 
 		TestColorizedString(test, test.Colorize(red), red, null);
 		TestColorizedString(test, test.Colorize(green), green, null);
@@ -33,8 +37,15 @@ public class FormattingTests
 		string dL = "[";
 		string dR = "]";
 
-		string result = test.Colorize(null, null, dL, dR);
-		string exp = $"{dL}{test}{dR}";
+		string result = n.Colorize(null, null, dL, dR);
+		string exp = $"{dL}{n}{dR}";
+		Assert.AreEqual(exp, result);
+		result = empty.Colorize(null, null, dL, dR);
+		exp = $"{dL}{empty}{dR}";
+		Assert.AreEqual(exp, result);
+
+		result = test.Colorize(null, null, dL, dR);
+		exp = $"{dL}{test}{dR}";
 		Assert.AreEqual(exp, result);
 
 		result = test.Colorize(blue, null, dL, dR);
@@ -51,6 +62,12 @@ public class FormattingTests
 
 		result = test.Colorize(null, null, dL, dR, green, null);
 		exp = $"{ForeColorGreen}{dL}{ForeColorReset}{test}{ForeColorGreen}{dR}{ForeColorReset}";
+		Assert.AreEqual(exp, result);
+		result = n.Colorize(null, null, dL, dR, green, null);
+		exp = $"{ForeColorGreen}{dL}{ForeColorReset}{n}{ForeColorGreen}{dR}{ForeColorReset}";
+		Assert.AreEqual(exp, result);
+		result = empty.Colorize(null, null, dL, dR, green, null);
+		exp = $"{ForeColorGreen}{dL}{ForeColorReset}{empty}{ForeColorGreen}{dR}{ForeColorReset}";
 		Assert.AreEqual(exp, result);
 
 		result = test.Colorize(null, null, dL, dR, null, red);
@@ -94,36 +111,43 @@ public class FormattingTests
 	{
 		//tests the "string Colorize(string value, IEnumerable<Color> colors)" overload
 		List<Color> colors = null!;
+		string n = null!;
 		string empty = "";
 		string foo = "foo";
 		string foobar = "foobar";
 
+		Assert.AreEqual(n, n.Colorize(colors!));
 		Assert.AreEqual(empty, empty.Colorize(colors!));
 		Assert.AreEqual(foo, foo.Colorize(colors!));
 		Assert.AreEqual(foobar, foobar.Colorize(colors!));
 
 		colors = new();
+		Assert.AreEqual(n, n.Colorize(colors!));
 		Assert.AreEqual(empty, empty.Colorize(colors!));
 		Assert.AreEqual(foo, foo.Colorize(colors!));
 		Assert.AreEqual(foobar, foobar.Colorize(colors!));
 
 		colors.Add(Expectations.red);
-		Assert.AreEqual(empty, empty.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}{n}{ForeColorReset}", n.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}{empty}{ForeColorReset}", empty.Colorize(colors));
 		Assert.AreEqual($"{ForeColorRed}{foo}{ForeColorReset}", foo.Colorize(colors));
 		Assert.AreEqual($"{ForeColorRed}{foobar}{ForeColorReset}", foobar.Colorize(colors));
 
 		colors.Add(Expectations.white);
-		Assert.AreEqual(empty, empty.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}{n}{ForeColorReset}", n.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}{empty}{ForeColorReset}", empty.Colorize(colors));
 		Assert.AreEqual($"{ForeColorRed}f{ForeColorReset}{ForeColorWhite}o{ForeColorReset}{ForeColorRed}o{ForeColorReset}", foo.Colorize(colors));
 		Assert.AreEqual($"{ForeColorRed}f{ForeColorReset}{ForeColorWhite}o{ForeColorReset}{ForeColorRed}o{ForeColorReset}{ForeColorWhite}b{ForeColorReset}{ForeColorRed}a{ForeColorReset}{ForeColorWhite}r{ForeColorReset}", foobar.Colorize(colors));
 
 		colors.Add(Expectations.blue);
-		Assert.AreEqual(empty, empty.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}{n}{ForeColorReset}", n.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}{empty}{ForeColorReset}", empty.Colorize(colors));
 		Assert.AreEqual($"{ForeColorRed}f{ForeColorReset}{ForeColorWhite}o{ForeColorReset}{ForeColorBlue}o{ForeColorReset}", foo.Colorize(colors));
 		Assert.AreEqual($"{ForeColorRed}f{ForeColorReset}{ForeColorWhite}o{ForeColorReset}{ForeColorBlue}o{ForeColorReset}{ForeColorRed}b{ForeColorReset}{ForeColorWhite}a{ForeColorReset}{ForeColorBlue}r{ForeColorReset}", foobar.Colorize(colors));
 
 		colors.Add(Expectations.green);
-		Assert.AreEqual(empty, empty.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}{n}{ForeColorReset}", n.Colorize(colors));
+		Assert.AreEqual($"{ForeColorRed}{empty}{ForeColorReset}", empty.Colorize(colors));
 		Assert.AreEqual($"{ForeColorRed}f{ForeColorReset}{ForeColorWhite}o{ForeColorReset}{ForeColorBlue}o{ForeColorReset}", foo.Colorize(colors));
 		Assert.AreEqual($"{ForeColorRed}f{ForeColorReset}{ForeColorWhite}o{ForeColorReset}{ForeColorBlue}o{ForeColorReset}{ForeColorGreen}b{ForeColorReset}{ForeColorRed}a{ForeColorReset}{ForeColorWhite}r{ForeColorReset}", foobar.Colorize(colors));
 	}
@@ -264,7 +288,6 @@ public class FormattingTests
 
 	internal static void TestColorizedString(string source, string result, Color? fore, Color? back)
 	{
-		Assert.IsNotNull(source);
 		Assert.IsNotNull(result);
 
 		if (fore == null && back == null)
