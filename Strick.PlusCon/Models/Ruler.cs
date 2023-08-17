@@ -70,6 +70,7 @@ public static class Ruler
 	/// using the default colors and segment
 	/// </summary>
 	/// <param name="width"><inheritdoc cref="Get(int, IEnumerable{Color}?, string?)" path="/param[@name='width']"/></param>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public static string Get(int width) => Get(width, Segment);
 
 	/// <summary>
@@ -78,6 +79,7 @@ public static class Ruler
 	/// </summary>
 	/// <param name="width"><inheritdoc cref="Get(int, IEnumerable{Color}?, string?)" path="/param[@name='width']"/></param>
 	/// <param name="colors"><inheritdoc cref="Get(int, IEnumerable{Color}?, string?)" path="/param[@name='colors']"/></param>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public static string Get(int width, IEnumerable<Color>? colors) => Get(width, colors, Segment);
 
 	/// <summary>
@@ -95,21 +97,21 @@ public static class Ruler
 	/// using the colors and segment specified by the <paramref name="colors"/> 
 	/// and <paramref name="segment"/> arguments, respectively.
 	/// </summary>
-
-	/// <param name="width">The width of the ruler to create</param>
-
+	/// <param name="width">The width of the ruler to create. Must be a positive value, otherwise an exception is thrown.</param>
 	/// <param name="colors">A sequence of colors to use for the ruler. This overrides the default
 	/// colors specified in the <see cref="Colors"/> property. 
 	/// A null value or an empty sequence is acceptable, and will result in the ruler having no color sequences.</param>
-
 	/// <param name="segment">The string used to construct each segment of the ruler. 
 	/// This overrides the default segment string specified in the <see cref="Segment"/> property.
 	/// <para>Note: the same rules apply to this argument as the property.</para></param>
-
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	/// <exception cref="ArgumentNullException"></exception>
 	/// <exception cref="ArgumentException"></exception>
 	public static string Get(int width, IEnumerable<Color>? colors, string segment)
 	{
+		if (width < 1)
+		{ throw new ArgumentOutOfRangeException(nameof(width), "must be > 0"); }
+
 		ThrowIfInvalid(segment);
 
 
@@ -146,89 +148,4 @@ public static class Ruler
 		if (segment.Length != 9)
 		{ throw new ArgumentException($"{nameof(Segment)} value must be exactly 9 characters in length"); }
 	}
-
-
-	/* UNUSED STUFF
-	//public static char[] chars = { '-', '-', '-', '-', '*', '-', '-', '-', '-' };
-	//public static char[] chars;
-
-	private static string Segx2(int width, int value)
-	{
-		string seg;
-		if (width < 10)
-		{ seg = new string(chars, 0, width); }
-		else
-		{ seg = new string(chars) + value.ToString(); }
-
-		//if (Colors.HasAny())
-		//{ return seg.Colorize(Colors); }
-
-		return seg;
-	}
-
-	private static IEnumerable<Color> GetColors()
-	{
-		//List<Color> colors = ColorUtilities.GetGradientColors(Color.Gray, Color.White, 9).ToList();
-		//colors.Insert(4, Color.White);
-		//colors.Add(Color.White);
-		////colors = ColorUtilities.GetGradientColors(Color.White, Color.Gray, 10).ToList();
-		//colors = new();// ColorUtilities.GetGradientColors(Color.Gray, Color.White, 5).ToList();
-		//colors.AddRange(ColorUtilities.GetGradientColors(Color.White, Color.Gray, 6).ToList().GetRange(1, 4));
-		//colors.Add(Color.White);
-		//colors.AddRange(ColorUtilities.GetGradientColors(Color.White, Color.Gray, 6).ToList().GetRange(1, 4));
-		//colors.Add(Color.White);
-		//colors[0] = Color.Silver;
-		//colors[1] = Color.Gray;
-		//colors[2] = Color.Gray;
-		//colors[3] = Color.Silver;
-		//colors[4] = Color.White;
-		//colors[5] = Color.Silver;
-		//colors[6] = Color.Gray;
-		//colors[7] = Color.Gray;
-		//colors[8] = Color.Silver;
-		//colors[9] = Color.White;
-		return Colors;
-	}
-
-	//inter style
-	public static StyledText inter14 = new("----", new TextStyle(Color.White, null, Color.Gray));
-	public static StyledText inter69 = new("----", new TextStyle(Color.Gray, null, Color.White));
-	//5 style
-	public static StyledText five = new("*", new TextStyle(Color.White));
-	//10 style
-	public static TextStyle ten = new(Color.Lime);
-
-	private static string Segx(int width, int value)
-	{
-		//* get a list of the 10 colors
-		//* build the string
-		//* trim the string, if necessary
-		//* call the colorize method with the string and list of colors
-
-		if (width == 10)
-		{ return $"{inter14.TextStyled}{five.TextStyled}{inter69.TextStyled}{ten.StyleText(value.ToString())}"; }
-
-
-		return $"{inter14.Text}{five.Text}{inter69.Text}{value.ToString()}".Substring(0, width);
-	}
-
-	public static string Get1(int width)
-	{
-		StringBuilder nl = new(new string('-', width));
-
-		for (int i = 4; i < width; i += 10)
-		{ nl[i] = five.Text[0]; }
-		int ten = 1;
-		for (int i = 9; i < width; i += 10)
-		{
-			nl[i] = (char)(ten + 48);
-			if (ten > 8)
-			{ ten = 0; }
-			else
-			{ ten++; }
-		}
-
-		return nl.ToString();
-	}
-	*/
 }

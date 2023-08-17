@@ -18,9 +18,10 @@ public class RulerTests
 	{
 		var savedColors = Ruler.Colors;
 		Ruler.Colors = null;
-		int w = 1;
 
-		string r = Ruler.Get(w);
+		Assert.ThrowsException<ArgumentOutOfRangeException>(() => Ruler.Get(0));
+		Assert.ThrowsException<ArgumentOutOfRangeException>(() => Ruler.Get(-1));
+
 		CheckGet(1, "-");
 		CheckGet(2, "--");
 		CheckGet(3, "---");
