@@ -140,6 +140,12 @@ public static class EscapeCodes
 	public static string Cursor_Shape => Escape + "[{shape} q";
 
 	#endregion CURSOR SIZE/SHAPE
+
+
+	/// <summary>
+	/// Returns a string containing the escape sequence to clear the console buffer
+	/// </summary>
+	public static string ClearConsoleBuffer => Escape + "[3J";
 }
 
 
