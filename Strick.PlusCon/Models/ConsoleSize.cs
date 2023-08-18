@@ -47,10 +47,9 @@ public class ConsoleSize
 
 	/// <summary>
 	/// <inheritdoc cref="ConsoleSize()"/>
-	/// Also sets the height and width of the console window to the values specified 
-	/// by the <paramref name="newWindowSize"/> argument, and the height and width of 
-	/// the console buffer set to the values specified by the 
-	/// <paramref name="newBufferSize"/> argument.
+	/// Also sets the width and height of the console window to the values specified by
+	/// the <paramref name="newWindowSize"/> argument, and the width and height of the
+	/// console buffer to the values specified by the <paramref name="newBufferSize"/> argument.
 	/// </summary>
 	/// <param name="newWindowSize">The new size for the console window.</param>
 	/// <param name="newBufferSize">The new size for the console buffer.</param>
@@ -117,17 +116,20 @@ public class ConsoleSize
 	public static void Set(Size windowAndBufferSize, bool clearBuffer) => Set(windowAndBufferSize, windowAndBufferSize, clearBuffer);
 
 	/// <summary>
-	/// Sets the the width and height of the console window and buffer to the values specified by the 
-	/// <paramref name="windowAndBufferSize"/> argument.
+	/// Sets the width and height of the console window to the values specified by
+	/// the <paramref name="windowSize"/> argument, and the width and height of the
+	/// console buffer to the values specified by the <paramref name="bufferSize"/> argument. 
 	/// Also clears the console buffer.
 	/// <para><b>Note: This only works on Windows. It has no effect on other platforms at this time.</b></para>
 	/// </summary>
 	public static void Set(Size windowSize, Size bufferSize) => Set(windowSize, bufferSize, true);
 
 	/// <summary>
-	/// Sets the the width and height of the console window and buffer to the values specified by the 
-	/// <paramref name="windowAndBufferSize"/> argument.
-	/// Also clears the console buffer.
+	/// Sets the width and height of the console window to the values specified by
+	/// the <paramref name="windowSize"/> argument, and the width and height of the
+	/// console buffer to the values specified by the <paramref name="bufferSize"/> argument. 
+	/// Clears the console buffer (or not) based on the value of the 
+	/// <paramref name="clearBuffer"/> argument.
 	/// <para><b>Note: This only works on Windows. It has no effect on other platforms at this time.</b></para>
 	/// </summary>
 	public static void Set(Size windowSize, Size bufferSize, bool clearBuffer) => Set(windowSize.Width, windowSize.Height, bufferSize.Width, bufferSize.Height, clearBuffer);
@@ -150,16 +152,20 @@ public class ConsoleSize
 	public static void Set(int width, int height, bool clearBuffer) => Set(width, height, width, height, clearBuffer);
 
 	/// <summary>
-	/// Sets the the width and height of the console window and buffer to the values specified by the 
-	/// <paramref name="width"/> and <paramref name="height"/> arguments, respectively. 
+	/// Sets the width and height of the console window to the values specified by
+	/// the <paramref name="windowWidth"/> and <paramref name="windowHeight"/> arguments, 
+	/// and the width and height of the console buffer to the values specified by the 
+	/// <paramref name="bufferWidth"/> and <paramref name="bufferHeight"/> arguments. 
 	/// Also clears the console buffer.
 	/// <para><b>Note: This only works on Windows. It has no effect on other platforms at this time.</b></para>
 	/// </summary>
 	public static void Set(int windowWidth, int windowHeight, int bufferWidth, int bufferHeight) => Set(windowWidth, windowHeight, bufferWidth, bufferHeight, true);
 
 	/// <summary>
-	/// Sets the the width and height of the console window and buffer to the values specified by the 
-	/// <paramref name="width"/> and <paramref name="height"/> arguments, respectively. 
+	/// Sets the width and height of the console window to the values specified by
+	/// the <paramref name="windowWidth"/> and <paramref name="windowHeight"/> arguments, 
+	/// and the width and height of the console buffer to the values specified by the 
+	/// <paramref name="bufferWidth"/> and <paramref name="bufferHeight"/> arguments. 
 	/// Clears the console buffer (or not) based on the value of the <paramref name="clearBuffer"/> argument.
 	/// <para><b>Note: This only works on Windows. It has no effect on other platforms at this time.</b></para>
 	/// </summary>
