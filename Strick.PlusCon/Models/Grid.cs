@@ -266,9 +266,9 @@ public class Grid
 		{ return; }
 
 		if (title.Text.Length == 1)
-		{ WL(title.StyleText(new string(title.Text[0], Width))); }
+		{ W(title.StyleText(new string(title.Text[0], Width))); }
 		else
-		{ WL(title.StyleText(title.Text.Center(Width))); }
+		{ W(title.StyleText(title.Text.Center(Width))); }
 	}
 
 
