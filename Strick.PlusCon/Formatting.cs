@@ -216,14 +216,25 @@ public static class Formatting
 	public static string SpaceOut(this string value) => value.Intersperse(' ');
 
 	/// <summary>
-	/// Intersperses (inserts) a <paramref name="ch"/> character between each of the characters of <paramref name="value"/> and returns the resulting string. 
+	/// Intersperses (inserts) a <paramref name="inter"/> character between each of the characters 
+	/// of <paramref name="value"/> and returns the resulting string. 
 	/// </summary>
-	/// <param name="value">The string to insert <paramref name="ch"/> into. 
-	/// If <paramref name="value"/> is null or empty, <paramref name="value"/> is returned.</param>
-	/// <param name="ch">The character to insert into <paramref name="value"/></param>
-	public static string Intersperse(this string value, char ch)
+	/// <param name="value">The string to insert <paramref name="inter"/> into. 
+	/// If <paramref name="value"/> is null, empty, or contains only 1 character it is returned unchanged. 
+	/// </param>
+	/// <param name="inter">The character to insert into <paramref name="value"/></param>
+	public static string Intersperse(this string value, char inter) => value.Intersperse(inter.ToString());
+
+	/// <summary>
+	/// Intersperses (inserts) a <paramref name="inter"/> string between each of the characters of <paramref name="value"/> and returns the resulting string. 
+	/// </summary>
+	/// <param name="value"><inheritdoc cref="Intersperse(string, char)" path="/param[@name='value']"/>
+	/// </param>
+	/// <param name="inter">The string to insert into <paramref name="value"/>. 
+	/// If null or empty, <paramref name="value"/> is returned unchanged.</param>
+	public static string Intersperse(this string value, string inter)
 	{
-		if (string.IsNullOrEmpty(value))
+		if (string.IsNullOrEmpty(value) || string.IsNullOrEmpty(inter))
 		{ return value; }
 
 		bool first = true;
@@ -233,11 +244,20 @@ public static class Formatting
 			if (first)
 			{ first = false; }
 			else
-			{ sb.Append(ch); }
+			{ sb.Append(inter); }
 			sb.Append(c);
 		}
 
 		return sb.ToString();
 	}
 
+
+	/// <summary>
+	/// Returns <paramref name="value"/> with the <see cref="EscapeCodes.Down1Left1"/> sequence interspersed into it. 
+	/// When written to the console, the string will display vertically. 
+	/// </summary>
+	/// <param name="value">The value to be converted for vertical display. 
+	/// If <paramref name="value"/> is null, empty, or contains only 1 character it is returned unchanged. 
+	/// </param>
+	public static string Vertical(this string value) => value.Intersperse(EscapeCodes.Down1Left1);
 }

@@ -143,6 +143,12 @@ public static class EscapeCodes
 
 
 	/// <summary>
+	/// Returns an escape sequence that moves the cursor down one row and left one column
+	/// </summary>
+	public static string Down1Left1 = $"\n{Escape}[1D";
+
+
+	/// <summary>
 	/// Returns a string containing the escape sequence to clear the console buffer
 	/// </summary>
 	public static string ClearConsoleBuffer => Escape + "[3J";
