@@ -258,7 +258,6 @@ public class FormattingTests
 		Assert.AreEqual("", src.Intersperse('-'));
 
 		src = "foo";
-		Assert.AreEqual("f-o-o", src.Intersperse('-'));
 		Assert.AreEqual("f.o.o", src.Intersperse('.'));
 		Assert.AreEqual("f o o", src.Intersperse(' '));
 		Assert.AreEqual("f o o", src.SpaceOut());
@@ -270,6 +269,45 @@ public class FormattingTests
 		Assert.AreEqual("f-o-o- -b-a-r", src.Intersperse('-'));
 		Assert.AreEqual("f o o   b a r", src.Intersperse(' '));
 		Assert.AreEqual("f o o   b a r", src.SpaceOut());
+	}
+
+	[TestMethod]
+	public void IntersperseTests2()
+	{
+		string? src = null;
+		string inter = "JKL";
+
+		Assert.AreEqual(null, src!.Intersperse(inter));
+		src = "";
+		Assert.AreEqual("", src.Intersperse(inter));
+
+		src = "foo";
+		Assert.AreEqual($"f{inter}o{inter}o", src.Intersperse(inter));
+
+		src = "bar";
+		Assert.AreEqual($"b{inter}a{inter}r", src.Intersperse(inter));
+
+		src = "foo bar";
+		Assert.AreEqual($"f{inter}o{inter}o{inter} {inter}b{inter}a{inter}r", src.Intersperse(inter));
+
+		src = "foo";
+		inter = "";
+		Assert.AreEqual(src, src.Intersperse(inter));
+		inter = null!;
+		Assert.AreEqual(src, src.Intersperse(inter));
+	}
+
+	[TestMethod]
+	public void VerticalTests()
+	{
+		string dr = EscapeCodes.Down1Left1;
+		string? src = null;
+
+		Assert.AreEqual(null, src!.Vertical());
+		Assert.AreEqual("", "".Vertical());
+		Assert.AreEqual(" ", " ".Vertical());
+		Assert.AreEqual("x", "x".Vertical());
+		Assert.AreEqual($"f{dr}o{dr}o", "foo".Vertical());
 	}
 
 
