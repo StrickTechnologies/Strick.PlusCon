@@ -79,13 +79,14 @@ public class ConsoleSize
 
 	/// <summary>
 	/// Sets the the width and height of the console window to the values specified by the 
-	/// <see cref="WindowSize"/> property of the <paramref name="size"/> parameter, and
+	/// <see cref="WindowSize"/> property of the <paramref name="size"/> argument, and
 	/// sets the the width and height of the console buffer to the values specified by the 
-	/// <see cref="BufferSize"/> property of the <paramref name="size"/> parameter. 
+	/// <see cref="BufferSize"/> property of the <paramref name="size"/> argument. 
 	/// Clears the console buffer (or not) based on the <see cref="ConsoleSize.ClearBufferOnSet"/> 
 	/// property of the <paramref name="size"/> argument.
 	/// <para><b>Note: This only works on Windows. It has no effect on other platforms at this time.</b></para>
 	/// </summary>
+	/// <param name="size">The new size for the console window and buffer.</param>
 	public static void Set(ConsoleSize size)
 	{
 		if (OperatingSystem.IsWindows())

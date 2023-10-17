@@ -224,7 +224,8 @@ public class Menu
 
 	/// <summary>
 	/// Returns an int value which represents the maximum width of the menu when displayed. 
-	/// Calculated based on the max width of <see cref="Title"/>, <see cref="Subtitle"/>, and all the <see cref="Options"/> (+3 for the Key, a period,  and space; e.g. "x. ").
+	/// Calculated based on the max width of <see cref="Title"/>, <see cref="Subtitle"/>, <see cref="Prompt"/>, 
+	/// and all the <see cref="Options"/> (+3 for the Key, a period,  and space; e.g. "x. ").
 	/// </summary>
 	public int Width
 	{

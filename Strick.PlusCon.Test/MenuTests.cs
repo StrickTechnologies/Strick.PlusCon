@@ -79,17 +79,17 @@ public class MenuTests
 
 		Assert.AreEqual(defaultPrompt.Text.Length, m.Width);
 
-		m.Title.Text = new string(' ', 20);
+		m.Title!.Text = new string(' ', 20);
 		Assert.AreEqual(20, m.Width);
 
-		m.Subtitle.Text = new string(' ', 21);
+		m.Subtitle!.Text = new string(' ', 21);
 		Assert.AreEqual(21, m.Width);
 
 		m.Title.Text = "title";
 		m.Subtitle.Text = "subtitle";
 		Assert.AreEqual(defaultPrompt.Text.Length, m.Width);
 
-		m.Prompt.Text = "short";
+		m.Prompt!.Text = "short";
 		Assert.AreEqual(11, m.Width);
 
 		f.Caption = "foo bar baz";

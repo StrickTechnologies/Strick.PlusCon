@@ -65,8 +65,8 @@ public class GridRow
 				//cell content defaults to null, no need to set it again
 				col++;
 			}
-			else if (val is string)
-			{ Cells[col++].Content = (string)val; }
+			else if (val is string v)
+			{ Cells[col++].Content = v; }
 			else
 			{ Cells[col++].Content = val.ToString(); }
 		}
