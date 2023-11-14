@@ -4,15 +4,16 @@ escape character. Escape sequences are sent to the console to control various
 forms of styling.
 
 ## `EscapeCodes` class
-The `EscapeCodes` static class contains a number of helpful properties and 
-methods that allow you to do custom things with colors, other formatting and 
-cursor movement, shape & visibility.
+The `EscapeCodes` static class contains a number of properties and methods that 
+allow you to do custom things with colors, other formatting, and cursor movement, 
+shape & visibility.
 
 ### Properties
 
 #### `Escape`
 Returns a `char` representing the escape character. This can be useful in building 
-your own esacpe sequences.
+your own esacpe sequences. It also better shows intent and is more readable in code
+than `'\x1b'`.
 
 #### `Color`, `Color_Fore`, `Color_Back`
 These properties return escape sequence "templates", which have placeholders that you 
@@ -59,6 +60,13 @@ control the curor's shape.
 **Placeholders**  
 `{shape}`. The cursor shape. Replace with a value from the `CursorShape` enum.  
 
+
+#### Down1Left1
+An escape sequence that moves the cursor down one row and left one column 
+when written to the console.
+
+#### ClearConsoleBuffer
+An escape sequence that clears the console buffer. 
 
 ### Methods
 #### GetForeColorSequence(System.Drawing.Color)

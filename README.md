@@ -15,6 +15,7 @@ Package Manager: `NuGet\Install-Package Strick.PlusCon -Version 1.1.0`
 
 
 ```c#
+//bring WL, RK shortcuts into scope
 using static Strick.PlusCon.Helpers;
 ...
 
@@ -43,6 +44,7 @@ g.AddRow(1, "Medium Widget", 2.33M);
 g.AddRow(2, "Large Widget", 3.49M);
 
 g.Show();
+RK("Press any key ");
 ```
 ![Example - Quick Start 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_quickstart_1.png)
 

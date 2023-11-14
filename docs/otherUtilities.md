@@ -1,4 +1,15 @@
 ## Other Utilities
+### About
+The `About` static class has a couple of properties that provide information about 
+the product.
+
+#### `ProductName`
+This property returns a string containing the name of the product.
+
+#### `Version`
+This property returns a `System.Version` object containing the 
+version number of the product.
+
 ### Virtual Terminal
 If you see console output that looks like this:
 ```
@@ -34,20 +45,31 @@ between each of the characters of a string value and returns the resulting strin
 
 
 #### `Intersperse` 
-This `string` extension method intersperses (inserts) a specified character between 
+This `string` extension method intersperses (inserts) a specified character or 
+string between each of the characters of a string value and returns the 
+resulting string. 
+
+#### `Vertical`
+This `string` extension method intersperses an `EscapeCodes.Down1Left1` sequence between 
 each of the characters of a string value and returns the resulting string. 
+When written to the console, the string will display vertically. 
 
 ```c#
-string nl = "----*----1";
-WL(nl);
-WL("A".Center(nl.Length));
-WL("AB".Center(nl.Length));
-WL("ABC".Center(nl.Length, '-'));
-WL("ABCD".Center(nl.Length));
-WL("ABCDEFGHIJ".Center(nl.Length));
-WL("ABCDEFGHIJ-Longer".Center(nl.Length));
+int len = 10;
+string ruler = Ruler.GetH(len);
+WL();
+WL(ruler);
+WL("A".Center(len));
+WL("AB".Center(len));
+WL("ABC".Center(len, '-'));
+WL("ABCD".Center(len));
+WL("ABCDEFGHIJ".Center(len));
+WL("ABCDEFGHIJ-Longer".Center(len));
 
 WL("Spaced out".SpaceOut());
 WL("dashed".Intersperse('-'));
+
+Console.SetCursorPosition(25, 1);
+W("Vertical".Vertical());
 ```
 ![Example - Formatting Utilities 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_formatutil_1.png)
