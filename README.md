@@ -8,8 +8,8 @@ Get the package from NuGet
 ![NuGet](https://img.shields.io/nuget/dt/Strick.PlusCon.svg) 
 ![NuGet](https://img.shields.io/nuget/v/Strick.PlusCon.svg)
 
-.Net CLI: `dotnet add package Strick.PlusCon --version 1.1.0`  
-Package Manager: `NuGet\Install-Package Strick.PlusCon -Version 1.1.0`
+.Net CLI: `dotnet add package Strick.PlusCon --version 1.2.0`  
+Package Manager: `NuGet\Install-Package Strick.PlusCon -Version 1.2.0`
 
 [See the full docs](https://stricktechnologies.github.io/Strick.PlusCon/)  
 
