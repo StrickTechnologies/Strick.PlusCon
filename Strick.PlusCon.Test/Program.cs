@@ -1,12 +1,8 @@
-﻿using System.Data.Common;
-using System.Drawing;
-using System.Runtime.Versioning;
-using System.Text;
-
-using Newtonsoft.Json.Linq;
+﻿using System.Drawing;
 
 using Strick.PlusCon.Models;
-using Strick.Utility;
+using Strick.PlusCon.Test.Models;
+using Strick.PlusCon.Test.Models.Examples;
 
 using static Strick.PlusCon.Helpers;
 
@@ -19,8 +15,9 @@ internal class Program
 	static void Main()
 	{
 		ConsoleUtilities.EnableVirtualTerminal();
+		ConsoleSize.Set(120, 40);
+		Cursor.Shape(CursorShape.Block_Blink);
 		Console.Title = BannerText.Trim();
-
 		Menu();
 
 		//Banner(); WL();
@@ -46,28 +43,11 @@ internal class Program
 		//W("foo bar");
 	}
 
-	private static void Banner() => WL(BannerText.Gradient(Color.White, Color.Red, Color.White).Colorize(null, Color.DarkSlateGray).Reverse());
-	private static string BannerText => $" {About.ProductName} ".SpaceOut();
+	internal static string BannerText => $" {About.ProductName} ".SpaceOut();
 
 	private static void Menu()
 	{
-		TextStyle menuTitleStyle = new TextStyle()
-		{
-			BackColor = Color.DarkSlateGray,
-			Reverse = true
-		};
-		menuTitleStyle.SetGradientColors(Color.White, Color.Red, Color.White);
-
-		Menu samplesMenu = NewMenu(BannerText, "Doc Samples", menuTitleStyle);
-		samplesMenu.Add(new MenuOption("Show All", 'a', () => { DocSamples.Show(new Size(43, 10), true); }));
-		samplesMenu.Add(new MenuSeperator("-"));
-		char key = 'b';
-		foreach (var docSample in DocSamples.Samples)
-		{
-			samplesMenu.Add(new($"{docSample.Header.Text.Replace("Example - ", "")} ({docSample.Name})", key++, () => { DocSamples.Show(docSample.Name, true); }));
-		}
-
-		Menu testMenu = NewMenu(BannerText, "Test Menu", menuTitleStyle);
+		Menu testMenu = new PCMenu("Test Menu");
 		testMenu.Add(new("Show Named Greens  ", 'G', ShowGreens));
 		testMenu.Add(new MenuOption("color lighten/darken", 'c', BrightenDarkenColors));
 		testMenu.Options[0].Style = new TextStyle(Color.LightGreen, null, Color.DarkGreen) { BackColor = Color.White, Reverse = true };
@@ -75,49 +55,23 @@ internal class Program
 		testMenu.Add(new("Ruler tests", 'R', RulerTests));
 		testMenu.Add(new MenuBackOption("back", 'X'));
 
-		Menu gridMenu = NewMenu(BannerText, "Grid Menu", menuTitleStyle);
+		Menu gridMenu = new PCMenu("Grid Menu");
 		gridMenu.Options.Add(new("Show test grid", 'G', GridTest));
 
-		Menu cursorMenu = NewMenu(BannerText, "Cursor Menu", menuTitleStyle);
-		cursorMenu.Options.Add(new("Default", '0', () => { Cursor.Shape(CursorShape.Default); }));
-		cursorMenu.Options.Add(new("Blinking Block", '1', () => { Cursor.Shape(CursorShape.Block_Blink); }));
-		cursorMenu.Options.Add(new("Steady Block", '2', () => { Cursor.Shape(CursorShape.Block_Steady); }));
-		cursorMenu.Options.Add(new("Blinking Underline", '3', () => { Cursor.Shape(CursorShape.Underline_Blink); }));
-		cursorMenu.Options.Add(new("Steady Underline", '4', () => { Cursor.Shape(CursorShape.Underline_Steady); }));
-		cursorMenu.Options.Add(new("Blinking Bar", '5', () => { Cursor.Shape(CursorShape.Bar_Blink); }));
-		cursorMenu.Options.Add(new("Steady Bar", '6', () => { Cursor.Shape(CursorShape.Bar_Steady); }));
-		cursorMenu.Options.Add(new("No-Blink (Steady)", 'N', () => { Cursor.Steady(); }));
-		cursorMenu.Options.Add(new("Blink", 'B', () => { Cursor.Blink(); }));
-		cursorMenu.Options.Add(new("Show", 'S', () => { Cursor.Show(); }));
-		cursorMenu.Options.Add(new("Hide", 'H', () => { Cursor.Hide(); }));
-		//cursorMenu.Options.Add(new("Size", 'Z', PromptCursorSize));
-
-		Menu mainMenu = NewMenu(BannerText, "Main Menu", menuTitleStyle);
+		Menu mainMenu = new PCMenu("Main Menu");
 
 		mainMenu.Options.Add(new MenuSeperator("time"));
 		var clock = mainMenu.Options.Last();
 		clock.BeforeShow += MainMenuClock_BeforeShow;
 		mainMenu.Options.Add(new MenuSeperator("-"));
-		mainMenu.Options.Add(new MenuOption("Show Doc Samples", 'S', samplesMenu));
-		mainMenu.Options.Add(new MenuOption("Cursor Settings", 'C', cursorMenu));
+		mainMenu.Options.Add(new MenuOption("Show Doc Samples", 'S', DocSamples.Menu));
+		mainMenu.Options.Add(new MenuOption("Cursor Settings", 'C', CursorUtil.Menu));
 		mainMenu.Options.Add(new MenuOption("Test Menu", 'T', testMenu));
 		mainMenu.Options.Add(new MenuOption("Grid Menu", 'G', gridMenu));
 		mainMenu.Options.Add(new MenuOption("Show Version Info", 'V', ShowVersionInfo));
 		mainMenu.Options.Add(new MenuSeperator("-"));
 		//mainMenu.BeforeShow += Menu_BeforeShow;
 		mainMenu.Show();
-	}
-
-	private static Menu NewMenu(string title, string subTitle, TextStyle menuTitleStyle)
-	{
-		Menu m = new Menu()
-		{
-			Title = new(title, menuTitleStyle),
-			Subtitle = new(subTitle.SpaceOut(), menuTitleStyle),
-			OptionsStyle = new(Color.White),
-		};
-		m.Prompt!.Style = new(Color.LightGreen);
-		return m;
 	}
 
 	private static void MainMenuClock_BeforeShow(object? sender, EventArgs e)
@@ -175,34 +129,34 @@ internal class Program
 	private static void RulerTests()
 	{
 		CLS();
-		Ruler.Colors.Clear();
+		Ruler.Colors = new();
 		//Ruler.chars[4] = '┼';
 		//Ruler.chars[4] = '*';
 		//Ruler.five.Text = "┼";
 		//WL(Ruler.Get1(Console.WindowWidth));
 		//WL(Ruler.Get1(Console.WindowWidth - 3));
-		WL(Ruler.Get());
-		WL(Ruler.Get(Console.WindowWidth - 3));
+		WL(Ruler.GetH());
+		WL(Ruler.GetH(Console.WindowWidth - 3));
 		Ruler.Colors = null!;
-		WL(Ruler.Get(Console.WindowWidth - 3));
-		WL(Ruler.Get(Console.WindowWidth - 3).Gradient(Color.White, Color.Red));
+		WL(Ruler.GetH(Console.WindowWidth - 3));
+		WL(Ruler.GetH(Console.WindowWidth - 3).Gradient(Color.White, Color.Red));
 		Ruler.Colors = ColorUtilities.GetGradientColors(Color.White, Color.Red, 10).ToList();
-		WL(Ruler.Get(Console.WindowWidth - 3));
-		WL(Ruler.Get(Console.WindowWidth - 3).Reverse());
+		WL(Ruler.GetH(Console.WindowWidth - 3));
+		WL(Ruler.GetH(Console.WindowWidth - 3).Reverse());
 		Ruler.Colors = ColorUtilities.GetGradientColors(Color.White, Color.Silver, 10).ToList();
-		WL(Ruler.Get(Console.WindowWidth - 3));
-		WL(Ruler.Get(Console.WindowWidth - 3).Reverse());
-		WL(Ruler.Get(Console.WindowWidth - 3).Colorize(null, Color.Blue).Reverse());
+		WL(Ruler.GetH(Console.WindowWidth - 3));
+		WL(Ruler.GetH(Console.WindowWidth - 3).Reverse());
+		WL(Ruler.GetH(Console.WindowWidth - 3).Colorize(null, Color.Blue).Reverse());
 		Ruler.Colors = ColorUtilities.GetGradientColors(Color.Gray, Color.White, 10).ToList();
-		WL(Ruler.Get(Console.WindowWidth - 3).Reverse());
-		WL(Ruler.Get(Console.WindowWidth - 3).Colorize(null, Color.Blue).Reverse());
-		WL(Ruler.Get(Console.WindowWidth - 3));
+		WL(Ruler.GetH(Console.WindowWidth - 3).Reverse());
+		WL(Ruler.GetH(Console.WindowWidth - 3).Colorize(null, Color.Blue).Reverse());
+		WL(Ruler.GetH(Console.WindowWidth - 3));
 
 		//NumberLine.chars = new char[] { '┌', '─', '┬', '─', '┼', '─', '┬', '─', '┐', };
 		//Ruler.chars = new char[] { '-', '┬', '-', '┼', '─', '┬', '─', '┐', };
 		WL("123456789012345678901234567890".Colorize(new[] { Color.Red, Color.White }));
 		WL("123456789012345678901234567890".Colorize(ColorUtilities.GetGradientColors(Color.White, Color.Gray, 10)));
-		WL(Ruler.Get(30));
+		WL(Ruler.GetH(30));
 		RK();
 	}
 
@@ -696,5 +650,38 @@ internal class Program
 		W("     ");
 		g.Show();
 		RK();
+	}
+
+	class SpecialChar
+	{
+		public SpecialChar(char character, string name, int unicode)
+		{
+			Character = character;
+			Name = name;
+			Unicode = unicode;
+		}
+		public char Character { get; }
+		public string Name { get; }
+		public int Unicode { get; }
+	}
+
+	private static void SpecialChars()
+	{
+		List<SpecialChar> chars = new List<SpecialChar>();
+		chars.Add(new('√', "sq root (251)", 0x221A));
+		chars.Add(new('✓', "check mark", 0x2713));
+		chars.Add(new('✔', "heavy check mark", 0x2714));
+		//checks.Add(new('🗸', "light check mark", 0x1F5F8));
+		chars.Add(new('⍻', "not check mark", 0x237B));
+		chars.Add(new('☑', "box check mark", 0x2611));
+		chars.Add(new('✅', "box heavy check mark", 0x2705));
+		chars.Add(new('•', "bullet", 0x2022)); //bullet is char 07 (bell)
+		chars.Add(new('∙', "bullet operator", 0x2219));
+		chars.Add(new('↔', "left-right arrow", 0x2194));
+		foreach (SpecialChar chk in chars)
+		{
+			WL($"{chk.Character.ToString()} {(char)chk.Unicode} {chk.Name}");
+		}
+		//WL($"X:{EscapeCodes.Escape}^{chars[6].Character}{"\x1b^\x07"}");
 	}
 }
