@@ -1,7 +1,7 @@
 ## Escape Sequences
 An *escape sequence* is a series (or "sequence") of characters beginning with the 
-escape character. Escape sequences are sent to the console to control various 
-forms of styling.
+escape character. Escape sequences can be sent to the console to perform various 
+actions, control various types of styling, and more.
 
 ## `EscapeCodes` class
 The `EscapeCodes` static class contains a number of properties and methods that 
