@@ -25,8 +25,15 @@ RK("Press any key to continue ");
 #### W and WL
 There are a few different overloads of the `W` and `WL` methods that allow 
 values to be output to the console with colors. 
-***Note:** The `WL` overloads are the same as the `W` overloads. 
-The only difference is that `WL` appends the current line terminator to the output.*
+As with `Console.Write` and `Console.WriteLine`, 
+the `WL` methods are the same as the `W` methods. 
+The only difference is that `WL` appends the current line terminator to the output.
+
+All overloads will accept `null` or empty string values for the `message` parameter. 
+For `W`, this generally results in no action being taken (nothing is sent 
+to the console). For `WL`, this generally results in only the current line 
+terminator being sent to the console. Refer to the internal documentation 
+for each method for specific differences.
 
 Supply foreground and background colors (`System.Drawing.Color`) to display 
 messages in the console using those colors.
@@ -65,6 +72,18 @@ WL("Hello [World]!", Color.Red, Color.White, Color.Blue, Color.White);
 
 ![Example - W/WL 4](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_wwl_4.png)
 
+`W` and `WL` will also accept `TextStyle` and `StyledText` objects.
+
+```
+TextStyle style = new TextStyle(Color.Blue, Color.LimeGreen);
+WL("Blue in Green", style);
+
+style.BackColor = Color.MediumPurple;
+style.ForeColor = Color.Blue;
+WL(new StyledText("midnight blue", style));
+```
+
+![Example - W/WL 5](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_wwl_5.png)
 
 #### CLS
 Use the CLS method to clear the console screen. Pass background and/or foreground colors to set the console screen to those colors.

@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 
+using Strick.PlusCon.Models;
 
 namespace Strick.PlusCon;
 
@@ -16,7 +17,7 @@ public static class Helpers
 	/// <para>A simple shortcut for <see cref="Console.Write(string)"/>.</para>
 	/// </summary>
 	/// <param name="message">The value to write.</param>
-	public static void W(string message) => Console.Write(message);
+	public static void W(string? message) => Console.Write(message);
 
 	/// <summary>
 	/// <para>A simple shortcut for <see cref="Console.WriteLine()"/></para>
@@ -27,7 +28,7 @@ public static class Helpers
 	/// <para>A simple shortcut for <see cref="Console.WriteLine(string)"/></para>
 	/// </summary>
 	/// <param name="message"><inheritdoc cref="W(string)" path="/param[@name='message']"/></param>
-	public static void WL(string message) => Console.WriteLine(message);
+	public static void WL(string? message) => Console.WriteLine(message);
 
 
 	//Original version inspired from https://stackoverflow.com/a/60492990/1585667
@@ -42,7 +43,7 @@ public static class Helpers
 	/// <param name="message"><inheritdoc cref="W(string)" path="/param[@name='message']"/></param>
 	/// <param name="fore">The foreground color to use when displaying values enclosed in "[" and "]"</param>
 	/// <param name="back">The background color to use when displaying values enclosed in "[" and "]"</param>
-	public static void W(string message, Color fore, Color? back = null) => W(message, fore, back, null);
+	public static void W(string? message, Color fore, Color? back = null) => W(message, fore, back, null);
 
 	/// <summary>
 	/// <inheritdoc cref="W(string)"/>
@@ -56,7 +57,7 @@ public static class Helpers
 	/// <param name="back"><inheritdoc cref="W(string, Color, Color?)" path="/param[@name='back']"/></param>
 	/// <param name="showDelimiters">A <see cref="bool"/> indicating whether or not to show the delimeters ("[" and "]"). 
 	/// The delimiters are display using the default console colors.</param>
-	public static void W(string message, Color fore, Color? back, bool showDelimiters) => W(message, fore, back, showDelimiters ? Color.Transparent : null);
+	public static void W(string? message, Color fore, Color? back, bool showDelimiters) => W(message, fore, back, showDelimiters ? Color.Transparent : null);
 
 	/// <summary>
 	/// <inheritdoc cref="W(string)"/>
@@ -71,8 +72,12 @@ public static class Helpers
 	/// <param name="back"><inheritdoc cref="W(string, Color, Color?)" path="/param[@name='back']"/></param>
 	/// <param name="delimFore">The foreground color to use for the delimiters "[" and "]"</param>
 	/// <param name="delimBack">The background color to use for the delimiters "[" and "]"</param>
-	public static void W(string message, Color fore, Color? back, Color? delimFore = null, Color? delimBack = null)
+	public static void W(string? message, Color fore, Color? back, Color? delimFore = null, Color? delimBack = null)
 	{
+		if(string.IsNullOrEmpty( message))
+		{ return; }
+
+
 		char delimL = '[';
 		char delimR = ']';
 		//var segments = Regex.Split(message, @"(\[[^\]]*\])");
@@ -117,7 +122,7 @@ public static class Helpers
 	/// <param name="message"><inheritdoc cref="W(string, Color, Color?)" path="/param[@name='message']"/></param>
 	/// <param name="fore"><inheritdoc cref="W(string, Color, Color?)" path="/param[@name='fore']"/></param>
 	/// <param name="back"><inheritdoc cref="W(string, Color, Color?)" path="/param[@name='back']"/></param>
-	public static void WL(string message, Color fore, Color? back = null) => WL(message, fore, back, null, null);
+	public static void WL(string? message, Color fore, Color? back = null) => WL(message, fore, back, null, null);
 
 	/// <summary>
 	/// <inheritdoc cref="WL(string)"/>
@@ -130,7 +135,7 @@ public static class Helpers
 	/// <param name="fore"><inheritdoc cref="W(string, Color, Color?, bool)" path="/param[@name='fore']"/></param>
 	/// <param name="back"><inheritdoc cref="W(string, Color, Color?, bool)" path="/param[@name='back']"/></param>
 	/// <param name="showDelimiters"><inheritdoc cref="W(string, Color, Color?, bool)" path="/param[@name='showDelimiters']"/></param>
-	public static void WL(string message, Color fore, Color? back, bool showDelimiters) => WL(message, fore, back, showDelimiters ? Color.Transparent : null);
+	public static void WL(string? message, Color fore, Color? back, bool showDelimiters) => WL(message, fore, back, showDelimiters ? Color.Transparent : null);
 
 	/// <summary>
 	/// <inheritdoc cref="WL(string)"/>
@@ -145,9 +150,44 @@ public static class Helpers
 	/// <param name="back"><inheritdoc cref="WL(string, Color, Color?, bool)" path="/param[@name='back']"/></param>
 	/// <param name="delimFore"><inheritdoc cref="W(string, Color, Color?, Color?, Color?)" path="/param[@name='delimFore']"/></param>
 	/// <param name="delimBack"><inheritdoc cref="W(string, Color, Color?, Color?, Color?)" path="/param[@name='delimBack']"/></param>
-	public static void WL(string message, Color fore, Color? back, Color? delimFore = null, Color? delimBack = null)
+	public static void WL(string? message, Color fore, Color? back, Color? delimFore = null, Color? delimBack = null)
 	{
 		W(message, fore, back, delimFore, delimBack);
+		WL();
+	}
+
+
+	public static void W(string? message, TextStyle style)
+	{
+		if (string.IsNullOrEmpty(message))
+		{ return; }
+
+		if (style == null)
+		{
+			W(message);
+			return;
+		}
+
+		W(style.StyleText(message));
+	}
+
+	public static void WL(string? message, TextStyle style)
+	{
+		W(message, style);
+		WL();
+	}
+
+	public static void W(StyledText? message)
+	{
+		if (message == null)
+		{ return; }
+
+		W(message.TextStyled);
+	}
+
+	public static void WL(StyledText? message)
+	{
+		W(message);
 		WL();
 	}
 
@@ -213,30 +253,4 @@ public static class Helpers
 
 		CLS();
 	}
-
-
-	//public static void w(string message, ConsoleColor color, bool stripDelimiters = true)
-	//{
-	//	var segments = Regex.Split(message, @"(\[[^\]]*\])");
-	//	for (int x = 0; x < segments.Length; x++)
-	//	{
-	//		string segment = segments[x];
-
-	//		if (segment.StartsWith("[") && segment.EndsWith("]"))
-	//		{
-	//			Console.ForegroundColor = color;
-
-	//			if (stripDelimiters)
-	//			{ segment = segment.Substring(1, segment.Length - 2); }
-	//		}
-
-	//		w(segment);
-	//		Console.ResetColor();
-	//	}
-	//}
-	//public static void wl(string message, ConsoleColor color, bool stripDelimiters = true)
-	//{
-	//	w(message, color, stripDelimiters);
-	//	wl();
-	//}
 }

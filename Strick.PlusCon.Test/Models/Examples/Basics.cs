@@ -22,6 +22,7 @@ internal static class Basics
 			new DocSample("wwl2", "Example - W/WL (2)", Ex_wwl_2),
 			new DocSample("wwl3", "Example - W/WL (3)", Ex_wwl_3),
 			new DocSample("wwl4", "Example - W/WL (4)", Ex_wwl_4),
+			new DocSample("wwl5", "Example - W/WL (5)", Ex_wwl_5),
 			new DocSample("cls1", "Example - CLS (1)", Ex_cls_1),
 			new DocSample("cls2", "Example - CLS (2)", Ex_cls_2),
 
@@ -131,6 +132,17 @@ internal static class Basics
 		//Example ** W/WL 4
 		WL("Hello [World]!", Color.Red, null, Color.Red);
 		WL("Hello [World]!", Color.Red, Color.White, Color.Blue, Color.White);
+	}
+
+	internal static void Ex_wwl_5()
+	{
+		//Example ** W/WL 5
+		TextStyle style = new TextStyle(Color.Blue, Color.LimeGreen);
+		WL("Blue in Green", style);
+
+		style.BackColor = Color.MediumPurple;
+		style.ForeColor = Color.Blue;
+		WL(new StyledText("midnight blue", style));
 	}
 
 

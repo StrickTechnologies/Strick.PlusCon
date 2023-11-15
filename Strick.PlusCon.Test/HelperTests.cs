@@ -1,5 +1,7 @@
 using System.Drawing;
 
+using Strick.PlusCon.Models;
+
 using static Strick.PlusCon.Helpers;
 using static Strick.PlusCon.Test.Expectations;
 
@@ -10,11 +12,13 @@ namespace Strick.PlusCon.Test;
 [TestClass]
 public class HelperTests
 {
+
 	[TestMethod]
 	public void WandWL_NoValues()
 	{
-		foreach (string value in new[] { "test", "Test [22", "Test 22]" })
-		{ TestWandWL(value, value); }
+		string? ns = null;
+		foreach (string? value in new[] { ns, "", "test", "Test [22", "Test 22]" })
+		{ TestWandWL(value, value ?? ""); }
 	}
 
 	[TestMethod]
@@ -33,8 +37,15 @@ public class HelperTests
 			{fr}		reset foreground color
 		*/
 
-		string value = "test [foo]";
-		string expected = "test {df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr}";
+		string? value = null;
+		string expected = "";
+		TestWandWLV(value, expected);
+
+		value = "";
+		TestWandWLV(value, expected);
+
+		value = "test [foo]";
+		expected = "test {df}{db}{dl}{dbr}{dfr}{f}{b}foo{br}{fr}{df}{db}{dr}{dbr}{dfr}";
 		TestWandWLV(value, expected);
 
 		value = "[foo] test";
@@ -70,8 +81,52 @@ public class HelperTests
 		TestWandWLV(value, expected);
 	}
 
+	[TestMethod]
+	public void WandWL_StyledText()
+	{
+		string? text = null;
+		TextStyle style = new TextStyle();
+		string expected;
 
-	private static void TestWandWL(string value, string expected)
+		expected = "";
+		TestWandWLStyledText(text, style, expected);
+
+		text = "";
+		TestWandWLStyledText(text, style, expected);
+
+		text = " ";
+		expected = " ";
+		TestWandWLStyledText(text, style, expected);
+
+		text = "foo";
+		expected = "foo";
+		TestWandWLStyledText(text, style, expected);
+
+		style.ForeColor = Expectations.red;
+		expected = $"{ForeColorRed}{text}{ForeColorReset}";
+		TestWandWLStyledText(text, style, expected);
+
+		style.BackColor = Expectations.white;
+		expected = $"{ForeColorRed}{BackColorWhite}{text}{BackColorReset}{ForeColorReset}";
+		TestWandWLStyledText(text, style, expected);
+
+		style.Underline = true;
+		expected = $"{Underline}{ForeColorRed}{BackColorWhite}{text}{BackColorReset}{ForeColorReset}{UnderlineReset}";
+		TestWandWLStyledText(text, style, expected);
+
+		style.Reverse = true;
+		expected = $"{Underline}{Reverse}{ForeColorRed}{BackColorWhite}{text}{BackColorReset}{ForeColorReset}{ReverseReset}{UnderlineReset}";
+		TestWandWLStyledText(text, style, expected);
+
+		style.SetGradientColors(blue, green, white);
+		style.BackColor = null;
+		style.ForeColor = null;
+		expected = $"{Underline}{Reverse}{ForeColorBlue}f{ForeColorReset}{ForeColorGreen}o{ForeColorReset}{ForeColorWhite}o{ForeColorReset}{ReverseReset}{UnderlineReset}";
+		TestWandWLStyledText(text, style, expected);
+	}
+
+
+	private static void TestWandWL(string? value, string expected)
 	{
 		var originalOut = Console.Out;
 		using var sw = new StringWriter();
@@ -95,13 +150,19 @@ public class HelperTests
 		W(value, red);
 		sw.Flush();
 		result = sw.ToString();
-		Assert.AreEqual($"{ForeColorRed}{expected}{ForeColorReset}", result);
+		if (string.IsNullOrEmpty(value))
+		{ Assert.AreEqual(expected, result); }
+		else
+		{ Assert.AreEqual($"{ForeColorRed}{expected}{ForeColorReset}", result); }
 		sw.Clear();
 
 		WL(value, red);
 		sw.Flush();
 		result = sw.ToString();
-		Assert.AreEqual($"{ForeColorRed}{expected}{ForeColorReset}\r\n", result);
+		if (string.IsNullOrEmpty(value))
+		{ Assert.AreEqual(expected + "\r\n", result); }
+		else
+		{ Assert.AreEqual($"{ForeColorRed}{expected}{ForeColorReset}\r\n", result); }
 		sw.Clear();
 
 
@@ -109,20 +170,26 @@ public class HelperTests
 		W(value, red, blue);
 		sw.Flush();
 		result = sw.ToString();
-		Assert.AreEqual($"{ForeColorRed}{BackColorBlue}{expected}{BackColorReset}{ForeColorReset}", result);
+		if (string.IsNullOrEmpty(value))
+		{ Assert.AreEqual(expected, result); }
+		else
+		{ Assert.AreEqual($"{ForeColorRed}{BackColorBlue}{expected}{BackColorReset}{ForeColorReset}", result); }
 		sw.Clear();
 
 		WL(value, red, blue);
 		sw.Flush();
 		result = sw.ToString();
-		Assert.AreEqual($"{ForeColorRed}{BackColorBlue}{expected}{BackColorReset}{ForeColorReset}\r\n", result);
+		if (string.IsNullOrEmpty(value))
+		{ Assert.AreEqual(expected + "\r\n", result); }
+		else
+		{ Assert.AreEqual($"{ForeColorRed}{BackColorBlue}{expected}{BackColorReset}{ForeColorReset}\r\n", result); }
 		sw.Clear();
 
 
 		Console.SetOut(originalOut);
 	}
 
-	private static void TestWandWLV(string value, string expected)
+	private static void TestWandWLV(string? value, string expected)
 	{
 		var originalOut = Console.Out;
 		using var sw = new StringWriter();
@@ -337,6 +404,64 @@ public class HelperTests
 
 		Console.SetOut(originalOut);
 		sw.Clear();
+	}
+
+	private static void TestWandWLStyledText(string? value, TextStyle style, string expected)
+	{
+		string expectedWL = expected + "\r\n";
+		var originalOut = Console.Out;
+		using var sw = new StringWriter();
+		Console.SetOut(sw);
+
+		if (string.IsNullOrEmpty(value))
+		{
+			StyledText st = null!;
+			W(st);
+			sw.Flush();
+			Assert.AreEqual(expected, sw.ToString());
+			sw.Clear();
+
+			WL(st);
+			sw.Flush();
+			Assert.AreEqual(expectedWL, sw.ToString());
+			sw.Clear();
+		}
+		else
+		{
+			StyledText st = new(value, style);
+			W(st);
+			sw.Flush();
+			Assert.AreEqual(expected, sw.ToString());
+			sw.Clear();
+
+			WL(st);
+			sw.Flush();
+			Assert.AreEqual(expectedWL, sw.ToString());
+			sw.Clear();
+		}
+
+		W(value, style);
+		sw.Flush();
+		Assert.AreEqual(expected, sw.ToString());
+		sw.Clear();
+
+		WL(value, style);
+		sw.Flush();
+		Assert.AreEqual(expectedWL, sw.ToString());
+		sw.Clear();
+
+		TextStyle tsN = null!;
+		W(value, tsN);
+		sw.Flush();
+		Assert.AreEqual(value ?? "", sw.ToString());
+		sw.Clear();
+
+		WL(value, tsN);
+		sw.Flush();
+		Assert.AreEqual(value + "\r\n", sw.ToString());
+		sw.Clear();
+
+		Console.SetOut(originalOut);
 	}
 
 
