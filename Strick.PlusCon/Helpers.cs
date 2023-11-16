@@ -225,11 +225,51 @@ public static class Helpers
 	/// <returns>A <see cref="ConsoleKeyInfo"/> object containing information about the key pressed.</returns>
 	public static ConsoleKeyInfo RK(string? prompt = null)
 	{
-		if (!string.IsNullOrWhiteSpace(prompt))
-		{ W(prompt); }
-
+		W(prompt);
 		return Console.ReadKey();
 	}
+
+	/// <summary>
+	/// <inheritdoc cref="RK(string?)"/>. 
+	/// Uses <see cref="W(string?, Color, Color?, Color?, Color?)"/> to display the prompt.
+	/// </summary>
+	/// <param name="prompt"><inheritdoc cref="W(string?, Color, Color?, Color?, Color?)" path="/param[@name='message']"/></param>
+	/// <param name="fore"><inheritdoc cref="W(string?, Color, Color?, Color?, Color?)" path="/param[@name='fore']"/></param>
+	/// <param name="back"><inheritdoc cref="W(string?, Color, Color?, Color?, Color?)" path="/param[@name='back']"/></param>
+	/// <param name="delimFore"><inheritdoc cref="W(string?, Color, Color?, Color?, Color?)" path="/param[@name='delimFore']"/></param>
+	/// <param name="delimBack"><inheritdoc cref="W(string?, Color, Color?, Color?, Color?)" path="/param[@name='delimBack']"/></param>
+	/// <returns><inheritdoc cref="RK(string?)" path="/returns"/></returns>
+	public static ConsoleKeyInfo RK(string? prompt, Color fore, Color? back, Color? delimFore = null, Color? delimBack = null)
+	{
+		W(prompt, fore, back, delimFore, delimBack);
+		return Console.ReadKey();
+	}
+
+	/// <summary>
+	/// <inheritdoc cref="RK(string?)"/>. 
+	/// Uses <see cref="W(string?, TextStyle?)"/> to display the prompt.
+	/// </summary>
+	/// <param name="prompt"><inheritdoc cref="W(string?, TextStyle?)" path="/param[@name='message']"/></param>
+	/// <param name="style"><inheritdoc cref="W(string?, TextStyle?)" path="/param[@name='style']"/></param>
+	/// <returns><inheritdoc cref="RK(string?)" path="/returns"/></returns>
+	public static ConsoleKeyInfo RK(string? prompt, TextStyle style)
+	{
+		W(prompt, style);
+		return Console.ReadKey();
+	}
+
+	/// <summary>
+	/// <inheritdoc cref="RK(string?)"/>. 
+	/// Uses <see cref="W(StyledText?)"/> to display the prompt.
+	/// </summary>
+	/// <param name="prompt"><inheritdoc cref="W(StyledText?)" path="/param[@name='message']"/></param>
+	/// <returns><inheritdoc cref="RK(string?)" path="/returns"/></returns>
+	public static ConsoleKeyInfo RK(StyledText? prompt)
+	{
+		W(prompt);
+		return Console.ReadKey();
+	}
+
 
 	/// <summary>
 	/// Displays <paramref name="prompt"/> if not null or white space, then waits for user input. 
@@ -240,9 +280,48 @@ public static class Helpers
 	/// <returns>The characters entered. If only <c>&lt;enter&gt;</c> an empty string is returned.</returns>
 	public static string? RL(string? prompt = null)
 	{
-		if (!string.IsNullOrWhiteSpace(prompt))
-		{ W(prompt); }
+		W(prompt);
+		return Console.ReadLine();
+	}
 
+	/// <summary>
+	/// <inheritdoc cref="RL(string?)"/> 
+	/// Uses <see cref="W(string?, Color, Color?, Color?, Color?)"/> to display the prompt.
+	/// </summary>
+	/// <param name="prompt"><inheritdoc cref="W(string?, Color, Color?, Color?, Color?)" path="/param[@name='message']"/></param>
+	/// <param name="fore"><inheritdoc cref="W(string?, Color, Color?, Color?, Color?)" path="/param[@name='fore']"/></param>
+	/// <param name="back"><inheritdoc cref="W(string?, Color, Color?, Color?, Color?)" path="/param[@name='back']"/></param>
+	/// <param name="delimFore"><inheritdoc cref="W(string?, Color, Color?, Color?, Color?)" path="/param[@name='delimFore']"/></param>
+	/// <param name="delimBack"><inheritdoc cref="W(string?, Color, Color?, Color?, Color?)" path="/param[@name='delimBack']"/></param>
+	/// <returns><inheritdoc cref="RL(string?)" path="/returns"/></returns>
+	public static string? RL(string? prompt, Color fore, Color? back, Color? delimFore = null, Color? delimBack = null)
+	{
+		W(prompt, fore, back, delimFore, delimBack);
+		return Console.ReadLine();
+	}
+
+	/// <summary>
+	/// <inheritdoc cref="RL(string?)"/> 
+	/// Uses <see cref="W(string?, TextStyle?)"/> to display the prompt.
+	/// </summary>
+	/// <param name="prompt"><inheritdoc cref="W(string?, TextStyle?)" path="/param[@name='message']"/></param>
+	/// <param name="style"><inheritdoc cref="W(string?, TextStyle?)" path="/param[@name='style']"/></param>
+	/// <returns><inheritdoc cref="RL(string?)" path="/returns"/></returns>
+	public static string? RL(string? prompt, TextStyle style)
+	{
+		W(prompt, style);
+		return Console.ReadLine();
+	}
+
+	/// <summary>
+	/// <inheritdoc cref="RL(string?)"/> 
+	/// Uses <see cref="W(StyledText?)"/> to display the prompt.
+	/// </summary>
+	/// <param name="prompt"><inheritdoc cref="W(StyledText?)" path="/param[@name='message']"/></param>
+	/// <returns><inheritdoc cref="RL(string?)" path="/returns"/></returns>
+	public static string? RL(StyledText? prompt)
+	{
+		W(prompt);
 		return Console.ReadLine();
 	}
 
