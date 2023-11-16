@@ -20,6 +20,10 @@ These styles can be overridden at the column, row, and cell level.
 Styling for all the grid's column headers can be set via the `ColumnHeaderCellStyle`, and `ColumnHeaderContentStyle` properties. 
 These styles can be overridden for each column.
 
+The `Title`, `Subtitle` and `Footer` properties are `StyledText` objects. 
+See the [doc for the `TextStyle` and `StyledText` classes](textStyle.md#styledtext-class)
+for information on how to apply styling to these grid elements.
+
 *Note: Calling the `Show` method if the grid does not have at least one column and one row will 
 result in an exception being thrown. After all, it is somewhat pointless to display a grid 
 without at least one of each.*
