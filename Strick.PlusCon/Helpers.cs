@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Text.RegularExpressions;
 
 using Strick.PlusCon.Models;
+
 
 namespace Strick.PlusCon;
 
@@ -27,26 +27,26 @@ public static class Helpers
 	/// <summary>
 	/// <para>A simple shortcut for <see cref="Console.WriteLine(string)"/></para>
 	/// </summary>
-	/// <param name="message"><inheritdoc cref="W(string)" path="/param[@name='message']"/></param>
+	/// <param name="message"><inheritdoc cref="W(string?)" path="/param[@name='message']"/></param>
 	public static void WL(string? message) => Console.WriteLine(message);
 
 
 	//Original version inspired from https://stackoverflow.com/a/60492990/1585667
 
 	/// <summary>
-	/// <inheritdoc cref="W(string)"/>
+	/// <inheritdoc cref="W(string?)"/>
 	/// Writes any portions of <paramref name="message"/> enclosed in "[" and "]" using the colors <paramref name="fore"/> and <paramref name="back"/>. 
 	/// The delimiters ("[" and "]") are NOT displayed.
 	/// <para>If no portion of <paramref name="message"/> is enclosed in "[" and "]", 
 	/// the entire message is written using the colors <paramref name="fore"/> and <paramref name="back"/>.</para>
 	/// </summary>
-	/// <param name="message"><inheritdoc cref="W(string)" path="/param[@name='message']"/></param>
+	/// <param name="message"><inheritdoc cref="W(string?)" path="/param[@name='message']"/></param>
 	/// <param name="fore">The foreground color to use when displaying values enclosed in "[" and "]"</param>
 	/// <param name="back">The background color to use when displaying values enclosed in "[" and "]"</param>
 	public static void W(string? message, Color fore, Color? back = null) => W(message, fore, back, null);
 
 	/// <summary>
-	/// <inheritdoc cref="W(string)"/>
+	/// <inheritdoc cref="W(string?)"/>
 	/// Writes any portions of <paramref name="message"/> enclosed in "[" and "]" using the colors <paramref name="fore"/> and <paramref name="back"/>. 
 	/// The delimiters ("[" and "]") are displayed based on the value of the <paramref name="showDelimiters"/> argument.
 	/// <para>If no portion of <paramref name="message"/> is enclosed in "[" and "]", 
@@ -60,7 +60,7 @@ public static class Helpers
 	public static void W(string? message, Color fore, Color? back, bool showDelimiters) => W(message, fore, back, showDelimiters ? Color.Transparent : null);
 
 	/// <summary>
-	/// <inheritdoc cref="W(string)"/>
+	/// <inheritdoc cref="W(string?)"/>
 	/// Writes any portions of <paramref name="message"/> enclosed in "[" and "]" using the colors <paramref name="fore"/> and <paramref name="back"/>. 
 	/// The delimiters ("[" and "]") are displayed based on the value of the <paramref name="delimFore"/> and <paramref name="delimBack"/> 
 	/// arguments -- if either is NOT null, the delimiters are displayed using those colors.
@@ -157,6 +157,12 @@ public static class Helpers
 	}
 
 
+	/// <summary>
+	/// <inheritdoc cref="W(string?)"/>
+	/// </summary>
+	/// <param name="message"><inheritdoc cref="W(string?)" path="/param[@name='message']"/></param>
+	/// <param name="style">The <see cref="TextStyle"/> object used to style the <paramref name="message"/> argument. 
+	/// If null, the <paramref name="message"/> argument is written without styling.</param>
 	public static void W(string? message, TextStyle style)
 	{
 		if (string.IsNullOrEmpty(message))
@@ -171,12 +177,24 @@ public static class Helpers
 		W(style.StyleText(message));
 	}
 
+	/// <summary>
+	/// <inheritdoc cref="WL(string?)"/>
+	/// </summary>
+	/// <param name="message"><inheritdoc cref="W(string?)" path="/param[@name='message']"/></param>
+	/// <param name="style"><inheritdoc cref="W(string?, TextStyle)" path="/param[@name='style']"/></param>
 	public static void WL(string? message, TextStyle style)
 	{
 		W(message, style);
 		WL();
 	}
 
+	/// <summary>
+	/// <inheritdoc cref="W(string?)"/>
+	/// </summary>
+	/// <param name="message">A <see cref="StyledText"/> object that contains 
+	/// the value to write (<see cref="StyledText.Text"/>) 
+	/// and the style (<see cref="StyledText.Style"/>) used to style the value. 
+	/// If null, nothing is written.</param>
 	public static void W(StyledText? message)
 	{
 		if (message == null)
@@ -185,6 +203,13 @@ public static class Helpers
 		W(message.TextStyled);
 	}
 
+	/// <summary>
+	/// <inheritdoc cref="WL(string?)"/>
+	/// </summary>
+	/// <param name="message">A <see cref="StyledText"/> object that contains 
+	/// the value to write (<see cref="StyledText.Text"/>) 
+	/// and the style (<see cref="StyledText.Style"/>) used to style the value. 
+	/// If null, only the current line terminator is written.</param>
 	public static void WL(StyledText? message)
 	{
 		W(message);
