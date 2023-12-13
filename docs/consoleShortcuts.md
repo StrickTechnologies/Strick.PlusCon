@@ -74,7 +74,7 @@ WL("Hello [World]!", Color.Red, Color.White, Color.Blue, Color.White);
 
 `W` and `WL` will also accept `TextStyle` and `StyledText` objects.
 
-```
+```c#
 TextStyle style = new TextStyle(Color.Blue, Color.LimeGreen);
 WL("Blue in Green", style);
 
@@ -87,6 +87,7 @@ WL(new StyledText("midnight blue", style));
 
 #### CLS
 Use the CLS method to clear the console screen. Pass background and/or foreground colors to set the console screen to those colors.
+
 ```c#
 CLS(Color.LimeGreen, Color.Blue);
 WL("Blue in Green");
@@ -113,3 +114,44 @@ WL("All Blues");
 ```
 
 ![Example - CLS 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_cls_2.png)
+
+#### RK and RL
+The `RK` and `RL` methods are simple shortcuts or wrappers for the `Console.ReadKey` 
+and `Console.ReadLine` methods, respectively.
+
+There are a few overloads that allow you to display a prompt with or without 
+styling. To render the prompt, each of these overloads makes use of the `W` method 
+that takes the same arguments.
+
+```c#
+string anyPrompt = "Press any key ";
+W(anyPrompt);
+RK();
+WL();
+
+string namePrompt = "What's your name? ";
+string? name;
+W(namePrompt);
+name = RL();
+WL($"Hello {name}!");
+name = RL(namePrompt);
+WL($"Hello {name}!");
+
+//colors
+RK(anyPrompt, Color.DodgerBlue, Color.White);
+WL();
+
+ConsoleKeyInfo confirm;
+confirm = RK("Are you sure [Y/N] ", Color.LimeGreen, Color.White);
+WL();
+confirm = RK("Are you really sure [Y/N] ", Color.LimeGreen, Color.White, Color.LimeGreen, Color.White);
+WL();
+
+TextStyle style = new TextStyle(Color.LimeGreen, null, Color.White);
+RK(anyPrompt, style);
+WL();
+style.Reverse = true;
+RK(new StyledText(anyPrompt, style));
+```
+
+![Example - RK/RL 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_rkrl_1.png)

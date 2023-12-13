@@ -225,5 +225,5 @@ private static void ExampleMenuOption2()
 }
 
 ```
-![Example - Menu 3](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_3-1.png)
-![Example - Menu 3](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_3-2.png)
+![Example - Menu 3-1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_3-1.png)
+![Example - Menu 3-2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_3-2.png)

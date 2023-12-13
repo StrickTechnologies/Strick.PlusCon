@@ -28,7 +28,7 @@ The Segment and Colors can also be overridden using various overloads of
 the `GetH` and `GetV` methods. In these cases, the Segment or Colors apply only to that
 particular call.
 
-```
+```c#
 WL(Ruler.GetH(10));
 WL("Default");
 
@@ -46,7 +46,7 @@ W("change colors");
 ```
 ![Example - Ruler - Horizontal 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_rulerH_1.png)
 
-```
+```c#
 W(Ruler.GetV());
 Console.SetCursorPosition(1, 0);
 W("default".Vertical());

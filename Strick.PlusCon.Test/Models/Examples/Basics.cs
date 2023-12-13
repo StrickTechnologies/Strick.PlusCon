@@ -23,6 +23,7 @@ internal static class Basics
 			new DocSample("wwl3", "Example - W/WL (3)", Ex_wwl_3),
 			new DocSample("wwl4", "Example - W/WL (4)", Ex_wwl_4),
 			new DocSample("wwl5", "Example - W/WL (5)", Ex_wwl_5),
+			new DocSample("rkrl1", "Example - RK/RL (1)", Ex_rkrl_1),
 			new DocSample("cls1", "Example - CLS (1)", Ex_cls_1),
 			new DocSample("cls2", "Example - CLS (2)", Ex_cls_2),
 
@@ -143,6 +144,40 @@ internal static class Basics
 		style.BackColor = Color.MediumPurple;
 		style.ForeColor = Color.Blue;
 		WL(new StyledText("midnight blue", style));
+	}
+
+
+	internal static void Ex_rkrl_1()
+	{
+		//Example ** RK/RL 1
+		string anyPrompt = "Press any key ";
+		W(anyPrompt);
+		RK();
+		WL();
+
+		string namePrompt = "What's your name? ";
+		string? name;
+		W(namePrompt);
+		name = RL();
+		WL($"Hello {name}!");
+		name = RL(namePrompt);
+		WL($"Hello {name}!");
+
+		//colors
+		RK(anyPrompt, Color.DodgerBlue, Color.White);
+		WL();
+
+		ConsoleKeyInfo confirm;
+		confirm = RK("Are you sure [Y/N] ", Color.LimeGreen, Color.White);
+		WL();
+		confirm = RK("Are you really sure [Y/N] ", Color.LimeGreen, Color.White, Color.LimeGreen, Color.White);
+		WL();
+
+		TextStyle style = new TextStyle(Color.LimeGreen, null, Color.White);
+		RK(anyPrompt, style);
+		WL();
+		style.Reverse = true;
+		RK(new StyledText(anyPrompt, style));
 	}
 
 
