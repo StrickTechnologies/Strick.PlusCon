@@ -5,10 +5,10 @@ Console methods.
 
 Shortcut|Console Equivalent|Notes
 -|-|-
-W|[Write](https://learn.microsoft.com/en-us/dotnet/api/system.console.write?view=net-6.0)|Overloads provide functionality to display text in color, or to highlight portions of a text value.
-WL|[WriteLine](https://learn.microsoft.com/en-us/dotnet/api/system.console.writeline?view=net-6.0)|Overloads provide functionality to display text in color, or to highlight portions of a text value.
-RK|[ReadKey](https://learn.microsoft.com/en-us/dotnet/api/system.console.readkey?view=net-6.0)|Includes an optional prompt argument that will be displayed before waiting for user input.
-RL|[ReadLine](https://learn.microsoft.com/en-us/dotnet/api/system.console.readline?view=net-6.0)|Includes an optional prompt argument that will be displayed before waiting for user input.
+W|[Write](https://learn.microsoft.com/en-us/dotnet/api/system.console.write?view=net-6.0)|Overloads provide functionality to display text with various forms of styling.
+WL|[WriteLine](https://learn.microsoft.com/en-us/dotnet/api/system.console.writeline?view=net-6.0)|Overloads provide functionality to display text with various forms of styling.
+RK|[ReadKey](https://learn.microsoft.com/en-us/dotnet/api/system.console.readkey?view=net-6.0)|Includes an optional prompt argument that will be displayed before waiting for user input. Overloads provide functionality to display the prompt with various forms of styling.
+RL|[ReadLine](https://learn.microsoft.com/en-us/dotnet/api/system.console.readline?view=net-6.0)|Includes an optional prompt argument that will be displayed before waiting for user input. Overloads provide functionality to display the prompt with various forms of styling.
 CLS|[Clear](https://learn.microsoft.com/en-us/dotnet/api/system.console.clear?view=net-6.0)|An overload provides the ability to clear the console window to specified foreground and background colors.
 
 Include a `using static` directive in your file to make these shortcuts available without additional qualifying.
@@ -24,7 +24,7 @@ RK("Press any key to continue ");
 
 #### W and WL
 There are a few different overloads of the `W` and `WL` methods that allow 
-values to be output to the console with colors. 
+values to be output to the console with various forms of styling. 
 As with `Console.Write` and `Console.WriteLine`, 
 the `WL` methods are the same as the `W` methods. 
 The only difference is that `WL` appends the current line terminator to the output.
@@ -116,7 +116,7 @@ WL("All Blues");
 ![Example - CLS 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_cls_2.png)
 
 #### RK and RL
-The `RK` and `RL` methods are simple shortcuts or wrappers for the `Console.ReadKey` 
+The `RK` and `RL` methods are simple shortcuts, or wrappers, for the `Console.ReadKey` 
 and `Console.ReadLine` methods, respectively.
 
 There are a few overloads that allow you to display a prompt with or without 

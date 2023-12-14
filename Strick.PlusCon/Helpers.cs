@@ -16,7 +16,9 @@ public static class Helpers
 	/// <summary>
 	/// <para>A simple shortcut for <see cref="Console.Write(string)"/>.</para>
 	/// </summary>
-	/// <param name="message">The value to write.</param>
+	/// <param name="message">The value to write to the console. 
+	/// A null or empty value results in nothing being written to the console.
+	/// </param>
 	public static void W(string? message) => Console.Write(message);
 
 	/// <summary>
@@ -27,7 +29,9 @@ public static class Helpers
 	/// <summary>
 	/// <para>A simple shortcut for <see cref="Console.WriteLine(string)"/></para>
 	/// </summary>
-	/// <param name="message"><inheritdoc cref="W(string?)" path="/param[@name='message']"/></param>
+	/// <param name="message">The value to write to the console. 
+	/// A null or empty value results in only the current line terminator being written to the console.
+	/// </param>
 	public static void WL(string? message) => Console.WriteLine(message);
 
 
@@ -35,43 +39,46 @@ public static class Helpers
 
 	/// <summary>
 	/// <inheritdoc cref="W(string?)"/>
-	/// Writes any portions of <paramref name="message"/> enclosed in "[" and "]" using the colors <paramref name="fore"/> and <paramref name="back"/>. 
-	/// The delimiters ("[" and "]") are NOT displayed.
-	/// <para>If no portion of <paramref name="message"/> is enclosed in "[" and "]", 
+	/// <span id="delimBase">Writes any portions of <paramref name="message"/> enclosed in "[" and "]" using the colors <paramref name="fore"/> and <paramref name="back"/>.</span>
+	/// <span id="delimNoDisplay"> The delimiters ("[" and "]") are NOT displayed.</span>
+	/// <para id="noDelim"> If no portion of <paramref name="message"/> is enclosed in "[" and "]", 
 	/// the entire message is written using the colors <paramref name="fore"/> and <paramref name="back"/>.</para>
 	/// </summary>
 	/// <param name="message"><inheritdoc cref="W(string?)" path="/param[@name='message']"/></param>
-	/// <param name="fore">The foreground color to use when displaying values enclosed in "[" and "]"</param>
-	/// <param name="back">The background color to use when displaying values enclosed in "[" and "]"</param>
+	/// <param name="fore">The foreground color used for displaying the <paramref name="message"/> argument.</param>
+	/// <param name="back">The background color used for displaying the <paramref name="message"/> argument.</param>
 	public static void W(string? message, Color fore, Color? back = null) => W(message, fore, back, null);
 
 	/// <summary>
 	/// <inheritdoc cref="W(string?)"/>
-	/// Writes any portions of <paramref name="message"/> enclosed in "[" and "]" using the colors <paramref name="fore"/> and <paramref name="back"/>. 
-	/// The delimiters ("[" and "]") are displayed based on the value of the <paramref name="showDelimiters"/> argument.
-	/// <para>If no portion of <paramref name="message"/> is enclosed in "[" and "]", 
-	/// the entire message is written using the colors <paramref name="fore"/> and <paramref name="back"/>.</para>
+	/// <inheritdoc cref="W(string?, Color, Color?)" path="/summary/span[@id='delimBase']"/>
+	/// <span id="delimBool">The delimiters ("[" and "]") are displayed or not based on the value of the <paramref name="showDelimiters"/> argument.</span>
+	/// <inheritdoc cref="W(string?, Color, Color?)" path="/summary/para[@id='noDelim']"/>
 	/// </summary>
 	/// <param name="message"><inheritdoc cref="W(string, Color, Color?)" path="/param[@name='message']"/></param>
 	/// <param name="fore"><inheritdoc cref="W(string, Color, Color?)" path="/param[@name='fore']"/></param>
 	/// <param name="back"><inheritdoc cref="W(string, Color, Color?)" path="/param[@name='back']"/></param>
-	/// <param name="showDelimiters">A <see cref="bool"/> indicating whether or not to show the delimeters ("[" and "]"). 
-	/// The delimiters are display using the default console colors.</param>
+	/// <param name="showDelimiters">A bool indicating whether or not to show the delimeters ("[" and "]"), 
+	/// if any are included in the <paramref name="message"/> argument. 
+	/// The delimiters are displayed using the default console colors.</param>
 	public static void W(string? message, Color fore, Color? back, bool showDelimiters) => W(message, fore, back, showDelimiters ? Color.Transparent : null);
 
 	/// <summary>
 	/// <inheritdoc cref="W(string?)"/>
-	/// Writes any portions of <paramref name="message"/> enclosed in "[" and "]" using the colors <paramref name="fore"/> and <paramref name="back"/>. 
-	/// The delimiters ("[" and "]") are displayed based on the value of the <paramref name="delimFore"/> and <paramref name="delimBack"/> 
-	/// arguments -- if either is NOT null, the delimiters are displayed using those colors.
-	/// <para>If no portion of <paramref name="message"/> is enclosed in "[" and "]", 
-	/// the entire message is written using the colors <paramref name="fore"/> and <paramref name="back"/>.</para>
+	/// <inheritdoc cref="W(string?, Color, Color?)" path="/summary/span[@id='delimBase']"/>
+	/// <span id="delimColors">The delimiters ("[" and "]") are displayed based on the value of the <paramref name="delimFore"/> and <paramref name="delimBack"/> 
+	/// arguments -- if either is NOT null, the delimiters are displayed using those colors.</span>
+	/// <inheritdoc cref="W(string?, Color, Color?)" path="/summary/para[@id='noDelim']"/>
 	/// </summary>
 	/// <param name="message"><inheritdoc cref="W(string, Color, Color?)" path="/param[@name='message']"/></param>
 	/// <param name="fore"><inheritdoc cref="W(string, Color, Color?)" path="/param[@name='fore']"/></param>
 	/// <param name="back"><inheritdoc cref="W(string, Color, Color?)" path="/param[@name='back']"/></param>
-	/// <param name="delimFore">The foreground color to use for the delimiters "[" and "]"</param>
-	/// <param name="delimBack">The background color to use for the delimiters "[" and "]"</param>
+	/// <param name="delimFore">The foreground color to use for the delimiters "[" and "]", 
+	/// if any are included in the <paramref name="message"/> argument. 
+	/// </param>
+	/// <param name="delimBack">The background color to use for the delimiters "[" and "]", 
+	/// if any are included in the <paramref name="message"/> argument. 
+	/// </param>
 	public static void W(string? message, Color fore, Color? back, Color? delimFore = null, Color? delimBack = null)
 	{
 		if(string.IsNullOrEmpty( message))
@@ -114,36 +121,32 @@ public static class Helpers
 
 	/// <summary>
 	/// <inheritdoc cref="WL(string)"/>
-	/// Writes any portions of <paramref name="message"/> enclosed in "[" and "]" using the colors <paramref name="fore"/> and <paramref name="back"/>. 
-	/// The delimiters ("[" and "]") are NOT displayed.
-	/// <para>If no portion of <paramref name="message"/> is enclosed in "[" and "]", 
-	/// the entire message is written using the colors <paramref name="fore"/> and <paramref name="back"/>.</para>
+	/// <inheritdoc cref="W(string?, Color, Color?)" path="/summary/span[@id='delimBase']"/>
+	/// <inheritdoc cref="W(string?, Color, Color?)" path="/summary/span[@id='delimNoDisplay']"/>
+	/// <inheritdoc cref="W(string?, Color, Color?)" path="/summary/para[@id='noDelim']"/>
 	/// </summary>
-	/// <param name="message"><inheritdoc cref="W(string, Color, Color?)" path="/param[@name='message']"/></param>
+	/// <param name="message"><inheritdoc cref="WL(string)" path="/param[@name='message']"/></param>
 	/// <param name="fore"><inheritdoc cref="W(string, Color, Color?)" path="/param[@name='fore']"/></param>
 	/// <param name="back"><inheritdoc cref="W(string, Color, Color?)" path="/param[@name='back']"/></param>
 	public static void WL(string? message, Color fore, Color? back = null) => WL(message, fore, back, null, null);
 
 	/// <summary>
 	/// <inheritdoc cref="WL(string)"/>
-	/// Writes any portions of <paramref name="message"/> enclosed in "[" and "]" using the colors <paramref name="fore"/> and <paramref name="back"/>. 
-	/// The delimiters ("[" and "]") are displayed based on the value of the <paramref name="showDelimiters"/> argument.
-	/// <para>If no portion of <paramref name="message"/> is enclosed in "[" and "]", 
-	/// the entire message is written using the colors <paramref name="fore"/> and <paramref name="back"/>.</para>
+	/// <inheritdoc cref="W(string?, Color, Color?, bool)" path="/summary/span[@id='delimBase']"/>
+	/// <inheritdoc cref="W(string?, Color, Color?, bool)" path="/summary/span[@id='delimBool']"/>
+	/// <inheritdoc cref="W(string?, Color, Color?)" path="/summary/para[@id='noDelim']"/>
 	/// </summary>
-	/// <param name="message"><inheritdoc cref="W(string, Color, Color?, bool)" path="/param[@name='message']"/></param>
-	/// <param name="fore"><inheritdoc cref="W(string, Color, Color?, bool)" path="/param[@name='fore']"/></param>
-	/// <param name="back"><inheritdoc cref="W(string, Color, Color?, bool)" path="/param[@name='back']"/></param>
+	/// <param name="message"><inheritdoc cref="WL(string, Color, Color?)" path="/param[@name='message']"/></param>
+	/// <param name="fore"><inheritdoc cref="WL(string, Color, Color?)" path="/param[@name='fore']"/></param>
+	/// <param name="back"><inheritdoc cref="WL(string, Color, Color?)" path="/param[@name='back']"/></param>
 	/// <param name="showDelimiters"><inheritdoc cref="W(string, Color, Color?, bool)" path="/param[@name='showDelimiters']"/></param>
 	public static void WL(string? message, Color fore, Color? back, bool showDelimiters) => WL(message, fore, back, showDelimiters ? Color.Transparent : null);
 
 	/// <summary>
 	/// <inheritdoc cref="WL(string)"/>
-	/// Writes any portions of <paramref name="message"/> enclosed in "[" and "]" using the colors <paramref name="fore"/> and <paramref name="back"/>. 
-	/// The delimiters ("[" and "]") are displayed based on the value of the <paramref name="delimFore"/> and <paramref name="delimBack"/> 
-	/// arguments -- if either is NOT null, the delimiters are displayed using those colors.
-	/// <para>If no portion of <paramref name="message"/> is enclosed in "[" and "]", 
-	/// the entire message is written using the colors <paramref name="fore"/> and <paramref name="back"/>.</para>
+	/// <inheritdoc cref="W(string?, Color, Color?, bool)" path="/summary/span[@id='delimBase']"/>
+	/// <inheritdoc cref="W(string?, Color, Color?, Color?, Color?)" path="/summary/span[@id='delimColors']"/>
+	/// <inheritdoc cref="W(string?, Color, Color?)" path="/summary/para[@id='noDelim']"/>
 	/// </summary>
 	/// <param name="message"><inheritdoc cref="WL(string, Color, Color?, bool)" path="/param[@name='message']"/></param>
 	/// <param name="fore"><inheritdoc cref="WL(string, Color, Color?, bool)" path="/param[@name='fore']"/></param>
@@ -180,7 +183,7 @@ public static class Helpers
 	/// <summary>
 	/// <inheritdoc cref="WL(string?)"/>
 	/// </summary>
-	/// <param name="message"><inheritdoc cref="W(string?)" path="/param[@name='message']"/></param>
+	/// <param name="message"><inheritdoc cref="WL(string?)" path="/param[@name='message']"/></param>
 	/// <param name="style"><inheritdoc cref="W(string?, TextStyle)" path="/param[@name='style']"/></param>
 	public static void WL(string? message, TextStyle style)
 	{
@@ -192,9 +195,9 @@ public static class Helpers
 	/// <inheritdoc cref="W(string?)"/>
 	/// </summary>
 	/// <param name="message">A <see cref="StyledText"/> object that contains 
-	/// the value to write (<see cref="StyledText.Text"/>) 
+	/// the value to write (<see cref="StyledText.Text"/>) to the console 
 	/// and the style (<see cref="StyledText.Style"/>) used to style the value. 
-	/// If null, nothing is written.</param>
+	/// If null, nothing is written to the console.</param>
 	public static void W(StyledText? message)
 	{
 		if (message == null)
@@ -207,9 +210,9 @@ public static class Helpers
 	/// <inheritdoc cref="WL(string?)"/>
 	/// </summary>
 	/// <param name="message">A <see cref="StyledText"/> object that contains 
-	/// the value to write (<see cref="StyledText.Text"/>) 
+	/// the value to write (<see cref="StyledText.Text"/>) to the console
 	/// and the style (<see cref="StyledText.Style"/>) used to style the value. 
-	/// If null, only the current line terminator is written.</param>
+	/// If null, only the current line terminator is written to the console.</param>
 	public static void WL(StyledText? message)
 	{
 		W(message);
