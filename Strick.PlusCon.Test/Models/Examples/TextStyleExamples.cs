@@ -78,6 +78,9 @@ internal static class TextStyleExamples
 		st.Style.BackColor = Color.DarkGray;
 		st.Style.ForeColor = Color.White;
 		st.Text = "(not) " + st.Text;
-		W(st.TextStyled);
+		WL(st.TextStyled);
+
+		st = new StyledText("-- ** down on the beach ** --", Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255));
+		WL(st.TextStyled);
 	}
 }

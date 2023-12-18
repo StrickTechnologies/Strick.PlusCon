@@ -41,7 +41,8 @@ W(ts.StyleText("-- ** down on the beach ** --"));
 ### `StyledText` class 
 Combines text content with a `TextStyle` object. 
 For flexibility, both the `Text` and `Style` properties are read/write, 
-and a `StyleText` method allows the styling to be applied to any text.
+and a `StyleText` method allows the styling to be applied to any text. 
+A number of constructor overloads allow for flexible instantiation.
 
 ```c#
 StyledText st = new("Hello World!", Color.Blue);
@@ -64,7 +65,10 @@ WL(st.TextStyled);
 st.Style.BackColor = Color.DarkGray;
 st.Style.ForeColor = Color.White;
 st.Text = "(not) " + st.Text;
-W(st.TextStyled);
+WL(st.TextStyled);
+
+st = new StyledText("-- ** down on the beach ** --", Color.SandyBrown, Color.FromArgb(3, 240, 165), Color.FromArgb(145, 193, 255));
+WL(st.TextStyled);
 ```
 
 ![Example - TextStyle 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_styledText_1.png)
