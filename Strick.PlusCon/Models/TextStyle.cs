@@ -20,7 +20,7 @@ public class TextStyle
 	/// <summary>
 	/// Creates an instance and sets the <see cref="ForeColor"/> property to <paramref name="foreColor"/>.
 	/// </summary>
-	/// <param name="foreColor"></param>
+	/// <param name="foreColor">The foreground color to apply to the text.</param>
 	public TextStyle(Color foreColor) : this()
 	{
 		ForeColor = foreColor;
@@ -30,8 +30,8 @@ public class TextStyle
 	/// Creates an instance and sets the <see cref="ForeColor"/>, and <see cref="BackColor"/> 
 	/// property values to the corresponding arguments.
 	/// </summary>
-	/// <param name="foreColor"></param>
-	/// <param name="backColor"></param>
+	/// <param name="foreColor"><inheritdoc cref="TextStyle(Color)" path="/param[@name='foreColor']"/></param>
+	/// <param name="backColor">The background color to apply to the text.</param>
 	public TextStyle(Color foreColor, Color backColor) : this(foreColor)
 	{
 		BackColor = backColor;
@@ -44,7 +44,9 @@ public class TextStyle
 	/// Alternatively, use the <see cref="TextStyle"/> constructor and the <see cref="SetGradientColors(Color, Color)"/> method.</para>
 	/// </summary>
 	/// <param name="gradientStart"><inheritdoc cref="Formatting.Gradient(string, Color, Color)" path="/param[@name='start']"/></param>
-	/// <param name="gradientMiddle"><inheritdoc cref="Formatting.Gradient(string, Color, Color, Color)" path="/param[@name='middle']"/></param>
+	/// <param name="gradientMiddle"><inheritdoc cref="Formatting.Gradient(string, Color, Color, Color)" path="/param[@name='middle']"/>
+	/// <b>Note:</b> for a two-color gradient use a null value for this parameter. 
+	/// </param>
 	/// <param name="gradientEnd"><inheritdoc cref="Formatting.Gradient(string, Color, Color)" path="/param[@name='end']"/></param>
 	public TextStyle(Color gradientStart, Color? gradientMiddle, Color gradientEnd) : this()
 	{
@@ -74,31 +76,35 @@ public class TextStyle
 
 
 	/// <summary>
-	/// The foreground color to apply to the text
+	/// The foreground color to apply to the text. 
+	/// Set to null for the default foreground color.
 	/// </summary>
 	public Color? ForeColor { get; set; }
 
 	/// <summary>
-	/// The background color to apply to the text
+	/// The background color to apply to the text. 
+	/// Set to null for the default background color.
 	/// </summary>
 	public Color? BackColor { get; set; }
 
 
 	/// <summary>
 	/// <inheritdoc cref="Formatting.Gradient(string, Color, Color)" path="/param[@name='start']"/>
-	/// <para>Readonly. Use <seealso cref="SetGradientColors(Color, Color)"/> or <seealso cref="SetGradientColors(Color, Color, Color)"/> to set colors.</para>
+	/// <para id="RO">Readonly. Use <seealso cref="SetGradientColors(Color, Color)"/> or 
+	/// <seealso cref="SetGradientColors(Color, Color, Color)"/> to set colors, or 
+	/// <seealso cref="ClearGradient"/> to clear gradient colors.</para>
 	/// </summary>
 	public Color? GradientStart { get; protected set; }
 
 	/// <summary>
 	/// <inheritdoc cref="Formatting.Gradient(string, Color, Color, Color)" path="/param[@name='middle']"/>
-	/// <para>Readonly. Use <seealso cref="SetGradientColors(Color, Color)"/> or <seealso cref="SetGradientColors(Color, Color, Color)"/> to set colors.</para>
+	/// <inheritdoc cref="GradientStart" path="/summary/para[@id='RO']"/>
 	/// </summary>
 	public Color? GradientMiddle { get; protected set; }
 
 	/// <summary>
 	/// <inheritdoc cref="Formatting.Gradient(string, Color, Color)" path="/param[@name='end']"/>
-	/// <para>Readonly. Use <seealso cref="SetGradientColors(Color, Color)"/> or <seealso cref="SetGradientColors(Color, Color, Color)"/> to set colors.</para>
+	/// <inheritdoc cref="GradientStart" path="/summary/para[@id='RO']"/>
 	/// </summary>
 	public Color? GradientEnd { get; protected set; }
 
