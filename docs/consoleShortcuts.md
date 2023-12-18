@@ -85,36 +85,6 @@ WL(new StyledText("midnight blue", style));
 
 ![Example - W/WL 5](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_wwl_5.png)
 
-#### CLS
-Use the CLS method to clear the console screen. Pass background and/or foreground colors to set the console screen to those colors.
-
-```c#
-CLS(Color.LimeGreen, Color.Blue);
-WL("Blue in Green");
-```
-
-![Example - CLS 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_cls_1.png)
-
-
-Note that the colors set in CLS will remain in effect until a color reset sequence is sent to the console.
-This would happen, for example, by using the `Colorize`, or `WL` methods (and others), as shown below.
-To set the colors back to the desired colors, you can send a color escape sequence (without a reset sequence) to the console.
-
-```c#
-CLS(Color.LimeGreen, Color.Blue);
-WL("Blue in Green");
-//colors reset by the line below
-WL("Kind Of Blue", Color.White, Color.Blue);
-//back to default console colors here
-WL("No longer blue");
-//set to desired colors again
-W(EscapeCodes.GetBackColorSequence(Color.LimeGreen) + EscapeCodes.GetForeColorSequence(Color.Blue));
-WL("Blue once more");
-WL("All Blues");
-```
-
-![Example - CLS 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_cls_2.png)
-
 #### RK and RL
 The `RK` and `RL` methods are simple shortcuts, or wrappers, for the `Console.ReadKey` 
 and `Console.ReadLine` methods, respectively.
@@ -155,3 +125,33 @@ RK(new StyledText(anyPrompt, style));
 ```
 
 ![Example - RK/RL 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_rkrl_1.png)
+
+#### CLS
+Use the CLS method to clear the console screen. Pass background and/or foreground colors to set the console screen to those colors.
+
+```c#
+CLS(Color.LimeGreen, Color.Blue);
+WL("Blue in Green");
+```
+
+![Example - CLS 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_cls_1.png)
+
+
+Note that the colors set in CLS will remain in effect until a color reset sequence is sent to the console.
+This would happen, for example, by using the `Colorize`, or `WL` methods (and others), as shown below.
+To set the colors back to the desired colors, you can send a color escape sequence (without a reset sequence) to the console.
+
+```c#
+CLS(Color.LimeGreen, Color.Blue);
+WL("Blue in Green");
+//colors reset by the line below
+WL("Kind Of Blue", Color.White, Color.Blue);
+//back to default console colors here
+WL("No longer blue");
+//set to desired colors again
+W(EscapeCodes.GetBackColorSequence(Color.LimeGreen) + EscapeCodes.GetForeColorSequence(Color.Blue));
+WL("Blue once more");
+WL("All Blues");
+```
+
+![Example - CLS 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_cls_2.png)

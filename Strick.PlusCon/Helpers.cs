@@ -221,8 +221,9 @@ public static class Helpers
 
 
 	/// <summary>
-	/// Displays <paramref name="prompt"/> if not null or white space, then waits for a key press. 
-	/// If <paramref name="prompt"/> is null or white space, simply waits for a key press.
+	/// <para>A simple shortcut for <see cref="Console.ReadKey()"/>.</para>
+	/// Displays <paramref name="prompt"/> if not null, then waits for a key press. 
+	/// If <paramref name="prompt"/> is null, simply waits for a key press.
 	/// </summary>
 	/// <param name="prompt">Optional value to display</param>
 	/// <returns>A <see cref="ConsoleKeyInfo"/> object containing information about the key pressed.</returns>
@@ -275,8 +276,9 @@ public static class Helpers
 
 
 	/// <summary>
-	/// Displays <paramref name="prompt"/> if not null or white space, then waits for user input. 
-	/// If <paramref name="prompt"/> is null or white space, simply waits for user input.
+	/// <para>A simple shortcut for <see cref="Console.ReadLine"/>.</para>
+	/// Displays <paramref name="prompt"/> if not null, then waits for user input. 
+	/// If <paramref name="prompt"/> is null, simply waits for user input.
 	/// <para>Allows the user to enter characters until the <c>&lt;enter&gt;</c> key is pressed.</para>
 	/// </summary>
 	/// <param name="prompt">Optional value to display</param>
