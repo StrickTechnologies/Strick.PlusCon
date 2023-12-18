@@ -576,7 +576,7 @@ internal class Program
 	private static void GridTest()
 	{
 		Grid g = new();
-		g.Title = new("A Sample Grid", new(Color.White, Color.Turquoise));
+		g.Title = new("A Sample Grid", Color.White, Color.Turquoise);
 		g.Subtitle = new("this one has a really super long sub-title. It's wider than the whole grid.");
 		g.CellStyle.BackColor = Color.FromArgb(48, 48, 48);
 		g.CellContentStyle = g.CellStyle;
@@ -642,7 +642,7 @@ internal class Program
 
 		g.AddRow("r6-c1", DateTime.Now, 1);
 
-		g.Footer = new($"A total of {g.RowCount} fun items", new(Color.White, Color.Purple));
+		g.Footer = new($"A total of {g.RowCount} fun items", Color.White, Color.Purple);
 
 		//g.AddColumn("empty");
 

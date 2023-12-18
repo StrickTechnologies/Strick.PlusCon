@@ -44,7 +44,7 @@ For flexibility, both the `Text` and `Style` properties are read/write,
 and a `StyleText` method allows the styling to be applied to any text.
 
 ```c#
-StyledText st = new("Hello World!", new(Color.Blue));
+StyledText st = new("Hello World!", Color.Blue);
 
 //same content, different styling
 foreach (Color c in ColorUtilities.GetGradientColors(Color.FromArgb(0, 255, 0), Color.FromArgb(0, 128, 0), 4))

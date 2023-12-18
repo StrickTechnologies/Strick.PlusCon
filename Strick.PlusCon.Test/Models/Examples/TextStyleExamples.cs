@@ -58,7 +58,7 @@ internal static class TextStyleExamples
 
 	internal static void Ex_StyledText_1()
 	{
-		StyledText st = new("Hello World!", new(Color.Blue));
+		StyledText st = new("Hello World!", Color.Blue);
 
 		//same content, different styling
 		foreach (Color c in ColorUtilities.GetGradientColors(Color.FromArgb(0, 255, 0), Color.FromArgb(0, 128, 0), 4))

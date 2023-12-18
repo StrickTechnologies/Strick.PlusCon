@@ -27,19 +27,21 @@ public class StyledTextTests
 
 		st = new(" ");
 		Assert.IsNotNull(st);
+		Assert.IsNotNull(st.Style);
 		Assert.AreEqual(" ", st.Text);
 		Assert.AreEqual(" ", st.TextStyled);
 		Assert.AreEqual("foo", st.StyleText("foo"));
 
 		st = new("foo");
 		Assert.IsNotNull(st);
+		Assert.IsNotNull(st.Style);
 		Assert.AreEqual("foo", st.Text);
 		Assert.AreEqual("foo", st.TextStyled);
 		Assert.AreEqual("foobar", st.StyleText("foobar"));
 
 		st = new("foo", null!);
 		Assert.IsNotNull(st);
-		Assert.IsNull(st.Style);
+		Assert.IsNotNull(st.Style);
 		Assert.AreEqual("foo", st.Text);
 		Assert.AreEqual("foo", st.TextStyled);
 		Assert.AreEqual("foobar", st.StyleText("foobar"));
@@ -47,7 +49,7 @@ public class StyledTextTests
 		TextStyle style = null!;
 		st = new("foo", style);
 		Assert.IsNotNull(st);
-		Assert.IsNull(st.Style);
+		Assert.IsNotNull(st.Style);
 		Assert.AreEqual("foo", st.Text);
 		Assert.AreEqual("foo", st.TextStyled);
 		Assert.AreEqual("foobar", st.StyleText("foobar"));
@@ -66,6 +68,32 @@ public class StyledTextTests
 		Assert.AreEqual("foo", st.Text);
 		FormattingTests.TestColorizedString(st.Text, st.TextStyled, red, null);
 		FormattingTests.TestColorizedString("foobar", st.StyleText("foobar"), red, null);
+
+		st = new StyledText("foo", blue);
+		Assert.IsNotNull(st);
+		Assert.IsNotNull(st.Style);
+		Assert.AreEqual("foo", st.Text);
+		Assert.AreEqual(blue, st.Style.ForeColor);
+		FormattingTests.TestColorizedString(st.Text, st.TextStyled, blue, null);
+		FormattingTests.TestColorizedString("foobar", st.StyleText("foobar"), blue, null);
+
+		st = new StyledText("foo", blue, black);
+		Assert.IsNotNull(st);
+		Assert.IsNotNull(st.Style);
+		Assert.AreEqual("foo", st.Text);
+		Assert.AreEqual(blue, st.Style.ForeColor);
+		Assert.AreEqual(black, st.Style.BackColor);
+		FormattingTests.TestColorizedString(st.Text, st.TextStyled, blue, black);
+		FormattingTests.TestColorizedString("foobar", st.StyleText("foobar"), blue, black);
+
+		st = new StyledText("foo", green, blue, green);
+		Assert.IsNotNull(st);
+		Assert.IsNotNull(st.Style);
+		Assert.AreEqual("foo", st.Text);
+		Assert.AreEqual(green, st.Style.GradientStart);
+		Assert.AreEqual(blue, st.Style.GradientMiddle);
+		Assert.AreEqual(green, st.Style.GradientEnd);
+		FormattingTests.TestGResult(st.Text, st.TextStyled, green, blue, green);
 	}
 
 	[TestMethod]

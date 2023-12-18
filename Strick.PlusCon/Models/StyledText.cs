@@ -15,27 +15,71 @@ namespace Strick.PlusCon.Models;
 public class StyledText
 {
 	/// <summary>
-	/// Creates an instance and sets the <see cref="Text"/> property to the value of the <paramref name="text"/> argument. 
-	/// If <paramref name="text"/> is null or empty string, an <see cref="ArgumentNullException"/> exception is thrown.
+	/// <para>Creates an instance and sets the <see cref="Text"/> property to the value of the <paramref name="text"/> argument. 
+	/// If <paramref name="text"/> is null or empty string, an <see cref="ArgumentNullException"/> exception is thrown.</para>
 	/// </summary>
-	/// <param name="text"></param>
-	public StyledText(string text)
+	/// <param name="text">The text value to be styled. 
+	/// An <see cref="ArgumentNullException"/> exception is thrown if <paramref name="text"/> is null or empty string.
+	/// </param>
+	/// <exception cref="ArgumentNullException"></exception>
+	public StyledText(string text) : this(text, null) { }
+
+	/// <summary>
+	/// <inheritdoc cref="StyledText(string)"/>
+	/// Also sets the <see cref="Style"/> property to the value of the <paramref name="style"/> argument.
+	/// </summary>
+	/// <param name="text"><inheritdoc cref="StyledText(string)" path="/param[@name='text']"/></param>
+	/// <param name="style">A <see cref="TextStyle"/> object. The <see cref="Style"/> property is set 
+	/// to the value of this argument. If null, the <see cref="Style"/> property will be set to a 
+	/// new <see cref="TextStyle"/> object.</param>
+	public StyledText(string text, TextStyle? style)
 	{
 		Text = text;
-		Style = new TextStyle();
+
+		if (style != null)
+		{ Style = style; }
+		else
+		{ Style = new TextStyle(); }
 	}
 
 	/// <summary>
 	/// <inheritdoc cref="StyledText(string)"/>
-	/// <para>Also sets the <see cref="Style"/> property to the value of the <paramref name="style"/> argument.</para>
+	/// The <see cref="TextStyle.ForeColor"/> property of the <see cref="Style"/> property 
+	/// is set to the <paramref name="foreColor"/> argument.
 	/// </summary>
-	/// <param name="text"></param>
-	/// <param name="style"></param>
-	public StyledText(string text, TextStyle style)
+	/// <param name="text"><inheritdoc cref="StyledText(string)" path="/param[@name='text']"/></param>
+	/// <param name="foreColor"><inheritdoc cref="TextStyle(Color)" path="/param[@name='foreColor']"/></param>
+	public StyledText(string text, Color foreColor) : this(text, new TextStyle(foreColor))
+	{ }
+
+	/// <summary>
+	/// <inheritdoc cref="StyledText(string, Color)"/>
+	/// And the <see cref="TextStyle.BackColor"/> property of the <see cref="Style"/> property 
+	/// is set to the <paramref name="backColor"/> argument.
+	/// </summary>
+	/// <param name="text"><inheritdoc cref="StyledText(string)" path="/param[@name='text']"/></param>
+	/// <param name="foreColor"><inheritdoc cref="TextStyle(Color)" path="/param[@name='foreColor']"/></param>
+	/// <param name="backColor"><inheritdoc cref="TextStyle(Color, Color)" path="/param[@name='backColor']"/></param>
+	public StyledText(string text, Color foreColor, Color backColor) : this(text, new TextStyle(foreColor, backColor))
+	{ }
+
+	/// <summary>
+	/// <inheritdoc cref="StyledText(string)"/>
+	/// The <see cref="TextStyle.GradientStart"/>, <see cref="TextStyle.GradientMiddle"/>, and <see cref="TextStyle.GradientEnd"/> 
+	/// properties of the <see cref="Style"/> property are set to the corresponding arguments.
+	/// </summary>
+	/// <param name="text"><inheritdoc cref="StyledText(string)" path="/param[@name='text']"/></param>
+	/// <param name="gradientStart"><inheritdoc cref="TextStyle(Color, Color?, Color)" path="/param[@name='gradientStart']"/></param>
+	/// <param name="gradientMiddle"><inheritdoc cref="TextStyle(Color, Color?, Color)" path="/param[@name='gradientMiddle']"/></param>
+	/// <param name="gradientEnd"><inheritdoc cref="TextStyle(Color, Color?, Color)" path="/param[@name='gradientEnd']"/></param>
+	public StyledText(string text, Color gradientStart, Color? gradientMiddle, Color gradientEnd) : this(text)
 	{
-		Text = text;
-		Style = style;
+		if (gradientMiddle == null)
+		{ Style.SetGradientColors(gradientStart, gradientEnd); }
+		else
+		{ Style.SetGradientColors(gradientStart, gradientMiddle.Value, gradientEnd); }
 	}
+
 
 	/// <summary>
 	/// Backer field for the Text property.

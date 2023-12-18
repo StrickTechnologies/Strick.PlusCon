@@ -47,8 +47,8 @@ internal static class GridExamples
 	internal static void Ex_Grid_2()
 	{
 		Grid g = new();
-		g.Title = new("Grid".SpaceOut(), new(Color.Silver, Color.Gray, Color.Silver) { BackColor = Color.LimeGreen, Reverse = true });
-		g.Subtitle = new("Example 2 (Styling)", new(Color.LimeGreen, Color.Gray));
+		g.Title = new("Grid".SpaceOut(), new TextStyle(Color.Silver, Color.Gray, Color.Silver) { BackColor = Color.LimeGreen, Reverse = true });
+		g.Subtitle = new("Example 2 (Styling)", Color.LimeGreen, Color.Gray);
 
 		//set cell/content styling for entire grid
 		g.CellStyle = new(Color.DodgerBlue, Color.Silver);
