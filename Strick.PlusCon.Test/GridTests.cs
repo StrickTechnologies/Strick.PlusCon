@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-
-using Strick.PlusCon.Models;
+﻿using Strick.PlusCon.Models;
 
 using static Strick.PlusCon.Test.Expectations;
 
@@ -401,7 +394,8 @@ public class GridTests
 		CheckColHead(col2, 1, "Y", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col2.CellLayout, $" {Underline}{ForeColorWhite}Y{ForeColorReset}{UnderlineReset} ");
 	}
 
-	private static void CheckGridState(Grid g, int expectedColCount, int expectedRowCount)
+
+	internal static void CheckGridState(Grid g, int expectedColCount, int expectedRowCount)
 	{
 		Assert.IsNotNull(g);
 

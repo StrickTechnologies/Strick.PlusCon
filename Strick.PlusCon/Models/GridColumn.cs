@@ -152,4 +152,59 @@ public class GridColumn
 			return l;
 		}
 	}
+
+
+	public IEnumerable<GridCell> Find(string? searchText, SearchType searchType = SearchType.Contains)
+	{
+		if (string.IsNullOrEmpty( searchText ))
+		{ return Cells.Where(cell => cell.Content == searchText); }
+		
+		switch (searchType)
+		{
+			case SearchType.Contains:
+			{
+				return Cells.Where(cell => cell.Content != null && cell.Content.Contains(searchText, StringComparison.OrdinalIgnoreCase));
+			}
+
+			case SearchType.Equals:
+			{
+				return Cells.Where(cell => searchText.Equals(cell.Content, StringComparison.OrdinalIgnoreCase));
+			}
+
+			case SearchType.StartsWith:
+			{
+				return Cells.Where(cell => cell.Content != null && cell.Content.StartsWith(searchText, StringComparison.OrdinalIgnoreCase));
+			}
+
+			case SearchType.EndsWith:
+			{
+				return Cells.Where(cell => cell.Content != null && cell.Content.EndsWith(searchText, StringComparison.OrdinalIgnoreCase));
+			}
+		}
+
+		throw new ArgumentOutOfRangeException(nameof(searchType), "Invalid search type");
+	}
+
+	public GridCell? FindFirst(string? searchText, SearchType searchType = SearchType.Contains)
+	{
+		return Find(searchText, searchType).FirstOrDefault();
+	}
+
+	public GridRow? FindFirstRow(string? searchText, SearchType searchType = SearchType.Contains)
+	{
+		var cell = FindFirst(searchText, searchType);
+		if (cell == null)
+		{ return null; }
+
+		return cell.Row;
+	}
+
+	public IEnumerable<GridRow> FindRows(string? searchText, SearchType searchType = SearchType.Contains)
+	{
+		var cells = Find(searchText, searchType);
+		if (cells == null)
+		{ return Enumerable.Empty<GridRow>(); }
+
+		return cells.Select(cell => cell.Row);
+	}
 }
