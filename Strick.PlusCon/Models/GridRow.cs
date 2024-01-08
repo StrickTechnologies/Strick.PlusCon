@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 
@@ -150,4 +151,59 @@ public class GridRow
 	public virtual TextStyle? CellStyle { get; set; }
 
 	#endregion STYLE
+
+
+	#region FIND
+
+	/// <summary>
+	/// <span id='searchType'>Searches the Row's cells (<see cref="GridRow.Cells"/>) and </span>
+	/// <inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/summary/span[@id='rtype']"/>
+	/// <inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/summary/span[@id='desc']"/>
+	/// </summary>
+	/// <param name="searchText"><inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/param[@name='searchText']"/></param>
+	/// <param name="searchType"><inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/param[@name='searchType']"/></param>
+	public IEnumerable<GridCell> Find(string? searchText, SearchType searchType = SearchType.Contains) => Cells.Find(searchText, searchType);
+
+	/// <summary>
+	/// <inheritdoc cref="GridRow.Find(string?, SearchType)" path="/summary/span[@id='searchType']"/>
+	/// returns the first cell
+	/// <inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/summary/span[@id='desc']"/>
+	/// </summary>
+	/// <param name="searchText"><inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/param[@name='searchText']"/></param>
+	/// <param name="searchType"><inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/param[@name='searchType']"/></param>
+	public GridCell? FindFirst(string? searchText, SearchType searchType = SearchType.Contains) => Cells.Find(searchText, searchType).FirstOrDefault();
+
+	/// <summary>
+	/// <inheritdoc cref="GridRow.Find(string?, SearchType)" path="/summary/span[@id='searchType']"/>
+	/// returns the <see cref="GridColumn"/> object for the first cell 
+	/// <inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/summary/span[@id='desc']"/>
+	/// </summary>
+	/// <param name="searchText"><inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/param[@name='searchText']"/></param>
+	/// <param name="searchType"><inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/param[@name='searchType']"/></param>
+	public GridColumn? FindFirstColumn(string? searchText, SearchType searchType = SearchType.Contains)
+	{
+		var cell = FindFirst(searchText, searchType);
+		if (cell == null)
+		{ return null; }
+
+		return cell.Column;
+	}
+
+	/// <summary>
+	/// <inheritdoc cref="GridRow.Find(string?, SearchType)" path="/summary/span[@id='searchType']"/>
+	/// returns a sequence of <see cref="GridColumn"/> objects for the cells 
+	/// <inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/summary/span[@id='desc']"/>
+	/// </summary>
+	/// <param name="searchText"><inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/param[@name='searchText']"/></param>
+	/// <param name="searchType"><inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/param[@name='searchType']"/></param>
+	public IEnumerable<GridColumn> FindColumns(string? searchText, SearchType searchType = SearchType.Contains)
+	{
+		var cells = Find(searchText, searchType);
+		if (cells == null)
+		{ return Enumerable.Empty<GridColumn>(); }
+
+		return cells.Select(cell => cell.Column);
+	}
+
+	#endregion FIND
 }
