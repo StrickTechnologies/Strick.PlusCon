@@ -28,6 +28,9 @@ for information on how to apply styling to these grid elements.
 result in an exception being thrown. After all, it is somewhat pointless to display a grid 
 without at least one of each.*
 
+The `Grid` class has a `Find` method that will perform a case-insensitive 
+search of all the grid's cells and return a sequence containing the matching cells.
+
 ## `GridColumn` Class
 Represents a column in a grid.
 
@@ -46,6 +49,11 @@ A column always has a `Cells` collection, which always contains the same number 
 The `HasCells` property returns a boolean indicating whether or not the column has any cells 
 (i.e. whether or not the grid has any rows). *The `Cells` sequence is readonly -- to add rows
 to a grid, use the `Rows` collection, or one of the `AddRow` methods of the `Grid` object.*
+
+The `GridColumn` class has `Find`, `FindFirst`, `FindRows` and `FindFirstRow` methods 
+that will perform a case-insensitive search of all the columns's cells. 
+The methods return a sequence containing the matching cells (`Find`) or rows (`FindRows`), 
+the first matching cell (`FindFirst`), or the first matching row (`FindFirstRow`).
 
 ## `GridColumns` Class
 The `GridColumns` class represents a collection of `GridColumn` objects for a grid (`Grid.Columns`). 
@@ -71,6 +79,12 @@ collection of the `Grid` object.*
 
 The styling for a row's cells can be set through its `CellStyle` and `ContentStyle` properties. 
 Setting these styles will override the styles inherited from the column or grid.
+
+The `GridRow` class has `Find`, `FindFirst`, `FindColumns` and `FindFirstColumn` methods 
+that will perform a case-insensitive search of all the row's cells. 
+The methods return a sequence containing the matching cells (`Find`) 
+or columns (`FindColumns`), the first matching cell (`FindFirst`), 
+or the first matching column (`FindFirstColumn`).
 
 ## `GridCell` Class
 The content to be displayed in a given cell can be accessed via it's (read/write) `Content` property. 
