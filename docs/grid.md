@@ -18,7 +18,8 @@ Styling for all the grid's cells can be set via the `CellStyle`, and `CellConten
 These styles can be overridden at the column, row, and cell level.
 
 Styling for all the grid's column headers can be set via the `ColumnHeaderCellStyle`, and `ColumnHeaderContentStyle` properties. 
-These styles can be overridden for each column.
+These styles can be overridden for each column. Rendering of column headers can be 
+controlled via the `ShowColumnHeaders` property.
 
 The `Title`, `Subtitle` and `Footer` properties are `StyledText` objects. 
 See the [doc for the `TextStyle` and `StyledText` classes](textStyle.md#styledtext-class)
@@ -35,6 +36,7 @@ search of all the grid's cells and return a sequence containing the matching cel
 Represents a column in a grid.
 
 A column has a `Header` property that returns a `GridHeaderCell` object for its header cell. 
+The `Header` property will always have a non-null value. 
 The various properties of the `Header` object can be used to control the content, appearance and layout 
 of the column's header.
 
