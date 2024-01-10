@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 
 
 namespace Strick.PlusCon.Models;
@@ -122,7 +117,7 @@ public abstract class GridCellBase
 	/// <summary>
 	/// Returns the cell's content rendered for display within the grid (all text styling, cell styling, padding and margins applied)
 	/// </summary>
-	internal string RenderedContent
+	internal virtual string RenderedContent
 	{
 		get
 		{

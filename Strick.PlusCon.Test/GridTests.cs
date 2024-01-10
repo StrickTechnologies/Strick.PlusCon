@@ -394,6 +394,42 @@ public class GridTests
 		CheckColHead(col2, 1, "Y", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col2.CellLayout, $" {Underline}{ForeColorWhite}Y{ForeColorReset}{UnderlineReset} ");
 	}
 
+	[TestMethod]
+	public void ShowColumnHeaders()
+	{
+		Grid g = new Grid();
+		g.ColumnHeaderContentStyle=new TextStyle();
+		g.ColumnHeaderCellStyle=new TextStyle();
+		var col1 = g.Columns.Add("foo");
+		col1.CellLayout.MarginLeft = 0;
+		col1.CellLayout.MarginRight = 0;
+		var col2 = g.Columns.Add("bar");
+		col2.CellLayout.MarginLeft = 0;
+		col2.CellLayout.MarginRight = 0;
+		var col3 = g.Columns.Add("longer");
+		col3.CellLayout.MarginLeft = 0;
+		col3.CellLayout.MarginRight = 0;
+		g.AddRow("11", "12", "13");
+		g.AddRow("21", "22", "23");
+		g.AddRow("31", "32", "33");
+
+		CheckColHead(col1, 0, "foo", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "foo");
+		CheckColumnState(col1, 0, "foo", 3, 3, 3);
+		CheckColHead(col2, 1, "bar", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "bar");
+		CheckColumnState(col2, 1, "bar", 3, 3, 3);
+		CheckColHead(col3, 2, "longer", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "longer");
+		CheckColumnState(col3, 2, "longer", 6, 6, 6);
+
+		g.ShowColumnHeaders = false;
+
+		CheckColHead(col1, 0, "foo", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "");
+		CheckColumnState(col1, 0, "foo", 2, 2, 2);
+		CheckColHead(col2, 1, "bar", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "");
+		CheckColumnState(col2, 1, "bar", 2, 2, 2);
+		CheckColHead(col3, 2, "longer", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "");
+		CheckColumnState(col3, 2, "longer", 2, 2, 2);
+	}
+
 
 	internal static void CheckGridState(Grid g, int expectedColCount, int expectedRowCount)
 	{
@@ -412,6 +448,7 @@ public class GridTests
 	{
 		Assert.IsNotNull(col);
 		Assert.IsNotNull(col.Grid);
+		Assert.IsNotNull(col.Header);
 
 		Assert.IsTrue(ReferenceEquals(col, col.Grid.Columns[expectedIndex]));
 		Assert.AreEqual(expectedIndex, col.Index);
@@ -468,10 +505,11 @@ public class GridTests
 
 	private static void CheckColHead(GridColumn col, int expectedColIndex, string? expectedContent, TextStyle expectedCellStyle, TextStyle expectedContentStyle, GridCellLayout expectedLayout, string expectedRenderedContent)
 	{
-		GridHeaderCell hd = col.Header;
-		int colW = col.TotalWidth;
-
 		Assert.IsNotNull(col);
+
+		GridHeaderCell? hd = col.Header;
+		Assert.IsNotNull(hd);
+
 		Assert.AreEqual(expectedColIndex, hd.ColumnIndex);
 		TextStyleTests.CheckTextStyleEquality(hd.CellStyleI, expectedCellStyle);
 		TextStyleTests.CheckTextStyleEquality(hd.ContentStyleI, expectedContentStyle);
@@ -482,7 +520,7 @@ public class GridTests
 		else
 		{ Assert.AreEqual(expectedContent, hd.Content); }
 
-		if (colW == 0)
+		if (col.TotalWidth == 0)
 		{ Assert.IsTrue(string.IsNullOrEmpty(expectedRenderedContent)); }
 		else
 		{ Assert.AreEqual(expectedRenderedContent, hd.RenderedContent); }

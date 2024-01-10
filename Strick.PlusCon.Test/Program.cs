@@ -644,7 +644,15 @@ internal class Program
 
 		g.Footer = new($"A total of {g.RowCount} fun items", Color.White, Color.Purple);
 
-		//g.AddColumn("empty");
+		GridColumn gc = g.Columns.Add("foo bar");
+		g.ColumnHeaderContentStyle.SetGradientColors(Color.Red, Color.Pink);
+		//gc.Header.ContentStyle = new(Color.Red, null, Color.Pink);
+		//gc.Header.ContentStyle.BackColor = Color.Silver;
+		gc.Header.Content = "whacked";
+		foreach (GridCell cell in gc.Cells)
+		{ cell.Content = cell.RowIndex.ToString(); }
+
+		//g.ShowColumnHeaders = false;
 
 		CLS();
 		W("     ");

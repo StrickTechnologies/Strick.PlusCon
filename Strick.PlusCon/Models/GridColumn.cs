@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Strick.PlusCon.Models;
+
 
 /// <summary>
 /// Represents a column in a <see cref="Grid"/> object.
@@ -14,7 +14,7 @@ public class GridColumn
 	internal GridColumn(Grid grid)
 	{
 		Grid = grid;
-		Header = new(this);
+		Header = new GridHeaderCell(this);
 	}
 
 	internal GridColumn(Grid grid, string headerText) : this(grid)
@@ -66,7 +66,7 @@ public class GridColumn
 	/// <summary>
 	/// The header for the column.
 	/// </summary>
-	public GridHeaderCell Header { get; set; }
+	public GridHeaderCell Header { get; }
 
 
 	#region STYLE
@@ -116,7 +116,7 @@ public class GridColumn
 		get
 		{
 			int l = HasCells ? Cells.Max(c => c.ContentWidth) : 0;
-			if (Header != null)
+			if (Grid.ShowColumnHeaders && Header != null)
 			{ l = Math.Max(l, Header.ContentWidth); }
 
 			return l;
@@ -131,7 +131,7 @@ public class GridColumn
 		get
 		{
 			int l = HasCells ? Cells.Max(c => c.CellWidth) : 0;
-			if (Header != null)
+			if (Grid.ShowColumnHeaders && Header != null)
 			{ l = Math.Max(l, Header.CellWidth); }
 
 			return l;
@@ -146,7 +146,7 @@ public class GridColumn
 		get
 		{
 			int l = HasCells ? Cells.Max(c => c.TotalWidth) : 0;
-			if (Header != null)
+			if (Grid.ShowColumnHeaders && Header != null)
 			{ l = Math.Max(l, Header.TotalWidth); }
 
 			return l;

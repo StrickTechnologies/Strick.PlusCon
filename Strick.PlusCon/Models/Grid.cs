@@ -155,6 +155,12 @@ public class Grid
 	public TextStyle ColumnHeaderContentStyle { get; set; } = new(Color.White) { Underline = true };
 
 	/// <summary>
+	/// Gets/Sets a value which indicates whether or not to show the column headers. 
+	/// The default is true. 
+	/// </summary>
+	public bool ShowColumnHeaders { get; set; } = true;
+
+	/// <summary>
 	/// The text styling to be applied to ALL the grid's cells. 
 	/// This includes the area of the cell which is NOT the cell's "content".
 	/// <para>Can be overridden at the 
@@ -215,7 +221,7 @@ public class Grid
 		}
 
 		//COLUMN HEADERS
-		if (Columns.Any(c => c.Header != null))
+		if (ShowColumnHeaders && Columns.Any(c => c.Header != null))
 		{
 			foreach (GridColumn column in Columns)
 			{

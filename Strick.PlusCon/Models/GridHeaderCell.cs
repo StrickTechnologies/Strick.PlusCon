@@ -50,4 +50,15 @@ public class GridHeaderCell : GridCellBase
 	/// <inheritdoc cref="GridCellBase.CellStyleI"/>
 	/// </summary>
 	internal protected override TextStyle CellStyleI => CellStyle ?? Grid.ColumnHeaderCellStyle;
+
+	internal override string RenderedContent
+	{
+		get
+		{
+			if (Grid.ShowColumnHeaders)
+			{ return base.RenderedContent; }
+
+			return "";
+		}
+	}
 }
