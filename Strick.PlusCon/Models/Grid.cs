@@ -290,19 +290,6 @@ public class Grid
 		return allCells.Find(searchExpression);
 	}
 
-	/// <summary>
-	/// Searches ALL of the Grid's cells in a row, column order and 
-	/// <inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/summary/span[@id='rtype']"/>
-	/// <inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/summary/span[@id='desc']"/>
-	/// </summary>
-	/// <param name="searchText"><inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/param[@name='searchText']"/></param>
-	/// <param name="searchType"><inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/param[@name='searchType']"/></param>
-	public IEnumerable<GridCell> Find(string? searchText)
-	{
-		var allCells = Rows.SelectMany(r => r.Cells);
-		return allCells.Find(searchText);
-	}
-
 
 	private static void MoveToStartOfNextRow(int left)
 	{

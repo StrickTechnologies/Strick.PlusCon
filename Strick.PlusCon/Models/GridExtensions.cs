@@ -58,18 +58,4 @@ public static class GridExtensions
 
 		throw new ArgumentOutOfRangeException(nameof(searchExpression.Type), "Invalid search type");
 	}
-
-	/// <summary>
-	/// Searches the <paramref name="cells"/> argument and 
-	/// <span id='rtype'>returns a sequence of <see cref="GridCell"/> objects </span>
-	/// <span id='desc'>whose <see cref="GridCellBase.Content"/> property 
-	/// matches the <paramref name="searchText"/> argument, as specified by the <paramref name="searchType"/> argument.
-	/// The search is case-insensitive.</span>
-	/// </summary>
-	/// <param name="cells">The <see cref="GridCell"/> objects to search.</param>
-	/// <param name="searchText">The text for search for. Null or an empty string are acceptable, and search for cells containing those values, respectively.</param>
-	/// <param name="searchType">The type of search to perform</param>
-	/// <exception cref="ArgumentOutOfRangeException"></exception>
-	public static IEnumerable<GridCell> Find(this IEnumerable<GridCell> cells, string? searchText, SearchType searchType = SearchType.Contains)
-	{ return cells.Find(new GridSearchExpression(searchText, searchType)); }
 }
