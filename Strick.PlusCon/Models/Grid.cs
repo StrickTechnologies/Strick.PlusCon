@@ -280,15 +280,27 @@ public class Grid
 
 	/// <summary>
 	/// Searches ALL of the Grid's cells in a row, column order and 
+	/// <inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, GridSearchExpression)" path="/summary/span[@id='rtype']"/>
+	/// <inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, GridSearchExpression)" path="/summary/span[@id='desc']"/>
+	/// </summary>
+	/// <param name="searchExpression"><inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, GridSearchExpression)" path="/param[@name='searchExpression']"/></param>
+	public IEnumerable<GridCell> Find(GridSearchExpression searchExpression)
+	{
+		var allCells = Rows.SelectMany(r => r.Cells);
+		return allCells.Find(searchExpression);
+	}
+
+	/// <summary>
+	/// Searches ALL of the Grid's cells in a row, column order and 
 	/// <inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/summary/span[@id='rtype']"/>
 	/// <inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/summary/span[@id='desc']"/>
 	/// </summary>
 	/// <param name="searchText"><inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/param[@name='searchText']"/></param>
 	/// <param name="searchType"><inheritdoc cref="GridExtensions.Find(IEnumerable{GridCell}, string?, SearchType)" path="/param[@name='searchType']"/></param>
-	public IEnumerable<GridCell> Find(string? searchText, SearchType searchType = SearchType.Contains)
+	public IEnumerable<GridCell> Find(string? searchText)
 	{
 		var allCells = Rows.SelectMany(r => r.Cells);
-		return allCells.Find(searchText, searchType);
+		return allCells.Find(searchText);
 	}
 
 

@@ -118,21 +118,21 @@ public class GridFindTests
 	[TestMethod]
 	public void GridFind()
 	{
-		CheckCellsFind(grid.Find("", SearchType.Contains), grid.Rows[4].Cells[1]);
-		CheckCellsFind(grid.Find("", SearchType.StartsWith), grid.Rows[4].Cells[1]);
-		CheckCellsFind(grid.Find("", SearchType.EndsWith), grid.Rows[4].Cells[1]);
-		CheckCellsFind(grid.Find("", SearchType.Equals), grid.Rows[4].Cells[1]);
-		CheckCellsFind(grid.Find(null, SearchType.Contains), grid.Rows[4].Cells[2]);
-		CheckCellsFind(grid.Find(null, SearchType.StartsWith), grid.Rows[4].Cells[2]);
-		CheckCellsFind(grid.Find(null, SearchType.EndsWith), grid.Rows[4].Cells[2]);
-		CheckCellsFind(grid.Find(null, SearchType.Equals), grid.Rows[4].Cells[2]);
+		CheckCellsFind(grid.Find(new GridSearchExpression("", SearchType.Contains)), grid.Rows[4].Cells[1]);
+		CheckCellsFind(grid.Find(new GridSearchExpression("", SearchType.StartsWith)), grid.Rows[4].Cells[1]);
+		CheckCellsFind(grid.Find(new GridSearchExpression("", SearchType.EndsWith)), grid.Rows[4].Cells[1]);
+		CheckCellsFind(grid.Find(new GridSearchExpression("", SearchType.Equals)), grid.Rows[4].Cells[1]);
+		CheckCellsFind(grid.Find(new GridSearchExpression(null, SearchType.Contains)), grid.Rows[4].Cells[2]);
+		CheckCellsFind(grid.Find(new GridSearchExpression(null, SearchType.StartsWith)), grid.Rows[4].Cells[2]);
+		CheckCellsFind(grid.Find(new GridSearchExpression(null, SearchType.EndsWith)), grid.Rows[4].Cells[2]);
+		CheckCellsFind(grid.Find(new GridSearchExpression(null, SearchType.Equals)), grid.Rows[4].Cells[2]);
 
-		CheckCellsFind(grid.Find("c1", SearchType.Contains), grid.Rows[1].Cells[0], grid.Rows[3].Cells[0], grid.Rows[4].Cells[0]);
-		CheckCellsFind(grid.Find("c1", SearchType.EndsWith), grid.Rows[1].Cells[0], grid.Rows[3].Cells[0], grid.Rows[4].Cells[0]);
-		CheckCellsFind(grid.Find("c1", SearchType.StartsWith));
-		CheckCellsFind(grid.Find("c1", SearchType.Equals));
+		CheckCellsFind(grid.Find(new GridSearchExpression("c1", SearchType.Contains)), grid.Rows[1].Cells[0], grid.Rows[3].Cells[0], grid.Rows[4].Cells[0]);
+		CheckCellsFind(grid.Find(new GridSearchExpression("c1", SearchType.EndsWith)), grid.Rows[1].Cells[0], grid.Rows[3].Cells[0], grid.Rows[4].Cells[0]);
+		CheckCellsFind(grid.Find(new GridSearchExpression("c1", SearchType.StartsWith)));
+		CheckCellsFind(grid.Find(new GridSearchExpression("c1", SearchType.Equals)));
 
-		CheckCellsFind(grid.Find("3", SearchType.Contains), grid.Rows[0].Cells[2], grid.Rows[1].Cells[2], grid.Rows[2].Cells[0], grid.Rows[2].Cells[1], grid.Rows[2].Cells[2], grid.Rows[3].Cells[2]);
+		CheckCellsFind(grid.Find(new GridSearchExpression("3", SearchType.Contains)), grid.Rows[0].Cells[2], grid.Rows[1].Cells[2], grid.Rows[2].Cells[0], grid.Rows[2].Cells[1], grid.Rows[2].Cells[2], grid.Rows[3].Cells[2]);
 	}
 
 
@@ -142,22 +142,23 @@ public class GridFindTests
 		Assert.IsNotNull(expectedCells);
 
 		int expectedCount = expectedCells.Count();
+		GridSearchExpression searchExpression = new GridSearchExpression(searchText, searchType);
 
 		//CELLS
-		CheckCellsFind(row.Find(searchText, searchType), expectedCells);
+		CheckCellsFind(row.Find(searchExpression), expectedCells);
 
 		if (expectedCount > 0)
-		{ Assert.AreEqual(expectedCells[0], row.FindFirst(searchText, searchType)); }
+		{ Assert.AreEqual(expectedCells[0], row.FindFirst(searchExpression)); }
 		else
-		{ Assert.AreEqual(null, row.FindFirst(searchText, searchType)); }
+		{ Assert.AreEqual(null, row.FindFirst(searchExpression)); }
 
 		//COLUMNS
-		CheckColumnsFind(row.FindColumns(searchText, searchType), expectedCells.Select(cell => cell.Column).ToArray());
+		CheckColumnsFind(row.FindColumns(searchExpression), expectedCells.Select(cell => cell.Column).ToArray());
 
 		if (expectedCount > 0)
-		{ Assert.AreEqual(expectedCells[0].Column, row.FindFirstColumn(searchText, searchType)); }
+		{ Assert.AreEqual(expectedCells[0].Column, row.FindFirstColumn(searchExpression)); }
 		else
-		{ Assert.AreEqual(null, row.FindFirstColumn(searchText, searchType)); }
+		{ Assert.AreEqual(null, row.FindFirstColumn(searchExpression)); }
 	}
 
 	private static void CheckColumnFind(GridColumn col, string? searchText, SearchType searchType, params GridCell[] expectedCells)
@@ -166,22 +167,23 @@ public class GridFindTests
 		Assert.IsNotNull(expectedCells);
 
 		int expectedCount = expectedCells.Count();
+		GridSearchExpression searchExpression = new GridSearchExpression(searchText, searchType);
 
 		//CELLS
-		CheckCellsFind(col.Find(searchText, searchType), expectedCells);
+		CheckCellsFind(col.Find(searchExpression), expectedCells);
 
 		if (expectedCount > 0)
-		{ Assert.AreEqual(expectedCells[0], col.FindFirst(searchText, searchType)); }
+		{ Assert.AreEqual(expectedCells[0], col.FindFirst(searchExpression)); }
 		else
-		{ Assert.AreEqual(null, col.FindFirst(searchText, searchType)); }
+		{ Assert.AreEqual(null, col.FindFirst(searchExpression)); }
 
 		//ROWS
-		CheckRowsFind(col.FindRows(searchText, searchType), expectedCells.Select(cell => cell.Row).ToArray());
+		CheckRowsFind(col.FindRows(searchExpression), expectedCells.Select(cell => cell.Row).ToArray());
 
 		if (expectedCount > 0)
-		{ Assert.AreEqual(expectedCells[0].Row, col.FindFirstRow(searchText, searchType)); }
+		{ Assert.AreEqual(expectedCells[0].Row, col.FindFirstRow(searchExpression)); }
 		else
-		{ Assert.AreEqual(null, col.FindFirstRow(searchText, searchType)); }
+		{ Assert.AreEqual(null, col.FindFirstRow(searchExpression)); }
 	}
 
 	private static void CheckCellsFind(IEnumerable<GridCell> cells, params GridCell[] expectedCells)
