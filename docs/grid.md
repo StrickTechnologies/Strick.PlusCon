@@ -29,8 +29,9 @@ for information on how to apply styling to these grid elements.
 result in an exception being thrown. After all, it is somewhat pointless to display a grid 
 without at least one of each.*
 
-The `Grid` class has a `Find` method that will perform a case-insensitive 
-search of all the grid's cells and return a sequence containing the matching cells.
+The `Grid` class has a `Find` method that will perform a search of all the grid's cells 
+and return a sequence containing the matching cells. 
+The find method takes a `GridSearchExpression` argument.
 
 ## `GridColumn` Class
 Represents a column in a grid.
@@ -53,9 +54,13 @@ The `HasCells` property returns a boolean indicating whether or not the column h
 to a grid, use the `Rows` collection, or one of the `AddRow` methods of the `Grid` object.*
 
 The `GridColumn` class has `Find`, `FindFirst`, `FindRows` and `FindFirstRow` methods 
-that will perform a case-insensitive search of all the columns's cells. 
-The methods return a sequence containing the matching cells (`Find`) or rows (`FindRows`), 
-the first matching cell (`FindFirst`), or the first matching row (`FindFirstRow`).
+that will perform a search of all the columns's cells. 
+These methods take a `GridSearchExpression` argument and 
+return a sequence containing 
+the matching cells (`Find`) 
+or rows (`FindRows`), 
+the first matching cell (`FindFirst`), 
+or the first matching row (`FindFirstRow`). 
 
 ## `GridColumns` Class
 The `GridColumns` class represents a collection of `GridColumn` objects for a grid (`Grid.Columns`). 
@@ -83,10 +88,13 @@ The styling for a row's cells can be set through its `CellStyle` and `ContentSty
 Setting these styles will override the styles inherited from the column or grid.
 
 The `GridRow` class has `Find`, `FindFirst`, `FindColumns` and `FindFirstColumn` methods 
-that will perform a case-insensitive search of all the row's cells. 
-The methods return a sequence containing the matching cells (`Find`) 
-or columns (`FindColumns`), the first matching cell (`FindFirst`), 
-or the first matching column (`FindFirstColumn`).
+that will perform a search of all the row's cells. 
+These methods take a `GridSearchExpression` argument and 
+return a sequence containing 
+the matching cells (`Find`) 
+or columns (`FindColumns`), 
+the first matching cell (`FindFirst`), 
+or the first matching column (`FindFirstColumn`). 
 
 ## `GridCell` Class
 The content to be displayed in a given cell can be accessed via it's (read/write) `Content` property. 
@@ -135,6 +143,17 @@ a Row or RowIndex property.
 Allows alignment, padding and margins to be specified for columns and cells.
 
 When a grid cell is rendered, Padding is part of the cell, Margins are outside the cell.
+
+## `GridSearchExpression` Class
+
+The `GridSearchExpression` class can be used to search the cells of a `Grid`, 
+`GridColumn`, or `GridRow` object. 
+
+The `Text` property specifies the text to search for. Both `null` and empty string are 
+acceptable, and search for cells containing those values, respectively.
+
+The `Type` property specifies the type of search to perform, and the `ComparisonType` 
+property designates the comparison type used for the search. 
 
 ## Examples
 
