@@ -42,52 +42,62 @@ public class GridFindTests
 		GridColumn col2 = grid.Columns[1];
 		GridColumn col3 = grid.Columns[2];
 
-		CheckColumnFind(col1, "foo", SearchType.Contains);
-		CheckColumnFind(col1, "foo", SearchType.StartsWith);
-		CheckColumnFind(col1, "foo", SearchType.EndsWith);
-		CheckColumnFind(col1, "foo", SearchType.Equals);
-		CheckColumnFind(col1, "c1", SearchType.Contains, grid.Rows[1].Cells[0], grid.Rows[3].Cells[0], grid.Rows[4].Cells[0]);
-		CheckColumnFind(col1, "c1", SearchType.EndsWith, grid.Rows[1].Cells[0], grid.Rows[3].Cells[0], grid.Rows[4].Cells[0]);
-		CheckColumnFind(col1, "c1", SearchType.Equals);
-		CheckColumnFind(col1, "c1", SearchType.StartsWith);
-		CheckColumnFind(col1, "col1", SearchType.Contains, grid.Rows[0].Cells[0], grid.Rows[2].Cells[0]);
-		CheckColumnFind(col1, "col1", SearchType.EndsWith, grid.Rows[0].Cells[0], grid.Rows[2].Cells[0]);
-		CheckColumnFind(col1, "col1", SearchType.StartsWith);
-		CheckColumnFind(col1, "col1", SearchType.Equals);
-		CheckColumnFind(col1, "col", SearchType.Contains, grid.Rows[0].Cells[0], grid.Rows[2].Cells[0]);
-		CheckColumnFind(col1, "col", SearchType.Equals);
-		CheckColumnFind(col1, "col", SearchType.StartsWith);
-		CheckColumnFind(col1, "col", SearchType.EndsWith);
-		CheckColumnFind(col2, "r4 c2", SearchType.Contains, grid.Rows[3].Cells[1]);
-		CheckColumnFind(col2, "r4 c2", SearchType.Contains, grid.Rows[3].Cells[1]);
-		CheckColumnFind(col2, "r4 c2", SearchType.Equals, grid.Rows[3].Cells[1]);
-		CheckColumnFind(col2, "r4 c2", SearchType.StartsWith, grid.Rows[3].Cells[1]);
-		CheckColumnFind(col2, "r4 c2", SearchType.EndsWith, grid.Rows[3].Cells[1]);
-		CheckColumnFind(col3, "col3", SearchType.Contains, grid.Rows[0].Cells[2], grid.Rows[2].Cells[2]);
-		CheckColumnFind(col3, "col3", SearchType.EndsWith, grid.Rows[0].Cells[2], grid.Rows[2].Cells[2]);
-		CheckColumnFind(col3, "col3", SearchType.StartsWith);
-		CheckColumnFind(col3, "col3", SearchType.Equals);
-		CheckColumnFind(col3, "row", SearchType.Contains, grid.Rows[0].Cells[2], grid.Rows[1].Cells[2]);
-		CheckColumnFind(col3, "row", SearchType.StartsWith, grid.Rows[0].Cells[2], grid.Rows[1].Cells[2]);
-		CheckColumnFind(col3, "row", SearchType.EndsWith);
-		CheckColumnFind(col3, "row", SearchType.Equals);
+		CheckColumnFind(col1, new("foo", SearchType.Contains));
+		CheckColumnFind(col1, new("foo", SearchType.StartsWith));
+		CheckColumnFind(col1, new("foo", SearchType.EndsWith));
+		CheckColumnFind(col1, new("foo", SearchType.Equals));
+		CheckColumnFind(col1, new("c1", SearchType.Contains), grid.Rows[1].Cells[0], grid.Rows[3].Cells[0], grid.Rows[4].Cells[0]);
+		CheckColumnFind(col1, new("c1", SearchType.EndsWith), grid.Rows[1].Cells[0], grid.Rows[3].Cells[0], grid.Rows[4].Cells[0]);
+		CheckColumnFind(col1, new("c1", SearchType.Equals));
+		CheckColumnFind(col1, new("c1", SearchType.StartsWith));
+		CheckColumnFind(col1, new("col1", SearchType.Contains), grid.Rows[0].Cells[0], grid.Rows[2].Cells[0]);
+		CheckColumnFind(col1, new("col1", SearchType.EndsWith), grid.Rows[0].Cells[0], grid.Rows[2].Cells[0]);
+		CheckColumnFind(col1, new("col1", SearchType.StartsWith));
+		CheckColumnFind(col1, new("col1", SearchType.Equals));
+		CheckColumnFind(col1, new("col", SearchType.Contains), grid.Rows[0].Cells[0], grid.Rows[2].Cells[0]);
+		CheckColumnFind(col1, new("col", SearchType.Equals));
+		CheckColumnFind(col1, new("col", SearchType.StartsWith));
+		CheckColumnFind(col1, new("col", SearchType.EndsWith));
+		CheckColumnFind(col2, new("r4 c2", SearchType.Contains), grid.Rows[3].Cells[1]);
+		CheckColumnFind(col2, new("r4 c2", SearchType.Contains), grid.Rows[3].Cells[1]);
+		CheckColumnFind(col2, new("r4 c2", SearchType.Equals), grid.Rows[3].Cells[1]);
+		CheckColumnFind(col2, new("r4 c2", SearchType.StartsWith), grid.Rows[3].Cells[1]);
+		CheckColumnFind(col2, new("r4 c2", SearchType.EndsWith), grid.Rows[3].Cells[1]);
+		CheckColumnFind(col3, new("col3", SearchType.Contains), grid.Rows[0].Cells[2], grid.Rows[2].Cells[2]);
+		CheckColumnFind(col3, new("col3", SearchType.EndsWith), grid.Rows[0].Cells[2], grid.Rows[2].Cells[2]);
+		CheckColumnFind(col3, new("col3", SearchType.StartsWith));
+		CheckColumnFind(col3, new("col3", SearchType.Equals));
+		CheckColumnFind(col3, new("row", SearchType.Contains), grid.Rows[0].Cells[2], grid.Rows[1].Cells[2]);
+		CheckColumnFind(col3, new("row", SearchType.StartsWith), grid.Rows[0].Cells[2], grid.Rows[1].Cells[2]);
+		CheckColumnFind(col3, new("row", SearchType.EndsWith));
+		CheckColumnFind(col3, new("row", SearchType.Equals));
 
-		CheckColumnFind(col3, "", SearchType.Contains);
-		CheckColumnFind(col2, "", SearchType.Contains, grid.Rows[4].Cells[1]);
-		CheckColumnFind(col2, null, SearchType.Contains);
-		CheckColumnFind(col3, null, SearchType.Contains, grid.Rows[4].Cells[2]);
-		CheckColumnFind(col3, "", SearchType.StartsWith);
-		CheckColumnFind(col2, "", SearchType.StartsWith, grid.Rows[4].Cells[1]);
-		CheckColumnFind(col2, null, SearchType.StartsWith);
-		CheckColumnFind(col3, null, SearchType.StartsWith, grid.Rows[4].Cells[2]);
-		CheckColumnFind(col3, "", SearchType.EndsWith);
-		CheckColumnFind(col2, "", SearchType.EndsWith, grid.Rows[4].Cells[1]);
-		CheckColumnFind(col2, null, SearchType.EndsWith);
-		CheckColumnFind(col3, null, SearchType.EndsWith, grid.Rows[4].Cells[2]);
-		CheckColumnFind(col3, "", SearchType.Equals);
-		CheckColumnFind(col2, "", SearchType.Equals, grid.Rows[4].Cells[1]);
-		CheckColumnFind(col2, null, SearchType.Equals);
-		CheckColumnFind(col3, null, SearchType.Equals, grid.Rows[4].Cells[2]);
+		CheckColumnFind(col3, new("", SearchType.Contains));
+		CheckColumnFind(col2, new("", SearchType.Contains), grid.Rows[4].Cells[1]);
+		CheckColumnFind(col2, new(null, SearchType.Contains));
+		CheckColumnFind(col3, new(null, SearchType.Contains), grid.Rows[4].Cells[2]);
+		CheckColumnFind(col3, new("", SearchType.StartsWith));
+		CheckColumnFind(col2, new("", SearchType.StartsWith), grid.Rows[4].Cells[1]);
+		CheckColumnFind(col2, new(null, SearchType.StartsWith));
+		CheckColumnFind(col3, new(null, SearchType.StartsWith), grid.Rows[4].Cells[2]);
+		CheckColumnFind(col3, new("", SearchType.EndsWith));
+		CheckColumnFind(col2, new("", SearchType.EndsWith), grid.Rows[4].Cells[1]);
+		CheckColumnFind(col2, new(null, SearchType.EndsWith));
+		CheckColumnFind(col3, new(null, SearchType.EndsWith), grid.Rows[4].Cells[2]);
+		CheckColumnFind(col3, new("", SearchType.Equals));
+		CheckColumnFind(col2, new("", SearchType.Equals), grid.Rows[4].Cells[1]);
+		CheckColumnFind(col2, new(null, SearchType.Equals));
+		CheckColumnFind(col3, new(null, SearchType.Equals), grid.Rows[4].Cells[2]);
+
+		CheckColumnFind(col1, new("col1", SearchType.Contains, StringComparison.Ordinal), grid.Rows[0].Cells[0], grid.Rows[2].Cells[0]);
+		CheckColumnFind(col1, new("col1", SearchType.EndsWith, StringComparison.Ordinal), grid.Rows[0].Cells[0], grid.Rows[2].Cells[0]);
+		CheckColumnFind(col1, new("col1", SearchType.StartsWith, StringComparison.Ordinal));
+		CheckColumnFind(col1, new("col1", SearchType.Equals, StringComparison.Ordinal));
+		CheckColumnFind(col1, new("Col1", SearchType.Contains, StringComparison.Ordinal));
+		CheckColumnFind(col1, new("Col1", SearchType.EndsWith, StringComparison.Ordinal));
+		CheckColumnFind(col1, new("Col1", SearchType.Contains, StringComparison.OrdinalIgnoreCase), grid.Rows[0].Cells[0], grid.Rows[2].Cells[0]);
+		CheckColumnFind(col1, new("Col1", SearchType.EndsWith, StringComparison.OrdinalIgnoreCase), grid.Rows[0].Cells[0], grid.Rows[2].Cells[0]);
+
 	}
 
 	[TestMethod]
@@ -96,23 +106,36 @@ public class GridFindTests
 		GridRow row1 = grid.Rows[0];
 		GridRow row5 = grid.Rows[4];
 
-		CheckRowFind(row1, "foo", SearchType.Contains);
-		CheckRowFind(row1, "foo", SearchType.StartsWith);
-		CheckRowFind(row1, "foo", SearchType.EndsWith);
-		CheckRowFind(row1, "foo", SearchType.Equals);
-		CheckRowFind(row1, "col2", SearchType.Contains, row1.Cells[1]);
-		CheckRowFind(row1, "col2", SearchType.EndsWith, row1.Cells[1]);
-		CheckRowFind(row1, "col2", SearchType.Equals);
-		CheckRowFind(row1, "col2", SearchType.StartsWith);
+		CheckRowFind(row1, new("foo", SearchType.Contains));
+		CheckRowFind(row1, new("foo", SearchType.StartsWith));
+		CheckRowFind(row1, new("foo", SearchType.EndsWith));
+		CheckRowFind(row1, new("foo", SearchType.Equals));
+		CheckRowFind(row1, new("col2", SearchType.Contains), row1.Cells[1]);
+		CheckRowFind(row1, new("col2", SearchType.EndsWith), row1.Cells[1]);
+		CheckRowFind(row1, new("col2", SearchType.Equals));
+		CheckRowFind(row1, new("col2", SearchType.StartsWith));
+
+		CheckRowFind(row1, new("col2", SearchType.Contains, StringComparison.Ordinal), row1.Cells[1]);
+		CheckRowFind(row1, new("col2", SearchType.EndsWith, StringComparison.Ordinal), row1.Cells[1]);
+		CheckRowFind(row1, new("col2", SearchType.Equals, StringComparison.Ordinal));
+		CheckRowFind(row1, new("col2", SearchType.StartsWith, StringComparison.Ordinal));
+		CheckRowFind(row1, new("Col2", SearchType.Contains, StringComparison.Ordinal));
+		CheckRowFind(row1, new("Col2", SearchType.EndsWith, StringComparison.Ordinal));
+		CheckRowFind(row1, new("Col2", SearchType.Equals, StringComparison.Ordinal));
+		CheckRowFind(row1, new("Col2", SearchType.StartsWith, StringComparison.Ordinal));
+		CheckRowFind(row1, new("Col2", SearchType.Contains, StringComparison.OrdinalIgnoreCase), row1.Cells[1]);
+		CheckRowFind(row1, new("Col2", SearchType.EndsWith, StringComparison.OrdinalIgnoreCase), row1.Cells[1]);
+		CheckRowFind(row1, new("Col2", SearchType.Equals, StringComparison.OrdinalIgnoreCase));
+		CheckRowFind(row1, new("Col2", SearchType.StartsWith, StringComparison.OrdinalIgnoreCase));
 		
-		CheckRowFind(row5, "", SearchType.Contains, row5.Cells[1]);
-		CheckRowFind(row5, "", SearchType.StartsWith, row5.Cells[1]);
-		CheckRowFind(row5, "", SearchType.EndsWith, row5.Cells[1]);
-		CheckRowFind(row5, "", SearchType.Equals, row5.Cells[1]);
-		CheckRowFind(row5, null, SearchType.Contains, row5.Cells[2]);
-		CheckRowFind(row5, null, SearchType.StartsWith, row5.Cells[2]);
-		CheckRowFind(row5, null, SearchType.EndsWith, row5.Cells[2]);
-		CheckRowFind(row5, null, SearchType.Equals, row5.Cells[2]);
+		CheckRowFind(row5, new("", SearchType.Contains), row5.Cells[1]);
+		CheckRowFind(row5, new("", SearchType.StartsWith), row5.Cells[1]);
+		CheckRowFind(row5, new("", SearchType.EndsWith), row5.Cells[1]);
+		CheckRowFind(row5, new("", SearchType.Equals), row5.Cells[1]);
+		CheckRowFind(row5, new(null, SearchType.Contains), row5.Cells[2]);
+		CheckRowFind(row5, new(null, SearchType.StartsWith), row5.Cells[2]);
+		CheckRowFind(row5, new(null, SearchType.EndsWith), row5.Cells[2]);
+		CheckRowFind(row5, new(null, SearchType.Equals), row5.Cells[2]);
 	}
 
 	[TestMethod]
@@ -132,17 +155,60 @@ public class GridFindTests
 		CheckCellsFind(grid.Find(new GridSearchExpression("c1", SearchType.StartsWith)));
 		CheckCellsFind(grid.Find(new GridSearchExpression("c1", SearchType.Equals)));
 
+		CheckCellsFind(grid.Find(new GridSearchExpression("c1", SearchType.Contains, StringComparison.Ordinal)), grid.Rows[1].Cells[0], grid.Rows[3].Cells[0], grid.Rows[4].Cells[0]);
+		CheckCellsFind(grid.Find(new GridSearchExpression("c1", SearchType.EndsWith, StringComparison.Ordinal)), grid.Rows[1].Cells[0], grid.Rows[3].Cells[0], grid.Rows[4].Cells[0]);
+		CheckCellsFind(grid.Find(new GridSearchExpression("c1", SearchType.StartsWith, StringComparison.Ordinal)));
+		CheckCellsFind(grid.Find(new GridSearchExpression("c1", SearchType.Equals, StringComparison.Ordinal)));
+		CheckCellsFind(grid.Find(new GridSearchExpression("C1", SearchType.Contains, StringComparison.Ordinal)));
+		CheckCellsFind(grid.Find(new GridSearchExpression("C1", SearchType.EndsWith, StringComparison.Ordinal)));
+		CheckCellsFind(grid.Find(new GridSearchExpression("C1", SearchType.StartsWith, StringComparison.Ordinal)));
+		CheckCellsFind(grid.Find(new GridSearchExpression("C1", SearchType.Equals, StringComparison.Ordinal)));
+		CheckCellsFind(grid.Find(new GridSearchExpression("C1", SearchType.Contains, StringComparison.OrdinalIgnoreCase)), grid.Rows[1].Cells[0], grid.Rows[3].Cells[0], grid.Rows[4].Cells[0]);
+		CheckCellsFind(grid.Find(new GridSearchExpression("C1", SearchType.EndsWith, StringComparison.OrdinalIgnoreCase)), grid.Rows[1].Cells[0], grid.Rows[3].Cells[0], grid.Rows[4].Cells[0]);
+		CheckCellsFind(grid.Find(new GridSearchExpression("C1", SearchType.StartsWith, StringComparison.OrdinalIgnoreCase)));
+		CheckCellsFind(grid.Find(new GridSearchExpression("C1", SearchType.Equals, StringComparison.OrdinalIgnoreCase)));
+
 		CheckCellsFind(grid.Find(new GridSearchExpression("3", SearchType.Contains)), grid.Rows[0].Cells[2], grid.Rows[1].Cells[2], grid.Rows[2].Cells[0], grid.Rows[2].Cells[1], grid.Rows[2].Cells[2], grid.Rows[3].Cells[2]);
 	}
 
+	[TestMethod]
+	public void GridSearchExpressionTests()
+	{
+		GridSearchExpression searchExpression = new();
+		Assert.IsInstanceOfType(searchExpression, typeof(GridSearchExpression));
+		Assert.IsNull(searchExpression.Text);
+		Assert.AreEqual(SearchType.Equals, searchExpression.Type);
+		Assert.AreEqual(StringComparison.OrdinalIgnoreCase, searchExpression.ComparisonType);
+		searchExpression.Text = "foo";
+		Assert.IsInstanceOfType(searchExpression, typeof(GridSearchExpression));
+		Assert.AreEqual("foo",searchExpression.Text);
+		Assert.AreEqual(SearchType.Equals, searchExpression.Type);
+		Assert.AreEqual(StringComparison.OrdinalIgnoreCase, searchExpression.ComparisonType);
+		searchExpression.Type = SearchType.Contains;
+		Assert.IsInstanceOfType(searchExpression, typeof(GridSearchExpression));
+		Assert.AreEqual("foo",searchExpression.Text);
+		Assert.AreEqual(SearchType.Contains, searchExpression.Type);
+		Assert.AreEqual(StringComparison.OrdinalIgnoreCase, searchExpression.ComparisonType);
+		searchExpression.ComparisonType= StringComparison.Ordinal;
+		Assert.IsInstanceOfType(searchExpression, typeof(GridSearchExpression));
+		Assert.AreEqual("foo",searchExpression.Text);
+		Assert.AreEqual(SearchType.Contains, searchExpression.Type);
+		Assert.AreEqual(StringComparison.Ordinal, searchExpression.ComparisonType);
 
-	private static void CheckRowFind(GridRow row, string? searchText, SearchType searchType, params GridCell[] expectedCells)
+		searchExpression = new("bar", SearchType.StartsWith, StringComparison.CurrentCulture);
+		Assert.IsInstanceOfType(searchExpression, typeof(GridSearchExpression));
+		Assert.AreEqual("bar",searchExpression.Text);
+		Assert.AreEqual(SearchType.StartsWith, searchExpression.Type);
+		Assert.AreEqual(StringComparison.CurrentCulture, searchExpression.ComparisonType);
+	}
+
+
+	private static void CheckRowFind(GridRow row, GridSearchExpression searchExpression, params GridCell[] expectedCells)
 	{
 		Assert.IsNotNull(row);
 		Assert.IsNotNull(expectedCells);
 
 		int expectedCount = expectedCells.Count();
-		GridSearchExpression searchExpression = new GridSearchExpression(searchText, searchType);
 
 		//CELLS
 		CheckCellsFind(row.Find(searchExpression), expectedCells);
@@ -161,13 +227,12 @@ public class GridFindTests
 		{ Assert.AreEqual(null, row.FindFirstColumn(searchExpression)); }
 	}
 
-	private static void CheckColumnFind(GridColumn col, string? searchText, SearchType searchType, params GridCell[] expectedCells)
+	private static void CheckColumnFind(GridColumn col, GridSearchExpression searchExpression, params GridCell[] expectedCells)
 	{
 		Assert.IsNotNull(col);
 		Assert.IsNotNull(expectedCells);
 
 		int expectedCount = expectedCells.Count();
-		GridSearchExpression searchExpression = new GridSearchExpression(searchText, searchType);
 
 		//CELLS
 		CheckCellsFind(col.Find(searchExpression), expectedCells);

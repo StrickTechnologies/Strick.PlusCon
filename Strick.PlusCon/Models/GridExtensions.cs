@@ -37,22 +37,22 @@ public static class GridExtensions
 		{
 			case SearchType.Contains:
 			{
-				return cells.Where(cell => cell.Content != null && cell.Content.Contains(searchExpression.Text, StringComparison.OrdinalIgnoreCase));
+				return cells.Where(cell => cell.Content != null && cell.Content.Contains(searchExpression.Text, searchExpression.ComparisonType));
 			}
 
 			case SearchType.Equals:
 			{
-				return cells.Where(cell => searchExpression.Text.Equals(cell.Content, StringComparison.OrdinalIgnoreCase));
+				return cells.Where(cell => searchExpression.Text.Equals(cell.Content, searchExpression.ComparisonType));
 			}
 
 			case SearchType.StartsWith:
 			{
-				return cells.Where(cell => cell.Content != null && cell.Content.StartsWith(searchExpression.Text, StringComparison.OrdinalIgnoreCase));
+				return cells.Where(cell => cell.Content != null && cell.Content.StartsWith(searchExpression.Text, searchExpression.ComparisonType));
 			}
 
 			case SearchType.EndsWith:
 			{
-				return cells.Where(cell => cell.Content != null && cell.Content.EndsWith(searchExpression.Text, StringComparison.OrdinalIgnoreCase));
+				return cells.Where(cell => cell.Content != null && cell.Content.EndsWith(searchExpression.Text, searchExpression.ComparisonType));
 			}
 		}
 
