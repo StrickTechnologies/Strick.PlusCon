@@ -4,7 +4,7 @@
 A `Grid` consists of rows and columns of data that is displayed in a tabular format. 
 Each Column is sized automatically to fit its widest content. 
 In addition to the rows and columns, grids can also have a `Title`, `Subtitle` and `Footer`. 
-The titles are centered above the rows/columns, the footer is centered beneath the rows/columns. 
+The titles are shown above the rows/columns, the footer is beneath beneath the rows/columns. 
 
 The appearance and layout of the grid's columns, rows, and cells can be customized through the 
 use of properties available at the various levels. 
@@ -23,7 +23,9 @@ controlled via the `ShowColumnHeaders` property.
 
 The `Title`, `Subtitle` and `Footer` properties are `StyledText` objects. 
 See the [doc for the `TextStyle` and `StyledText` classes](textStyle.md#styledtext-class)
-for information on how to apply styling to these grid elements.
+for information on how to apply styling to these grid elements. Additionally, there are 
+alignment properties for each (`TitleAlignment`, `SubtitleAlignment`, `FooterAlignment`) 
+that control the horizontal alignment of the content.
 
 *Note: Calling the `Show` method if the grid does not have at least one column and one row will 
 result in an exception being thrown. After all, it is somewhat pointless to display a grid 
@@ -171,7 +173,9 @@ g.AddRow("row2-column1", "row2-col2", "r2-col3");
 g.AddRow("r3-col1", "row3-column2", "r3-c3");
 
 g.Footer = new($"Total Count {g.RowCount}");
+g.FooterAlignment = HorizontalAlignment.Left;
 g.Show();
+RK();
 ```
 ![Example - Grid 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_grid_1.png)
 
@@ -208,7 +212,9 @@ cell.CellStyle = new(Color.White, Color.SlateGray);
 
 g.AddRow("r3-col1", "row3-col2", "r3-c3");
 
-g.Footer = new("Total Count 3");
+g.Footer = new("Total Count 3", Color.White, Color.SkyBlue, Color.White);
+g.Footer.Style.Reverse = true;
 g.Show();
+RK();
 ```
 ![Example - Grid 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_grid_2.png)

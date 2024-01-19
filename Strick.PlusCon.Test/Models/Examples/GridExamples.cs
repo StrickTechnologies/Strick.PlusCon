@@ -40,6 +40,7 @@ internal static class GridExamples
 		g.AddRow("r3-col1", "row3-column2", "r3-c3");
 
 		g.Footer = new($"Total Count {g.RowCount}");
+		g.FooterAlignment = HorizontalAlignment.Left;
 		g.Show();
 		RK();
 	}
@@ -77,7 +78,8 @@ internal static class GridExamples
 
 		g.AddRow("r3-col1", "row3-col2", "r3-c3");
 
-		g.Footer = new("Total Count 3");
+		g.Footer = new("Total Count 3", Color.White, Color.SkyBlue, Color.White);
+		g.Footer.Style.Reverse = true;
 		g.Show();
 		RK();
 	}

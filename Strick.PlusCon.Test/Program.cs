@@ -57,6 +57,7 @@ internal class Program
 
 		Menu gridMenu = new PCMenu("Grid Menu");
 		gridMenu.Options.Add(new("Show test grid", 'G', GridTest));
+		gridMenu.Options.Add(new("Show test grid 2", '2', GridTest2));
 
 		Menu mainMenu = new PCMenu("Main Menu");
 
@@ -577,7 +578,14 @@ internal class Program
 	{
 		Grid g = new();
 		g.Title = new("A Sample Grid", Color.White, Color.Turquoise);
+		g.TitleAlignment = HorizontalAlignment.Left;
 		g.Subtitle = new("this one has a really super long sub-title. It's wider than the whole grid.");
+		g.Subtitle.Text = "foo bar baz woo koo boo zoo";
+		g.Subtitle.Style.ForeColor = Color.White;
+		g.Subtitle.Style.BackColor = Color.Pink;
+		g.Subtitle.Style.SetGradientColors(Color.Pink, Color.White, Color.Pink);
+		g.Subtitle.Style.Reverse = true;
+		//g.SubtitleAlignment = HorizontalAlignment.Left;
 		g.CellStyle.BackColor = Color.FromArgb(48, 48, 48);
 		g.CellContentStyle = g.CellStyle;
 		//g.CellContentStyle.BackColor = Color.FromArgb(48, 48, 48);
@@ -643,6 +651,7 @@ internal class Program
 		g.AddRow("r6-c1", DateTime.Now, 1);
 
 		g.Footer = new($"A total of {g.RowCount} fun items", Color.White, Color.Purple);
+		g.FooterAlignment = HorizontalAlignment.Right;
 
 		GridColumn gc = g.Columns.Add("foo bar");
 		g.ColumnHeaderContentStyle.SetGradientColors(Color.Red, Color.Pink);
@@ -659,6 +668,50 @@ internal class Program
 		g.Show();
 		RK();
 	}
+
+	private static void GridTest2()
+	{
+		Grid g = new();
+		g.ColumnHeaderCellStyle = new();
+		g.ColumnHeaderContentStyle = new();
+
+		g.Columns.Add("1234567");
+		g.Columns[0].CellLayout.MarginLeft = 0;
+		g.Columns[0].CellLayout.MarginRight = 0;
+		g.AddRow("*--*--*");
+		CLS();
+		g.Show();
+		RK();
+
+		g.Title = new("foo");
+		g.Subtitle = new("bar");
+		g.Footer = new("baz");
+		CLS();
+		g.Show();
+		RK();
+
+		g.TitleAlignment = HorizontalAlignment.Left;
+		g.SubtitleAlignment = HorizontalAlignment.Left;
+		g.FooterAlignment = HorizontalAlignment.Left;
+		CLS();
+		g.Show();
+		RK();
+
+		g.TitleAlignment = HorizontalAlignment.Center;
+		g.SubtitleAlignment = HorizontalAlignment.Center;
+		g.FooterAlignment = HorizontalAlignment.Center;
+		CLS();
+		g.Show();
+		RK();
+
+		g.TitleAlignment = HorizontalAlignment.Right;
+		g.SubtitleAlignment = HorizontalAlignment.Right;
+		g.FooterAlignment = HorizontalAlignment.Right;
+		CLS();
+		g.Show();
+		RK();
+	}
+
 
 	class SpecialChar
 	{

@@ -398,8 +398,8 @@ public class GridTests
 	public void ShowColumnHeaders()
 	{
 		Grid g = new Grid();
-		g.ColumnHeaderContentStyle=new TextStyle();
-		g.ColumnHeaderCellStyle=new TextStyle();
+		g.ColumnHeaderContentStyle = new TextStyle();
+		g.ColumnHeaderCellStyle = new TextStyle();
 		var col1 = g.Columns.Add("foo");
 		col1.CellLayout.MarginLeft = 0;
 		col1.CellLayout.MarginRight = 0;
@@ -428,6 +428,42 @@ public class GridTests
 		CheckColumnState(col2, 1, "bar", 2, 2, 2);
 		CheckColHead(col3, 2, "longer", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "");
 		CheckColumnState(col3, 2, "longer", 2, 2, 2);
+	}
+
+	[TestMethod]
+	public void Chrome()
+	{
+		Grid g = new();
+		g.ColumnHeaderCellStyle = new TextStyle();
+		g.ColumnHeaderContentStyle = new TextStyle();
+		g.Columns.Add("1234567");
+		g.Columns[0].CellLayout.MarginLeft = 0;
+		g.Columns[0].CellLayout.MarginRight = 0;
+		g.AddRow("");
+
+		g.Title = new("foo");
+		CheckTitleRendering(g, g.Title, "foo    ", "  foo  ", "    foo");
+		g.Title.Text = "foobar";
+		CheckTitleRendering(g, g.Title, "foobar ", "foobar ", " foobar");
+		g.Title.Text = "foo bar";
+		CheckTitleRendering(g, g.Title, "foo bar", "foo bar", "foo bar");
+		g.Title.Text = "foo bar baz";
+		CheckTitleRendering(g, g.Title, "foo bar baz", "foo bar baz", "foo bar baz");
+		g.Title.Text = "-";
+		string tfill = "-------";
+		CheckTitleRendering(g, g.Title, tfill, tfill, tfill);
+
+		g.Title.Text = "foo";
+		g.Title.Style.ForeColor = Expectations.red;
+		CheckTitleRendering(g, g.Title, "foo    ", "  foo  ", "    foo", Expectations.ForeColorRed, Expectations.ForeColorReset);
+		g.Title.Text = "foobar";
+		CheckTitleRendering(g, g.Title, "foobar ", "foobar ", " foobar", Expectations.ForeColorRed, Expectations.ForeColorReset);
+		g.Title.Text = "foo bar";
+		CheckTitleRendering(g, g.Title, "foo bar", "foo bar", "foo bar", Expectations.ForeColorRed, Expectations.ForeColorReset);
+		g.Title.Text = "foo bar baz";
+		CheckTitleRendering(g, g.Title, "foo bar baz", "foo bar baz", "foo bar baz", Expectations.ForeColorRed, Expectations.ForeColorReset);
+		g.Title.Text = "-";
+		CheckTitleRendering(g, g.Title, tfill, tfill, tfill, Expectations.ForeColorRed, Expectations.ForeColorReset);
 	}
 
 
@@ -542,5 +578,12 @@ public class GridTests
 			Assert.AreEqual(expectedLayout.PaddingRight, actualLayout.PaddingRight);
 			Assert.AreEqual(expectedLayout.PaddingRightChar, actualLayout.PaddingRightChar);
 		}
+	}
+
+	internal static void CheckTitleRendering(Grid g, StyledText title, string expectedLeft, string expectedCenter, string expectedRight, string pre = "", string post = "")
+	{
+		Assert.AreEqual(pre + expectedLeft + post, g.RenderTitle(title, HorizontalAlignment.Left));
+		Assert.AreEqual(pre + expectedCenter + post, g.RenderTitle(title, HorizontalAlignment.Center));
+		Assert.AreEqual(pre + expectedRight + post, g.RenderTitle(title, HorizontalAlignment.Right));
 	}
 }

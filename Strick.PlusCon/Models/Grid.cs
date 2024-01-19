@@ -101,12 +101,26 @@ public class Grid
 	#region CHROME
 
 	/// <summary>
-	/// The title of the grid. Centered above the grid rows/columns.
-	/// If a single character string is specified (e.g. "-"), that character will be repeated for the width of the grid. 
-	/// <para>Note: if the Title is wider than the width of all the grid's columns, 
-	/// it will start at the left edge of the grid and flow past the right edge.</para>
+	/// The title of the grid. Shows at the top of the grid -- above the rows/columns. 
+	/// Horizontal alignment of the title's content can be controlled using the <see cref="TitleAlignment"/> property.
+	/// <div id='desc'>
+	/// If null, the line will not be shown. 
+	/// If a single character string is specified (e.g. "-") for the <see cref="StyledText.Text"/> property, 
+	/// that character will be repeated for the width of the grid. 
+	/// To show a blank line, use a single space as the content.
+	/// <para>
+	/// Note: if the content is wider than the width of all the grid's columns, 
+	/// it will start at the left edge of the grid and flow past the right edge, 
+	/// regardless of the horizontal alignment setting.
+	/// </para>
+	/// </div>
 	/// </summary>
 	public StyledText? Title { get; set; }
+
+	/// <summary>
+	/// The horizontal alignment for the grid's <see cref="Title"/>.
+	/// </summary>
+	public HorizontalAlignment TitleAlignment { get; set; } = HorizontalAlignment.Center;
 
 	/// <summary>
 	/// The length of the <see cref="Title"/> property. If <see cref="Title"/> is null or empty, 0 is returned. 
@@ -114,12 +128,16 @@ public class Grid
 	public int TitleLength => Title == null ? 0 : Title.Text.Length;
 
 	/// <summary>
-	/// The subtitle of the grid. Centered at the top of the grid, beneath the <see cref="Title"/> above the grid rows/columns.
-	/// If a single character string is specified (e.g. "-"), that character will be repeated for the width of the grid.
-	/// <para>Note: if the Subtitle is wider than the width of all the grid's columns, 
-	/// it will start at the left edge of the grid and flow past the right edge.</para>
+	/// The subtitle of the grid. Shown at the top of the grid, beneath the <see cref="Title"/>, above the rows/columns.
+	/// Horizontal alignment of the subtitle's content can be controlled using the <see cref="SubtitleAlignment"/> property.
+	/// <inheritdoc cref="Title" path="/summary/div[@id='desc']"/>
 	/// </summary>
 	public StyledText? Subtitle { get; set; }
+
+	/// <summary>
+	/// The horizontal alignment for the grid's <see cref="Subtitle"/>.
+	/// </summary>
+	public HorizontalAlignment SubtitleAlignment { get; set; } = HorizontalAlignment.Center;
 
 	/// <summary>
 	/// The length of the <see cref="Subtitle"/> property. If <see cref="Subtitle"/> is null or empty, 0 is returned. 
@@ -127,12 +145,16 @@ public class Grid
 	public int SubTitleLength => Subtitle == null ? 0 : Subtitle.Text.Length;
 
 	/// <summary>
-	/// The footer of the grid. Centered at the bottom of the grid, beneath the the grid rows/columns.
-	/// If a single character string is specified (e.g. "-"), that character will be repeated for the width of the grid.
-	/// <para>Note: if the Footer is wider than the width of all the grid's columns, 
-	/// it will start at the left edge of the grid and flow past the right edge.</para>
+	/// The footer of the grid. Shown at the bottom of the grid, beneath the the rows/columns.
+	/// Horizontal alignment of the footer's content can be controlled using the <see cref="FooterAlignment"/> property.
+	/// <inheritdoc cref="Title" path="/summary/div[@id='desc']"/>
 	/// </summary>
 	public StyledText? Footer { get; set; }
+
+	/// <summary>
+	/// The horizontal alignment for the grid's <see cref="Footer"/>.
+	/// </summary>
+	public HorizontalAlignment FooterAlignment { get; set; } = HorizontalAlignment.Center;
 
 	/// <summary>
 	/// The length of the <see cref="Footer"/> property. If <see cref="Footer"/> is null or empty, 0 is returned. 
@@ -211,12 +233,12 @@ public class Grid
 		//TITLES
 		if (Title != null)
 		{
-			ShowTitle(Title);
+			ShowTitle(Title, TitleAlignment);
 			MoveToStartOfNextRow(col);
 		}
 		if (Subtitle != null)
 		{
-			ShowTitle(Subtitle);
+			ShowTitle(Subtitle, SubtitleAlignment);
 			MoveToStartOfNextRow(col);
 		}
 
@@ -261,20 +283,29 @@ public class Grid
 		//FOOTER
 		if (Footer != null)
 		{
-			ShowTitle(Footer);
+			ShowTitle(Footer, FooterAlignment);
 			MoveToStartOfNextRow(col);
 		}
 	}
 
-	private void ShowTitle(StyledText? title)
+	private void ShowTitle(StyledText? title, HorizontalAlignment alignment)
 	{
 		if (title == null)
 		{ return; }
 
+		W(RenderTitle(title, alignment));
+	}
+
+	internal string RenderTitle(StyledText title, HorizontalAlignment alignment)
+	{
 		if (title.Text.Length == 1)
-		{ W(title.StyleText(new string(title.Text[0], Width))); }
-		else
-		{ W(title.StyleText(title.Text.Center(Width))); }
+		{ return title.StyleText(new string(title.Text[0], Width)); }
+		else if (title.Text.Length > Width || alignment == HorizontalAlignment.Left)
+		{ return title.StyleText(title.Text.PadRight(Width)); }
+		else if (alignment == HorizontalAlignment.Center)
+		{ return title.StyleText(title.Text.Center(Width)); }
+		else //if (alignment == HorizontalAlignment.Right)
+		{ return title.StyleText(title.Text.PadLeft(Width)); }
 	}
 
 
