@@ -36,6 +36,25 @@ public class Grid
 	/// </summary>
 	public int ColumnCount => Columns.Count;
 
+
+	/// <summary>
+	/// <inheritdoc cref="GridColumns.Add(string)"/>
+	/// </summary>
+	public GridColumn AddColumn() => Columns.Add();
+
+	/// <summary>
+	/// <inheritdoc cref="GridColumns.Add(string)"/>
+	/// </summary>
+	/// <param name="headerText"><inheritdoc cref="GridColumns.Add(string, HorizontalAlignment)" path="/param[@name='headerText']"/></param>
+	public GridColumn AddColumn(string headerText) => Columns.Add(headerText);
+
+	/// <summary>
+	/// <inheritdoc cref="GridColumns.Add(string, HorizontalAlignment)"/>
+	/// </summary>
+	/// <param name="headerText"><inheritdoc cref="GridColumns.Add(string, HorizontalAlignment)" path="/param[@name='headerText']"/></param>
+	/// <param name="alignment"><inheritdoc cref="GridColumns.Add(string, HorizontalAlignment)" path="/param[@name='alignment']"/></param>
+	public GridColumn AddColumn(string headerText, HorizontalAlignment alignment) => Columns.Add(headerText, alignment);
+
 	#endregion COLUMNS
 
 
@@ -93,6 +112,27 @@ public class Grid
 		GridRow r = new(this, cellContent);
 		Rows.Add(r);
 		return r;
+	}
+
+	/// <summary>
+	/// Adds a new "separator" row to the grid. A separator row is just a normal row with:
+	/// <list type="bullet">
+	/// <item>Each cell's  <see cref="GridCellBase.FillerChar"/> property set to the 
+	/// value of the <paramref name="fillerChar"/> argument.</item>
+	/// <item>Each cell's <see cref="GridCellBase.Content"/> property set to null. 
+	/// Note: the Content property can be set for cells in a separator row, just as in any other row.
+	/// </item>
+	/// </list>
+	/// </summary>
+	/// <param name="fillerChar">foo</param>
+	public GridRow AddSeparatorRow(char fillerChar = ' ')
+	{
+		GridRow newRow = new(this);
+		Rows.Add(newRow);
+		foreach (GridCell cell in newRow.Cells)
+		{ cell.FillerChar = fillerChar; }
+
+		return newRow;
 	}
 
 	#endregion ROWS
