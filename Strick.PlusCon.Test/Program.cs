@@ -59,7 +59,6 @@ internal class Program
 		Menu gridMenu = new PCMenu("Grid Menu");
 		gridMenu.Options.Add(new("Show test grid", 'G', GridTest));
 		gridMenu.Options.Add(new("Show test grid 2", '2', GridTest2));
-		gridMenu.Options.Add(new("Show test grid 3", '3', GridTest3));
 
 		Menu mainMenu = new PCMenu("Main Menu");
 
@@ -724,44 +723,6 @@ internal class Program
 		g.FooterAlignment = HorizontalAlignment.Right;
 		CLS();
 		g.Show();
-		RK();
-	}
-
-	private static void GridTest3()
-	{
-		Grid grid = new Grid();
-		grid.ColumnHeaderContentStyle.Underline = false;
-		grid.ColumnHeaderCellStyle.Underline = false;
-		grid.CellContentStyle.BackColor = Color.Silver;
-
-		GridColumn col = grid.Columns.Add();
-		col.CellLayout.PaddingLeft = 3;
-		col.CellLayout.PaddingLeftChar = 'L';
-		col.CellLayout.PaddingRight = 3;
-		col.CellLayout.PaddingRightChar = 'R';
-		col.Header.FillerChar = 'f';
-
-		GridRow row = grid.AddRow(" row 1 ");
-		row = grid.AddRow(" row 2 ");
-		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
-		row = grid.AddRow(" row 3 ");
-		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;
-		grid.AddRow(" ");
-		row = grid.AddRow(" ");
-		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
-		row = grid.AddRow(" ");
-		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;
-		grid.AddRow("");
-		grid.AddRow(" row 6 - much wider");
-
-		col.Header.Content = Ruler.GetH(col.CellWidth, null, Ruler.HorizontalSegment);
-
-		foreach (GridCell cell in col.Cells)
-		{ cell.FillerChar = 'f'; }
-
-		CLS(Color.FromArgb(64, 64, 64));
-		W(EscapeCodes.ColorReset_Back);
-		grid.Show();
 		RK();
 	}
 

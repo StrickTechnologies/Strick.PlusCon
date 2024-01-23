@@ -131,7 +131,7 @@ internal static class GridExamples
 
 		int legendLeft = grid.Width + 2;
 		Console.SetCursorPosition(legendLeft, 0);
-		W(new StyledText("Legend", new TextStyle(Color.DodgerBlue, background) { Underline = true }));
+		W("Legend", new TextStyle(Color.DodgerBlue, background) { Underline = true });
 		Console.SetCursorPosition(legendLeft, 1);
 		W(" ", text, Color.Black);
 		W(" Margin", text, background);
