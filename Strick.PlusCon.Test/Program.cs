@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
 
 using Strick.PlusCon.Models;
 using Strick.PlusCon.Test.Models;
@@ -58,6 +59,7 @@ internal class Program
 		Menu gridMenu = new PCMenu("Grid Menu");
 		gridMenu.Options.Add(new("Show test grid", 'G', GridTest));
 		gridMenu.Options.Add(new("Show test grid 2", '2', GridTest2));
+		gridMenu.Options.Add(new("Show test grid 3", '3', GridTest3));
 
 		Menu mainMenu = new PCMenu("Main Menu");
 
@@ -593,10 +595,10 @@ internal class Program
 		g.Columns.Add("Column-2");
 		var col = g.Columns.Add("C-3", HorizontalAlignment.Right);
 		//col.Header.HorizontalAlignment = HorizontalAlignment.Center;
-		//g.Columns[2].CellLayout.PaddingLeft = 1;
-		//g.Columns[2].CellLayout.PaddingLeftChar = '[';
-		//g.Columns[2].CellLayout.PaddingRight = 1;
-		//g.Columns[2].CellLayout.PaddingRightChar = ']';
+		g.Columns[1].CellLayout.PaddingLeft = 3;
+		g.Columns[1].CellLayout.PaddingLeftChar = 'p';
+		g.Columns[1].CellLayout.PaddingRight = 3;
+		g.Columns[1].CellLayout.PaddingRightChar = 'p';
 
 		//override style for COLUMN
 		g.Columns[1].ContentStyle = new(Color.White, Color.BlueViolet);
@@ -612,8 +614,10 @@ internal class Program
 		//g.Columns[2].CellLayout.MarginRightChar = '|';
 
 		g.Rows.Add(new(g, "r1 - c1", "r1-c2", "r1-c3"));
+		g.AddSeparatorRow();
 		g.Rows.Add(new(g, "r2-c1", "r2-c2", "row2-column3"));
 		g.Rows.Add(new(g, "r3-c1", "r3-c2", "r3-c3"));
+		//g.Rows[2].Cells[2].Content = @"\*";
 		g.AddRow("r4-c1", "r4-c2");//, "r4-c3");
 								   //g.AddRow("r5-c1", "r5-c2", "r5-c3", "r5-c4"); too many cells exception
 		var r = g.AddRow();
@@ -663,6 +667,17 @@ internal class Program
 
 		//g.ShowColumnHeaders = false;
 
+		//randomly fill a cell with a single char
+		int randomRow = 0;// Random.Shared.Next(g.RowCount);
+		int randomCol = 1;// Random.Shared.Next(g.ColumnCount);
+		g.Rows[randomRow].Cells[randomCol].HorizontalAlignment = HorizontalAlignment.Center;
+		g.Rows[randomRow].Cells[randomCol].FillerChar = 'f';
+		g.Rows[randomRow].Cells[randomCol].Content = " Content ";
+		//Debug.WriteLine($"random r:{randomRow + 1} c:{randomCol + 1}");
+		//g.Rows[5].Cells[1].Content = @"\*";
+
+		g.AddSeparatorRow('=');
+		g.Columns.Add("hoo ha");
 		CLS();
 		W("     ");
 		g.Show();
@@ -709,6 +724,44 @@ internal class Program
 		g.FooterAlignment = HorizontalAlignment.Right;
 		CLS();
 		g.Show();
+		RK();
+	}
+
+	private static void GridTest3()
+	{
+		Grid grid = new Grid();
+		grid.ColumnHeaderContentStyle.Underline = false;
+		grid.ColumnHeaderCellStyle.Underline = false;
+		grid.CellContentStyle.BackColor = Color.Silver;
+
+		GridColumn col = grid.Columns.Add();
+		col.CellLayout.PaddingLeft = 3;
+		col.CellLayout.PaddingLeftChar = 'L';
+		col.CellLayout.PaddingRight = 3;
+		col.CellLayout.PaddingRightChar = 'R';
+		col.Header.FillerChar = 'f';
+
+		GridRow row = grid.AddRow(" row 1 ");
+		row = grid.AddRow(" row 2 ");
+		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
+		row = grid.AddRow(" row 3 ");
+		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;
+		grid.AddRow(" ");
+		row = grid.AddRow(" ");
+		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
+		row = grid.AddRow(" ");
+		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;
+		grid.AddRow("");
+		grid.AddRow(" row 6 - much wider");
+
+		col.Header.Content = Ruler.GetH(col.CellWidth, null, Ruler.HorizontalSegment);
+
+		foreach (GridCell cell in col.Cells)
+		{ cell.FillerChar = 'f'; }
+
+		CLS(Color.FromArgb(64, 64, 64));
+		W(EscapeCodes.ColorReset_Back);
+		grid.Show();
 		RK();
 	}
 

@@ -36,6 +36,15 @@ public abstract class GridCellBase
 	[MemberNotNullWhen(true, nameof(Content))]
 	public bool HasContent => !string.IsNullOrEmpty(Content);
 
+	/// <summary>
+	/// The character used for "filler" when the cell is rendered for display in the grid. 
+	/// Filler is used to pad a cell's content (on the left, right or both, based on the cell's 
+	/// horizontal alignment) so that each cell in a column is the same width. 
+	/// Filler is part of the cell (NOT the content), and (along with the cell's Padding) 
+	/// is styled with the <see cref="CellStyle"/>.
+	/// </summary>
+	public char FillerChar { get; set; } = ' ';
+
 
 	#region STYLE
 
@@ -54,7 +63,7 @@ public abstract class GridCellBase
 
 
 	/// <summary>
-	/// The style applied to the cell itself (NOT the content, see also <see cref="ContentStyle"/>. The default is null.
+	/// The style applied to the cell itself (NOT the content, see also <see cref="ContentStyle"/>). The default is null.
 	/// <para>If null, the cell will get its content style from the row, the column or the grid. 
 	/// If NOT null, this style will override any cell styles set at the row, column or grid levels.</para>
 	/// </summary>
@@ -115,7 +124,7 @@ public abstract class GridCellBase
 
 
 	/// <summary>
-	/// Returns the cell's content rendered for display within the grid (all text styling, cell styling, padding and margins applied)
+	/// Returns the cell's content rendered for display within the grid (all text styling, cell styling, filler, padding and margins applied)
 	/// </summary>
 	internal virtual string RenderedContent
 	{
@@ -129,7 +138,7 @@ public abstract class GridCellBase
 				return new string(LayoutI.MarginLeftChar, LayoutI.MarginLeft) + AlignContent(rc) + new string(LayoutI.MarginRightChar, LayoutI.MarginRight);
 			}
 
-			return new string(LayoutI.MarginLeftChar, LayoutI.MarginLeft) + CellStyleI.StyleText(new string(' ', Column.CellWidth)) + new string(LayoutI.MarginRightChar, LayoutI.MarginRight);
+			return new string(LayoutI.MarginLeftChar, LayoutI.MarginLeft) + CellStyleI.StyleText(new string(FillerChar, Column.CellWidth)) + new string(LayoutI.MarginRightChar, LayoutI.MarginRight);
 		}
 	}
 
@@ -140,7 +149,6 @@ public abstract class GridCellBase
 	/// <returns></returns>
 	protected string AlignContent(string content)
 	{
-		char fillChar = ' ';
 		string pl = "";
 		string pr = "";
 
@@ -148,20 +156,20 @@ public abstract class GridCellBase
 
 		//**** LEFT ****
 		if (HorizontalAlignment == Models.HorizontalAlignment.Left)
-		{ pr = new string(fillChar, cellW - ContentWidth - LayoutI.TotalPadding); }
+		{ pr = new string(FillerChar, cellW - ContentWidth - LayoutI.TotalPadding); }
 
 		//**** CENTER ****
 		else if (HorizontalAlignment == HorizontalAlignment.Center)
 		{
 			var l = (cellW - ContentWidth - LayoutI.TotalPadding) / 2;
-			pl = new string(fillChar, l);
-			pr = new string(fillChar, cellW - ContentWidth - LayoutI.TotalPadding - l);
+			pl = new string(FillerChar, l);
+			pr = new string(FillerChar, cellW - ContentWidth - LayoutI.TotalPadding - l);
 		}
 
 		//**** RIGHT ****
 		else //if (HorizontalAlignment == HorizontalAlignment.Right) 
 		{
-			pl = new string(fillChar, cellW - ContentWidth - LayoutI.TotalPadding);
+			pl = new string(FillerChar, cellW - ContentWidth - LayoutI.TotalPadding);
 		}
 
 		if (LayoutI.PaddingLeft > 0)

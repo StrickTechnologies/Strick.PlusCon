@@ -52,7 +52,7 @@ Setting these styles will override the styles inherited from the grid.
 A column always has a `Cells` collection, which always contains the same number of 
 `GridCell` objects as the grid's `Rows` collection (even if zero). 
 The `HasCells` property returns a boolean indicating whether or not the column has any cells 
-(i.e. whether or not the grid has any rows). *The `Cells` sequence is readonly -- to add rows
+(i.e. whether or not the grid has any rows). *The `Cells` collection is readonly -- to add rows
 to a grid, use the `Rows` collection, or one of the `AddRow` methods of the `Grid` object.*
 
 The `GridColumn` class has `Find`, `FindFirst`, `FindRows` and `FindFirstRow` methods 
@@ -83,7 +83,7 @@ The `HasCells` property returns a boolean indicating whether or not the row has 
 (i.e. whether or not the grid has any columns).
 If a column is added to the grid, cells are automatically added to each row. 
 If a column is removed from the grid, the corresponding cell is automatically removed from each row. 
-*The `Cells` sequence is readonly -- to add columns to a grid, use the `Columns` 
+*The `Cells` collection is readonly -- to add columns to a grid, use the `Columns` 
 collection of the `Grid` object.*
 
 The styling for a row's cells can be set through its `CellStyle` and `ContentStyle` properties. 
@@ -124,8 +124,9 @@ using the cell's `ContentStyle` (or the content style inherited from the
 row, column or grid), and is padded with the number of characters specified 
 by the `PaddingLeft`, `PaddingLeftChar`, `PaddingRight`, and `PaddingRightChar` 
 properties of the column's `CellLayout`. 
-The cell may additionally contain "filler" (spaces) so that the cell's width 
-meets the widest cell in the column. The cell is also padded with the 
+The cell may additionally contain "filler" so that the cell's width 
+meets the widest cell in the column. The character used for the cell's filler 
+can be set via the `FillerChar` property. The cell is also padded with the 
 number of characters specified by  the `MarginLeft`, `MarginLeftChar`, 
 `MarginRight`, and `MarginRightChar` properties of the column's `CellLayout`. 
 Padding and "filler" are part of the cell and styled using the cell's `CellStyle` 
@@ -174,6 +175,9 @@ g.AddRow("r3-col1", "row3-column2", "r3-c3");
 
 g.Footer = new($"Total Count {g.RowCount}");
 g.FooterAlignment = HorizontalAlignment.Left;
+
+g.AddSeparatorRow('-');
+
 g.Show();
 RK();
 ```
@@ -218,3 +222,73 @@ g.Show();
 RK();
 ```
 ![Example - Grid 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_grid_2.png)
+
+### Cell Rendering & Layout
+This example illustrates how cells are structured (including content, margins, padding, and filler) 
+when a grid is rendered.
+
+```c#
+Color text = Color.White;
+Color background = Color.FromArgb(64, 64, 64);
+Grid grid = new Grid();
+grid.ColumnHeaderContentStyle.BackColor = Color.Green;
+grid.ColumnHeaderContentStyle.Underline = false;
+grid.ColumnHeaderCellStyle.Underline = false;
+grid.ColumnHeaderCellStyle.BackColor = Color.LightGreen;
+grid.CellContentStyle.BackColor = Color.Silver;
+grid.CellStyle.BackColor = Color.SkyBlue;
+
+GridColumn col = grid.AddColumn();
+col.CellLayout.PaddingLeft = 1;
+col.CellLayout.PaddingLeftChar = 'p';
+col.CellLayout.PaddingRight = 1;
+col.CellLayout.PaddingRightChar = 'p';
+col.Header.FillerChar = 'f';
+
+GridRow row = grid.AddRow(" row 1 ");
+row = grid.AddRow(" row 2 ");
+row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
+row = grid.AddRow(" row 3 ");
+row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;
+grid.AddRow("4");
+row = grid.AddRow("5");
+row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
+row = grid.AddRow("6");
+row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;
+grid.AddRow("");
+grid.AddRow(" row 8 - wider ");
+
+col.Header.Content = Ruler.GetH(col.ContentWidth, null, Ruler.HorizontalSegment);
+
+foreach (GridCell cell in col.Cells)
+{ cell.FillerChar = 'f'; }
+
+CLS(background);
+W(EscapeCodes.ColorReset_Back);
+grid.Show();
+
+int legendLeft = grid.Width + 2;
+Console.SetCursorPosition(legendLeft, 0);
+W(new StyledText("Legend", new TextStyle(Color.DodgerBlue, background) { Underline = true }));
+Console.SetCursorPosition(legendLeft, 1);
+W(" ", text, Color.Black);
+W(" Margin", text, background);
+Console.SetCursorPosition(legendLeft, 2);
+W("p Padding", text, background);
+Console.SetCursorPosition(legendLeft, 3);
+W("f Filler", text, background);
+Console.SetCursorPosition(legendLeft, 4);
+W(" ", text, grid.ColumnHeaderContentStyle.BackColor);
+W(" Header content", text, background);
+Console.SetCursorPosition(legendLeft, 5);
+W(" ", text, grid.ColumnHeaderCellStyle.BackColor);
+W(" Header non content", text, background);
+Console.SetCursorPosition(legendLeft, 6);
+W(" ", text, grid.CellContentStyle.BackColor);
+W(" Cell content", text, background);
+Console.SetCursorPosition(legendLeft, 7);
+W(" ", text, grid.CellStyle.BackColor);
+W(" Cell non content", text, background);
+RK();
+```
+![Example - Grid 3](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_grid_3.png)

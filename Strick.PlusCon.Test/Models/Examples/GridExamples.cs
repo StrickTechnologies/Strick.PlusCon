@@ -16,6 +16,7 @@ internal static class GridExamples
 		{
 			new DocSample("grid1", "Example - Grid (1)", Ex_Grid_1),
 			new DocSample("grid2", "Example - Grid (2)", Ex_Grid_2),
+			new DocSample("grid3", "Example - Grid (3)", Ex_Grid_3),
 		};
 
 	}
@@ -41,6 +42,9 @@ internal static class GridExamples
 
 		g.Footer = new($"Total Count {g.RowCount}");
 		g.FooterAlignment = HorizontalAlignment.Left;
+
+		g.AddSeparatorRow('-');
+
 		g.Show();
 		RK();
 	}
@@ -81,6 +85,72 @@ internal static class GridExamples
 		g.Footer = new("Total Count 3", Color.White, Color.SkyBlue, Color.White);
 		g.Footer.Style.Reverse = true;
 		g.Show();
+		RK();
+	}
+
+	internal static void Ex_Grid_3()
+	{
+		Color text = Color.White;
+		Color background = Color.FromArgb(64, 64, 64);
+		Grid grid = new Grid();
+		grid.ColumnHeaderContentStyle.BackColor = Color.Green;
+		grid.ColumnHeaderContentStyle.Underline = false;
+		grid.ColumnHeaderCellStyle.Underline = false;
+		grid.ColumnHeaderCellStyle.BackColor = Color.LightGreen;
+		grid.CellContentStyle.BackColor = Color.Silver;
+		grid.CellStyle.BackColor = Color.SkyBlue;
+
+		GridColumn col = grid.AddColumn();
+		col.CellLayout.PaddingLeft = 1;
+		col.CellLayout.PaddingLeftChar = 'p';
+		col.CellLayout.PaddingRight = 1;
+		col.CellLayout.PaddingRightChar = 'p';
+		col.Header.FillerChar = 'f';
+
+		GridRow row = grid.AddRow(" row 1 ");
+		row = grid.AddRow(" row 2 ");
+		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
+		row = grid.AddRow(" row 3 ");
+		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;
+		grid.AddRow("4");
+		row = grid.AddRow("5");
+		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
+		row = grid.AddRow("6");
+		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;
+		grid.AddRow("");
+		grid.AddRow(" row 8 - wider ");
+
+		col.Header.Content = Ruler.GetH(col.ContentWidth, null, Ruler.HorizontalSegment);
+
+		foreach (GridCell cell in col.Cells)
+		{ cell.FillerChar = 'f'; }
+
+		CLS(background);
+		W(EscapeCodes.ColorReset_Back);
+		grid.Show();
+
+		int legendLeft = grid.Width + 2;
+		Console.SetCursorPosition(legendLeft, 0);
+		W(new StyledText("Legend", new TextStyle(Color.DodgerBlue, background) { Underline = true }));
+		Console.SetCursorPosition(legendLeft, 1);
+		W(" ", text, Color.Black);
+		W(" Margin", text, background);
+		Console.SetCursorPosition(legendLeft, 2);
+		W("p Padding", text, background);
+		Console.SetCursorPosition(legendLeft, 3);
+		W("f Filler", text, background);
+		Console.SetCursorPosition(legendLeft, 4);
+		W(" ", text, grid.ColumnHeaderContentStyle.BackColor);
+		W(" Header content", text, background);
+		Console.SetCursorPosition(legendLeft, 5);
+		W(" ", text, grid.ColumnHeaderCellStyle.BackColor);
+		W(" Header non content", text, background);
+		Console.SetCursorPosition(legendLeft, 6);
+		W(" ", text, grid.CellContentStyle.BackColor);
+		W(" Cell content", text, background);
+		Console.SetCursorPosition(legendLeft, 7);
+		W(" ", text, grid.CellStyle.BackColor);
+		W(" Cell non content", text, background);
 		RK();
 	}
 }

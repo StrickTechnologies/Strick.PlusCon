@@ -125,7 +125,7 @@ public class GridTests
 		CheckGridState(g, 0, 1);
 		CheckRowState(r1, 0, 0);
 
-		c1 = g.Columns.Add("c1");
+		c1 = g.AddColumn("c1");
 		CheckGridState(g, 1, 1);
 		CheckColumnState(c1, 0, "c1", 2, 2, 4);
 		CheckRowState(r1, 0, 1);
@@ -133,7 +133,7 @@ public class GridTests
 		r1.Cells[0].Content = "r1-c1";
 		CheckCellState(r1.Cells[0], 0, 0, "r1-c1", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
 
-		c2 = g.Columns.Add("c2");
+		c2 = g.AddColumn("c2");
 		CheckGridState(g, 2, 1);
 		CheckColumnState(c2, 1, "c2", 2, 2, 4);
 		CheckRowState(g.Rows[0], 0, 2);
@@ -199,6 +199,19 @@ public class GridTests
 		CheckGridState(g, 0, 0);
 		g.AddRow();
 		CheckGridState(g, 0, 1);
+
+		g = new Grid();
+		CheckGridState(g, 0, 0);
+		c1 = g.AddColumn();
+		CheckGridState(g, 1, 0);
+		CheckColumnState(c1, 0, null, 0, 0, 2);
+		c2 = g.AddColumn("c2");
+		CheckGridState(g, 2, 0);
+		CheckColumnState(c2, 1, "c2", 2, 2, 4);
+		c3 = g.AddColumn("c3", HorizontalAlignment.Center);
+		CheckGridState(g, 3, 0);
+		CheckColumnState(c3, 2, "c3", 2, 2, 4);
+		Assert.AreEqual(HorizontalAlignment.Center, c3.CellLayout.HorizontalAlignment);
 	}
 
 	[TestMethod]
@@ -392,6 +405,40 @@ public class GridTests
 		CheckCellRendering(col2.Cells.ElementAt(0), 0, 1, "", g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
 		CheckCellRendering(col2.Cells.ElementAt(1), 1, 1, "", g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
 		CheckColHead(col2, 1, "Y", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col2.CellLayout, $" {Underline}{ForeColorWhite}Y{ForeColorReset}{UnderlineReset} ");
+	}
+
+	[TestMethod]
+	public void FillerChar()
+	{
+		Grid g = new Grid();
+		g.CellStyle = new();
+		g.CellContentStyle = new();
+		g.Columns.Add("foo");
+		g.Columns.Add("bar", HorizontalAlignment.Center);
+		g.Columns.Add("baz", HorizontalAlignment.Right);
+		g.Columns.Last().CellLayout.MarginLeft = 0;
+		g.Columns.Last().CellLayout.MarginRight = 0;
+		g.Columns.Add("");
+
+		g.AddRow("1", "2", "3", "4");
+		CheckGridState(g, 4, 1);
+		foreach (GridCell cell in g.Rows[0].Cells)
+		{ cell.FillerChar = '*'; }
+		CheckCellRendering(g.Rows[0].Cells[0], 0, 0, "1", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout, " 1** ");
+		CheckCellRendering(g.Rows[0].Cells[1], 0, 1, "2", g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout, " *2* ");
+		CheckCellRendering(g.Rows[0].Cells[2], 0, 2, "3", g.CellStyle, g.CellContentStyle, g.Columns[2].CellLayout, "**3");
+		CheckCellRendering(g.Rows[0].Cells[3], 0, 3, "4", g.CellStyle, g.CellContentStyle, g.Columns[3].CellLayout, " 4 ");
+
+		g.AddSeparatorRow('*');
+		CheckGridState(g, 4, 2);
+		CheckCellRendering(g.Rows[1].Cells[0], 1, 0, null, g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout, " *** ");
+		Assert.AreEqual(0, g.Rows[1].Cells[0].ContentWidth);
+		CheckCellRendering(g.Rows[1].Cells[1], 1, 1, null, g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout, " *** ");
+		Assert.AreEqual(0, g.Rows[1].Cells[1].ContentWidth);
+		CheckCellRendering(g.Rows[1].Cells[2], 1, 2, null, g.CellStyle, g.CellContentStyle, g.Columns[2].CellLayout, "***");
+		Assert.AreEqual(0, g.Rows[1].Cells[2].ContentWidth);
+		CheckCellRendering(g.Rows[1].Cells[3], 1, 3, null, g.CellStyle, g.CellContentStyle, g.Columns[3].CellLayout, " * ");
+		Assert.AreEqual(0, g.Rows[1].Cells[3].ContentWidth);
 	}
 
 	[TestMethod]
