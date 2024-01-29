@@ -1,4 +1,6 @@
-﻿using Strick.PlusCon.Models;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Strick.PlusCon.Models;
 
 using static Strick.PlusCon.Test.Expectations;
 
@@ -57,24 +59,24 @@ public class GridTests
 		CheckGridState(g, 2, 2);
 		Assert.AreEqual(7, g.Width);
 
-		CheckCellState(g.Rows[0].Cells[0], 0, 0, "", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(g.Rows[0].Cells[0], 0, 0, null, g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
 		g.CellStyle.BackColor = red;
-		CheckCellState(g.Rows[0].Cells[0], 0, 0, "", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(g.Rows[0].Cells[0], 0, 0, null, g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
 		g.Columns[0].CellStyle = new(green);
-		CheckCellState(g.Rows[0].Cells[0], 0, 0, "", g.Columns[0].CellStyle!, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(g.Rows[0].Cells[0], 0, 0, null, g.Columns[0].CellStyle!, g.CellContentStyle, g.Columns[0].CellLayout);
 		g.Rows[0].CellStyle = new(blue);
-		CheckCellState(g.Rows[0].Cells[0], 0, 0, "", g.Rows[0].CellStyle!, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(g.Rows[0].Cells[0], 0, 0, null, g.Rows[0].CellStyle!, g.CellContentStyle, g.Columns[0].CellLayout);
 		g.Rows[0].Cells[0].CellStyle = new(white);
-		CheckCellState(g.Rows[0].Cells[0], 0, 0, "", g.Rows[0].Cells[0].CellStyle!, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(g.Rows[0].Cells[0], 0, 0, null, g.Rows[0].Cells[0].CellStyle!, g.CellContentStyle, g.Columns[0].CellLayout);
 
 		g.CellContentStyle.BackColor = red;
-		CheckCellState(g.Rows[0].Cells[0], 0, 0, "", g.Rows[0].Cells[0].CellStyle!, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(g.Rows[0].Cells[0], 0, 0, null, g.Rows[0].Cells[0].CellStyle!, g.CellContentStyle, g.Columns[0].CellLayout);
 		g.Columns[0].ContentStyle = new(green);
-		CheckCellState(g.Rows[0].Cells[0], 0, 0, "", g.Rows[0].Cells[0].CellStyle!, g.Columns[0].ContentStyle!, g.Columns[0].CellLayout);
+		CheckCellState(g.Rows[0].Cells[0], 0, 0, null, g.Rows[0].Cells[0].CellStyle!, g.Columns[0].ContentStyle!, g.Columns[0].CellLayout);
 		g.Rows[0].ContentStyle = new(blue);
-		CheckCellState(g.Rows[0].Cells[0], 0, 0, "", g.Rows[0].Cells[0].CellStyle!, g.Rows[0].ContentStyle!, g.Columns[0].CellLayout);
+		CheckCellState(g.Rows[0].Cells[0], 0, 0, null, g.Rows[0].Cells[0].CellStyle!, g.Rows[0].ContentStyle!, g.Columns[0].CellLayout);
 		g.Rows[0].Cells[0].ContentStyle = new(white);
-		CheckCellState(g.Rows[0].Cells[0], 0, 0, "", g.Rows[0].Cells[0].CellStyle!, g.Rows[0].Cells[0].ContentStyle!, g.Columns[0].CellLayout);
+		CheckCellState(g.Rows[0].Cells[0], 0, 0, null, g.Rows[0].Cells[0].CellStyle!, g.Rows[0].Cells[0].ContentStyle!, g.Columns[0].CellLayout);
 
 		//g.Columns[0].CellLayout.HorizontalAlignment = HorizontalAlignment.Right;
 		//CheckCellState(g.Rows[0].Cells[0], g.Rows[0].Cells[0].CellStyle!, g.Rows[0].Cells[0].ContentStyle!, g.Columns[0].CellLayout);
@@ -129,7 +131,7 @@ public class GridTests
 		CheckGridState(g, 1, 1);
 		CheckColumnState(c1, 0, "c1", 2, 2, 4);
 		CheckRowState(r1, 0, 1);
-		CheckCellState(r1.Cells[0], 0, 0, "", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(r1.Cells[0], 0, 0, null, g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
 		r1.Cells[0].Content = "r1-c1";
 		CheckCellState(r1.Cells[0], 0, 0, "r1-c1", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
 
@@ -138,7 +140,7 @@ public class GridTests
 		CheckColumnState(c2, 1, "c2", 2, 2, 4);
 		CheckRowState(g.Rows[0], 0, 2);
 		CheckCellState(r1.Cells[0], 0, 0, "r1-c1", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
-		CheckCellState(r1.Cells[1], 0, 1, "", g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout);
+		CheckCellState(r1.Cells[1], 0, 1, null, g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout);
 		r1.Cells[1].Content = "r1-c2";
 		CheckCellState(r1.Cells[0], 0, 0, "r1-c1", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
 		CheckCellState(r1.Cells[1], 0, 1, "r1-c2", g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout);
@@ -166,9 +168,9 @@ public class GridTests
 		CheckRowState(r1, 0, 2);
 		CheckRowState(r2, 1, 2);
 		CheckCellState(r1.Cells[0], 0, 0, "r1-c1", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
-		CheckCellState(r1.Cells[1], 0, 1, "", g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout);
+		CheckCellState(r1.Cells[1], 0, 1, null, g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout);
 		CheckCellState(r2.Cells[0], 1, 0, "r2-c1", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
-		CheckCellState(r2.Cells[1], 1, 1, "", g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout);
+		CheckCellState(r2.Cells[1], 1, 1, null, g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout);
 
 		Assert.IsTrue(g.Columns.Remove(c1));
 		CheckGridState(g, 1, 2);
@@ -180,17 +182,17 @@ public class GridTests
 		CheckGridState(g, 1, 2);
 		CheckRowState(r1, 0, 1);
 		CheckRowState(r2, 1, 1);
-		CheckCellState(r1.Cells[0], 0, 0, "", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
-		CheckCellState(r2.Cells[0], 1, 0, "", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(r1.Cells[0], 0, 0, null, g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(r2.Cells[0], 1, 0, null, g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
 
 		var r3 = g.AddRow();
 		CheckGridState(g, 1, 3);
 		CheckRowState(r1, 0, 1);
 		CheckRowState(r2, 1, 1);
 		CheckRowState(r3, 2, 1);
-		CheckCellState(r1.Cells[0], 0, 0, "", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
-		CheckCellState(r2.Cells[0], 1, 0, "", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
-		CheckCellState(r3.Cells[0], 2, 0, "", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(r1.Cells[0], 0, 0, null, g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(r2.Cells[0], 1, 0, null, g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(r3.Cells[0], 2, 0, null, g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
 
 		g.Rows.Clear();
 		CheckGridState(g, 1, 0);
@@ -229,9 +231,9 @@ public class GridTests
 		var r1 = g.AddRow();
 		CheckGridState(g, 3, 1);
 		CheckRowState(r1, 0, 3);
-		CheckCellState(r1.Cells[0], 0, 0, "", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
-		CheckCellState(r1.Cells[1], 0, 1, "", g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout);
-		CheckCellState(r1.Cells[2], 0, 2, "", g.CellStyle, g.CellContentStyle, g.Columns[2].CellLayout);
+		CheckCellState(r1.Cells[0], 0, 0, null, g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(r1.Cells[1], 0, 1, null, g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout);
+		CheckCellState(r1.Cells[2], 0, 2, null, g.CellStyle, g.CellContentStyle, g.Columns[2].CellLayout);
 
 		r1.Cells[0].Content = "r1-c1";
 		r1.Cells[1].Content = "r1-c2";
@@ -243,9 +245,9 @@ public class GridTests
 		var r2 = g.AddRow();
 		CheckGridState(g, 3, 2);
 		CheckRowState(r2, 1, 3);
-		CheckCellState(r2.Cells[0], 1, 0, "", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
-		CheckCellState(r2.Cells[1], 1, 1, "", g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout);
-		CheckCellState(r2.Cells[2], 1, 2, "", g.CellStyle, g.CellContentStyle, g.Columns[2].CellLayout);
+		CheckCellState(r2.Cells[0], 1, 0, null, g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(r2.Cells[1], 1, 1, null, g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout);
+		CheckCellState(r2.Cells[2], 1, 2, null, g.CellStyle, g.CellContentStyle, g.Columns[2].CellLayout);
 
 		r2.Cells[0].Content = "r2-c1";
 		r2.Cells[1].Content = "r2-c2";
@@ -257,9 +259,9 @@ public class GridTests
 		var r3 = g.AddRow();
 		CheckGridState(g, 3, 3);
 		CheckRowState(r3, 2, 3);
-		CheckCellState(r3.Cells[0], 2, 0, "", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
-		CheckCellState(r3.Cells[1], 2, 1, "", g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout);
-		CheckCellState(r3.Cells[2], 2, 2, "", g.CellStyle, g.CellContentStyle, g.Columns[2].CellLayout);
+		CheckCellState(r3.Cells[0], 2, 0, null, g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
+		CheckCellState(r3.Cells[1], 2, 1, null, g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout);
+		CheckCellState(r3.Cells[2], 2, 2, null, g.CellStyle, g.CellContentStyle, g.Columns[2].CellLayout);
 
 		r3.Cells[0].Content = "r3-c1";
 		r3.Cells[1].Content = "r3-c2";
@@ -305,11 +307,11 @@ public class GridTests
 		CheckColumnState(col1, 0, "", 0, 0, 0);
 		CheckColHead(col1, 0, "", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "");
 		var r1 = g.AddRow();
-		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "", g.CellStyle, g.CellContentStyle, col1.CellLayout, "");
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, null, g.CellStyle, g.CellContentStyle, col1.CellLayout, "");
 		CheckColHead(col1, 0, "", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "");
 
 		col1.Header.Content = "X";
-		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "", g.CellStyle, g.CellContentStyle, col1.CellLayout, ForeColorWhite + " " + ForeColorReset);
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, null, g.CellStyle, g.CellContentStyle, col1.CellLayout, ForeColorWhite + " " + ForeColorReset);
 		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, Underline + ForeColorWhite + "X" + ForeColorReset + UnderlineReset);
 
 		r1.Cells[0].Content = "Y";
@@ -382,17 +384,17 @@ public class GridTests
 		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite}    {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
 		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
 		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
-		CheckCellRendering(col2.Cells.ElementAt(0), 0, 1, "", g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
-		CheckCellRendering(col2.Cells.ElementAt(1), 1, 1, "", g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col2.Cells.ElementAt(0), 0, 1, null, g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col2.Cells.ElementAt(1), 1, 1, null, g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
 		CheckColHead(col2, 1, "Y", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col2.CellLayout, $" {Underline}{ForeColorWhite}Y{ForeColorReset}{UnderlineReset} ");
 
 		r2.ContentStyle = new(blue);
 		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite}    {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
 		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, r2.ContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorBlue}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
 		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
-		CheckCellRendering(col2.Cells.ElementAt(0), 0, 1, "", g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col2.Cells.ElementAt(0), 0, 1, null, g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
 		//this doesn't seem right -- seems like it should be blue. however, the cell has no content and the entire cell is padding. white is the padding (cell) color.
-		CheckCellRendering(col2.Cells.ElementAt(1), 1, 1, "", g.CellStyle, r2.ContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col2.Cells.ElementAt(1), 1, 1, null, g.CellStyle, r2.ContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
 		r2.Cells[1].Content = "Z";
 		CheckCellRendering(col2.Cells.ElementAt(1), 1, 1, "Z", g.CellStyle, r2.ContentStyle, col2.CellLayout, $" {ForeColorBlue}Z{ForeColorReset} ");
 		r2.Cells[1].Content = "";
@@ -402,9 +404,65 @@ public class GridTests
 		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "foo", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite}    {ForeColorReset}{ForeColorWhite}foo{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
 		CheckCellRendering(col1.Cells.ElementAt(1), 1, 0, "longer", g.CellStyle, g.CellContentStyle, col1.CellLayout, $" {ForeColorWhite} {ForeColorReset}{ForeColorWhite}longer{ForeColorReset}{ForeColorWhite} {ForeColorReset} ");
 		CheckColHead(col1, 0, "X", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, $" {Underline}{ForeColorWhite}      {ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite}X{ForeColorReset}{UnderlineReset}{Underline}{ForeColorWhite} {ForeColorReset}{UnderlineReset} ");
-		CheckCellRendering(col2.Cells.ElementAt(0), 0, 1, "", g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
+		CheckCellRendering(col2.Cells.ElementAt(0), 0, 1, null, g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
 		CheckCellRendering(col2.Cells.ElementAt(1), 1, 1, "", g.CellStyle, g.CellContentStyle, col2.CellLayout, $" {ForeColorWhite} {ForeColorReset} ");
 		CheckColHead(col2, 1, "Y", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col2.CellLayout, $" {Underline}{ForeColorWhite}Y{ForeColorReset}{UnderlineReset} ");
+	}
+
+	[TestMethod]
+	public void CellPadding()
+	{
+		Grid g = new Grid();
+		g.CellContentStyle = new TextStyle();
+		g.CellStyle = new TextStyle();
+		g.ShowColumnHeaders = false;
+		var col1 = g.Columns.Add();
+		col1.CellLayout.MarginLeft = 0;
+		col1.CellLayout.MarginRight = 0;
+		col1.CellLayout.PaddingLeft = 0;
+		col1.CellLayout.PaddingRight = 0;
+		CheckColumnState(col1, 0, "", 0, 0, 0);
+		CheckColHead(col1, 0, "", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "");
+		var r1 = g.AddRow();
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, null, g.CellStyle, g.CellContentStyle, col1.CellLayout, "");
+		r1.Cells[0].Content = "";
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "", g.CellStyle, g.CellContentStyle, col1.CellLayout, "");
+		r1.Cells[0].Content = " ";
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, " ", g.CellStyle, g.CellContentStyle, col1.CellLayout, " ");
+
+		col1.CellLayout.PaddingLeft = 1;
+		col1.CellLayout.PaddingRight = 1;
+		col1.CellLayout.PaddingLeftChar = 'p';
+		col1.CellLayout.PaddingRightChar = 'p';
+
+		r1.Cells[0].Content = null;
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, null, g.CellStyle, g.CellContentStyle, col1.CellLayout, "  ");
+		r1.Cells[0].Content = "";
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "", g.CellStyle, g.CellContentStyle, col1.CellLayout, "pp");
+		r1.Cells[0].Content = " ";
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, " ", g.CellStyle, g.CellContentStyle, col1.CellLayout, "p p");
+		r1.Cells[0].Content = "x";
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "x", g.CellStyle, g.CellContentStyle, col1.CellLayout, "pxp");
+
+		g.ShowColumnHeaders = true;
+		g.ColumnHeaderCellStyle = new TextStyle();
+		g.ColumnHeaderContentStyle = new TextStyle();
+		col1.Header.Content = "foo";
+		CheckColHead(col1, 0, "foo", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "pfoop");
+		r1.Cells[0].Content = null;
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, null, g.CellStyle, g.CellContentStyle, col1.CellLayout, "     ");
+		r1.Cells[0].Content = "";
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "", g.CellStyle, g.CellContentStyle, col1.CellLayout, "pp   ");
+		r1.Cells[0].Content = " ";
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, " ", g.CellStyle, g.CellContentStyle, col1.CellLayout, "p p  ");
+		r1.Cells[0].Content = "x";
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "x", g.CellStyle, g.CellContentStyle, col1.CellLayout, "pxp  ");
+		r1.Cells[0].Content = "bar";
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "bar", g.CellStyle, g.CellContentStyle, col1.CellLayout, "pbarp");
+		CheckColHead(col1, 0, "foo", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "pfoop");
+		r1.Cells[0].Content = "long";
+		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, "long", g.CellStyle, g.CellContentStyle, col1.CellLayout, "plongp");
+		CheckColHead(col1, 0, "foo", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "pfoop ");
 	}
 
 	[TestMethod]
@@ -569,10 +627,16 @@ public class GridTests
 		TextStyleTests.CheckTextStyleEquality(cell.ContentStyleI, expectedContentStyle);
 		CheckLayoutEquality(expectedLayout, cell.LayoutI);
 
-		if (string.IsNullOrEmpty(expectedContent))
-		{ Assert.IsTrue(string.IsNullOrEmpty(cell.Content)); }
+		if (expectedContent == null)
+		{
+			Assert.AreEqual(null, cell.Content);
+			Assert.IsFalse(cell.HasContent);
+		}
 		else
-		{ Assert.AreEqual(expectedContent, cell.Content); }
+		{
+			Assert.IsTrue(cell.HasContent);
+			Assert.AreEqual(expectedContent, cell.Content);
+		}
 	}
 
 	private static void CheckCellRendering(GridCell cell, int expectedRowIndex, int expectedColIndex, string? expectedContent, TextStyle expectedCellStyle, TextStyle expectedContentStyle, GridCellLayout expectedLayout, string expectedRenderedContent)

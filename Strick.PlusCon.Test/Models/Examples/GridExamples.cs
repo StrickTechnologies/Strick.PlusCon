@@ -112,15 +112,12 @@ internal static class GridExamples
 		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
 		row = grid.AddRow(" row 3 ");
 		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;
-		grid.AddRow("4");
-		row = grid.AddRow("5");
-		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
-		row = grid.AddRow("6");
-		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;
-		grid.AddRow("");
-		grid.AddRow(" row 8 - wider ");
+		grid.AddRow(""); //"empty" (zero-length) content
+		grid.AddRow(" ");
+		grid.AddRow(); //no content
+		grid.AddRow(" row 7 - wider ");
 
-		col.Header.Content = Ruler.GetH(col.ContentWidth, null, Ruler.HorizontalSegment);
+		col.Header.Content = Ruler.GetH(col.ContentWidth, colors: null);
 
 		foreach (GridCell cell in col.Cells)
 		{ cell.FillerChar = 'f'; }

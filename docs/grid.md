@@ -123,7 +123,9 @@ When a cell is rendered for display in the grid, the cell's content is styled
 using the cell's `ContentStyle` (or the content style inherited from the 
 row, column or grid), and is padded with the number of characters specified 
 by the `PaddingLeft`, `PaddingLeftChar`, `PaddingRight`, and `PaddingRightChar` 
-properties of the column's `CellLayout`. 
+properties of the column's `CellLayout`. If the cell has NO content 
+(the cell's `Content` property is null), the cell will contain NO padding 
+(the padding is considered Content padding, not cell padding). 
 The cell may additionally contain "filler" so that the cell's width 
 meets the widest cell in the column. The character used for the cell's filler 
 can be set via the `FillerChar` property. The cell is also padded with the 
@@ -250,15 +252,12 @@ row = grid.AddRow(" row 2 ");
 row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
 row = grid.AddRow(" row 3 ");
 row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;
-grid.AddRow("4");
-row = grid.AddRow("5");
-row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
-row = grid.AddRow("6");
-row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;
-grid.AddRow("");
-grid.AddRow(" row 8 - wider ");
+grid.AddRow(""); //"empty" (zero-length) content
+grid.AddRow(" ");
+grid.AddRow(); //no content
+grid.AddRow(" row 7 - wider ");
 
-col.Header.Content = Ruler.GetH(col.ContentWidth, null, Ruler.HorizontalSegment);
+col.Header.Content = Ruler.GetH(col.ContentWidth, colors: null);
 
 foreach (GridCell cell in col.Cells)
 { cell.FillerChar = 'f'; }

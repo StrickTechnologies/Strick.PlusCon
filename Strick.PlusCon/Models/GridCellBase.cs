@@ -31,10 +31,12 @@ public abstract class GridCellBase
 	public string? Content { get; set; }
 
 	/// <summary>
-	/// Returns true if the cell's content is not null/empty.
+	/// Returns true if the cell's <see cref="Content"/> property is not null. 
+	/// <para>Note: a cell whose <see cref="Content"/> property is set to an empty string is considered 
+	/// to have content, and this property will return true.</para>
 	/// </summary>
 	[MemberNotNullWhen(true, nameof(Content))]
-	public bool HasContent => !string.IsNullOrEmpty(Content);
+	public bool HasContent => Content != null;
 
 	/// <summary>
 	/// The character used for "filler" when the cell is rendered for display in the grid. 
@@ -132,9 +134,7 @@ public abstract class GridCellBase
 		{
 			if (HasContent)
 			{
-				string rc;
-
-				rc = ContentStyleI.StyleText(Content);
+				string rc = ContentWidth > 0 ? ContentStyleI.StyleText(Content) : "";
 				return new string(LayoutI.MarginLeftChar, LayoutI.MarginLeft) + AlignContent(rc) + new string(LayoutI.MarginRightChar, LayoutI.MarginRight);
 			}
 
