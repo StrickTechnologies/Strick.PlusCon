@@ -129,8 +129,7 @@ public class Grid
 	{
 		GridRow newRow = new(this);
 		Rows.Add(newRow);
-		foreach (GridCell cell in newRow.Cells)
-		{ cell.FillerChar = fillerChar; }
+		newRow.Cells.SetFillerChar(fillerChar);
 
 		return newRow;
 	}

@@ -497,6 +497,12 @@ public class GridTests
 		Assert.AreEqual(0, g.Rows[1].Cells[2].ContentWidth);
 		CheckCellRendering(g.Rows[1].Cells[3], 1, 3, null, g.CellStyle, g.CellContentStyle, g.Columns[3].CellLayout, " * ");
 		Assert.AreEqual(0, g.Rows[1].Cells[3].ContentWidth);
+
+		g.Rows[0].Cells.SetFillerChar('f');
+		CheckCellRendering(g.Rows[0].Cells[0], 0, 0, "1", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout, " 1ff ");
+		CheckCellRendering(g.Rows[0].Cells[1], 0, 1, "2", g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout, " f2f ");
+		CheckCellRendering(g.Rows[0].Cells[2], 0, 2, "3", g.CellStyle, g.CellContentStyle, g.Columns[2].CellLayout, "ff3");
+		CheckCellRendering(g.Rows[0].Cells[3], 0, 3, "4", g.CellStyle, g.CellContentStyle, g.Columns[3].CellLayout, " 4 ");
 	}
 
 	[TestMethod]

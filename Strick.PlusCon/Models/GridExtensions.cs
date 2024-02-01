@@ -58,4 +58,19 @@ public static class GridExtensions
 
 		throw new ArgumentOutOfRangeException(nameof(searchExpression.Type), "Invalid search type");
 	}
+
+	/// <summary>
+	/// Sets the <see cref="GridCellBase.FillerChar"/> property of each object in the <paramref name="cells"/> sequence 
+	/// to the value of the <paramref name="fillerChar"/> argument.
+	/// </summary>
+	/// <param name="cells">A sequence of <see cref="GridCell"/> objects.</param>
+	/// <param name="fillerChar">A char value.</param>
+	public static void SetFillerChar(this IEnumerable<GridCell> cells, char fillerChar)
+	{
+		if (!cells.HasAny())
+		{ return; }
+
+		foreach (GridCell cell in cells)
+		{ cell.FillerChar = fillerChar; }
+	}
 }
