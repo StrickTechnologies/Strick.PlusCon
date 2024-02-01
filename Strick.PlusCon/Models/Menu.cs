@@ -72,6 +72,11 @@ public class Menu
 	public StyledText? Title { get; set; }
 
 	/// <summary>
+	/// The horizontal alignment for the menu's <see cref="Title"/>.
+	/// </summary>
+	public HorizontalAlignment TitleAlignment { get; set; } = HorizontalAlignment.Center;
+
+	/// <summary>
 	/// The length of the <see cref="Title"/> property. If <see cref="Title"/> is null or empty, 0 is returned. 
 	/// </summary>
 	public int TitleLength => Title == null ? 0 : Title.Text.Length;
@@ -84,9 +89,15 @@ public class Menu
 	public StyledText? Subtitle { get; set; }
 
 	/// <summary>
+	/// The horizontal alignment for the menu's <see cref="Subtitle"/>.
+	/// </summary>
+	public HorizontalAlignment SubtitleAlignment { get; set; } = HorizontalAlignment.Center;
+
+	/// <summary>
 	/// The length of the <see cref="Subtitle"/> property. If <see cref="Subtitle"/> is null or empty, 0 is returned. 
 	/// </summary>
 	public int SubTitleLength => Subtitle == null ? 0 : Subtitle.Text.Length;
+
 
 	/// <summary>
 	/// The prompt displayed beneath the menu options when awaiting user input
@@ -123,6 +134,14 @@ public class Menu
 	public List<char> ExitKeys { get; } = new(new[] { '0', ' ', (char)ConsoleKey.Escape, (char)ConsoleKey.Enter, (char)ConsoleKey.Backspace });
 
 
+	public int ColumnCount { get; set; } = 1;
+
+	/// <summary>
+	/// 0=render using classic, 1=render using grid
+	/// </summary>
+	public int RenderEngine = 1;
+
+
 	/// <summary>
 	/// Show the menu and wait for user input (a key press). 
 	/// On user input:
@@ -143,7 +162,7 @@ public class Menu
 	/// <exception cref="InvalidOperationException">Thrown if <see cref="Show"/> is called and there are no elements in the <see cref="Options"/> collection</exception>
 	public void Show()
 	{
-		if (Options == null || !Options.Any())
+		if (!Options.HasAny())
 		{ throw new InvalidOperationException("Cannot display a menu with no options. Add options to the menu before displaying..."); }
 
 		do
@@ -155,20 +174,12 @@ public class Menu
 			foreach (MenuOption opt in Options)
 			{ opt.OnBeforeShow(new()); }
 
-			var w = Width;
-			CLS();
-
-			//show titles
-			ShowTitle(Title, w);
-			ShowTitle(Subtitle, w);
-
-			//show options
-			foreach (MenuOption opt in Options)
-			{ ShowOption(opt, w); }
-
+			if (RenderEngine == 0)
+			{ Render(); }
+			else
+			{ GRender(); }
 
 			//user input
-			//var k = RK(Prompt != null ? Prompt.TextStyled : null);
 			var k = RK(Prompt?.TextStyled);
 
 
@@ -192,6 +203,97 @@ public class Menu
 		} while (true);
 	}
 
+	private void Render()
+	{
+		var width = Width;
+
+		CLS();
+
+		//show titles
+		ShowTitle(Title, width);
+		ShowTitle(Subtitle, width);
+
+		//show options
+		foreach (MenuOption opt in Options)
+		{ ShowOption(opt, width); }
+	}
+	private void GRender()
+	{
+		int colCount = ColumnCount;
+
+		var width = Width;
+		Grid grid = new Grid();
+		grid.ShowColumnHeaders = false;
+
+		for (int i = 0; i < colCount; i++)
+		{
+			var col = grid.AddColumn();
+			col.CellLayout.MarginLeft = 0;
+			col.ContentStyle = OptionsStyle;
+		}
+		grid.Columns.Last().CellLayout.MarginRight = 0;
+
+		if (Title != null)
+		{
+			grid.Title = Title;
+			grid.TitleAlignment = TitleAlignment;
+		}
+		if (Subtitle != null)
+		{
+			grid.Subtitle = Subtitle;
+			grid.SubtitleAlignment = SubtitleAlignment;
+		}
+
+		int colIndex = colCount;
+		GridRow row = null!;
+		foreach (MenuOption opt in Options)
+		{
+			colIndex++;
+			if (colIndex >= colCount)
+			{
+				colIndex = 0;
+				row = grid.AddRow();
+			}
+			if (opt is MenuSeperator && opt.Caption.Length == 1)
+			{ row.Cells[colIndex].FillerChar = opt.Caption[0]; }
+			else
+			{ row.Cells[colIndex].Content = opt.GetText(width); }
+			if (opt.Style != null)
+			{ row.Cells[colIndex].ContentStyle = opt.Style; }
+		}
+
+		int colWidth = grid.Columns.Sum(col => col.ContentWidth);
+		if (colWidth < width)
+		{
+			//var col2 = grid.AddColumn();
+			//col2.CellLayout.MarginLeft = 0;
+			//col2.CellLayout.MarginRight = 0;
+			//grid.Rows[0].Cells[1].Content = new string(' ', width - col.ContentWidth);
+			//grid.Columns[0].CellStyle = new(Color.White, System.Drawing.Color.HotPink);
+
+			if (colCount <= 2)
+			{
+				grid.Columns[0].CellLayout.PaddingRight = width - colWidth;
+				//grid.Columns[0].CellLayout.PaddingRightChar = 'p';
+				//grid.Columns[0].Cells.SetFillerChar('f');
+				//grid.Columns[0].CellLayout.MarginRight = width - colWidth;
+				//grid.Columns[0].CellLayout.MarginRightChar = 'm';
+			}
+			else
+			{
+				int x = (width - colWidth) / (colCount - 1);
+				for (int i = 0; i < colCount - 1; i++)
+				{
+					grid.Columns[i].CellLayout.MarginRight = x;
+				}
+			}
+		}
+
+		CLS();
+		grid.Show();
+	}
+
+
 	private void ShowOption(MenuOption opt, int width)
 	{
 		if (string.IsNullOrEmpty(opt.Caption))
@@ -208,6 +310,18 @@ public class Menu
 	}
 
 	private static void ShowTitle(StyledText? title, int width)
+	{
+		if (title == null)
+		{ return; }
+
+		if (title.Text.Length == 1)
+		{ WL(title.StyleText(new string(title.Text[0], width))); }
+		else
+		{ WL(title.StyleText(title.Text.Center(width))); }
+	}
+
+	//todo: WIP/Cleanup
+	private static void ShowTitle2(StyledText? title, int width)
 	{
 		if (title == null)
 		{ return; }

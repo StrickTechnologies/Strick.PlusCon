@@ -111,6 +111,10 @@ public class MenuOption
 		return $"{Keys[0]}. {Caption}";
 	}
 
+	//todo: WIP/Cleanup
+	public virtual string GetKeyText() => Keys.HasAny() ? $"{Keys[0]}. " : "";
+	public virtual string GetCaptionText => Keys.HasAny() ? $"{Keys[0]}. " : "";
+
 	internal int Width => GetText(1).Length;
 
 

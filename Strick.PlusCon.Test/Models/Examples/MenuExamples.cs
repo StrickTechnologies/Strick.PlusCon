@@ -17,6 +17,7 @@ internal static class MenuExamples
 			new DocSample("menu1", "Example - Menu (1)", Ex_Menu_1),
 			new DocSample("menu2", "Example - Menu (2)", Ex_Menu_2),
 			new DocSample("menu3", "Example - Menu Events (3)", Ex_Menu_3),
+			new DocSample("menu4", "Example - Menu Multi-column (4)", Ex_Menu_4),
 		};
 
 	}
@@ -115,6 +116,13 @@ internal static class MenuExamples
 		RK("press a key to return to the menu...");
 	}
 
+	private static void ExampleMenuOption3()
+	{
+		CLS();
+		WL("This is Example Menu Option 3", Color.BlueViolet);
+		RK("press a key to return to the menu...");
+	}
+
 	internal static void Ex_Menu_3()
 	{
 		Menu myMenu = new("Example Menu - Events", " ");
@@ -171,5 +179,20 @@ internal static class MenuExamples
 			count = int.Parse(opt.Caption.Split(' ')[1]) + 1;
 		}
 		opt.Caption = $"(refreshed {count} times)";
+	}
+
+	internal static void Ex_Menu_4()
+	{
+		Menu menu = new Menu("Example Menu - Multi-column", "-");
+		menu.ColumnCount = 3;
+
+		menu.Add(new MenuOption("Option 1", '1', ExampleMenuOption1));
+		menu.Add(new MenuOption("Option 2", '2', ExampleMenuOption2));
+		menu.Add(new MenuOption("Option 3", '3', ExampleMenuOption3));
+		menu.Add(new MenuSeperator("-"));
+		menu.Add(new MenuSeperator("="));
+		menu.Add(new MenuSeperator("-"));
+
+		menu.Show();
 	}
 }

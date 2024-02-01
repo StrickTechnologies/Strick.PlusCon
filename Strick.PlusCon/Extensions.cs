@@ -20,6 +20,11 @@ internal static class Extensions
 	}
 
 
-
+	/// <summary>
+	/// Returns a boolean indicating whether or not <paramref name="sequence"/> has at least one element. 
+	/// Returns false if <paramref name="sequence"/> is null.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="sequence"></param>
 	internal static bool HasAny<T>([NotNullWhen(true)] this IEnumerable<T>? sequence) => sequence != null && sequence.Any();
 }
