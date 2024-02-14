@@ -862,11 +862,7 @@ internal class Program
 		char letter = 'A';
 		char key = '1';
 		for (int i = 0; i < MenuTests_OptionCount; i++)
-		{
-			menu.Add(new MenuOption($"option{letter}", key, ShowGreens));
-			letter++;
-			key++;
-		}
+		{ menu.Add(new MenuOption($"option{letter++}", key++, ShowGreens)); }
 		menu.Show();
 	}
 
