@@ -23,7 +23,8 @@ public class Menu
 	}
 
 	/// <summary>
-	/// Creates a <see cref="Menu"/> instance with no options, and the <see cref="Title"/> property set to <paramref name="title"/>.
+	/// Creates a <see cref="Menu"/> instance with no options, 
+	/// and the <see cref="Title"/> property set to <paramref name="title"/>.
 	/// </summary>
 	public Menu(string title) : this()
 	{
@@ -31,7 +32,9 @@ public class Menu
 	}
 
 	/// <summary>
-	/// Creates a <see cref="Menu"/> instance with no options, the <see cref="Title"/> property set to <paramref name="title"/>, and the <see cref="Subtitle"/> property set to <paramref name="subTitle"/>.
+	/// Creates a <see cref="Menu"/> instance with no options, 
+	/// the <see cref="Title"/> property set to <paramref name="title"/>, 
+	/// and the <see cref="Subtitle"/> property set to <paramref name="subTitle"/>.
 	/// </summary>
 	public Menu(string title, string subTitle) : this(title)
 	{
@@ -134,12 +137,28 @@ public class Menu
 	public List<char> ExitKeys { get; } = new(new[] { '0', ' ', (char)ConsoleKey.Escape, (char)ConsoleKey.Enter, (char)ConsoleKey.Backspace });
 
 
+	/// <summary>
+	/// The number of columns. If >1, the options will show in a row, column order in that number of columns.
+	/// </summary>
 	public int ColumnCount { get; set; } = 1;
 
 	/// <summary>
-	/// 0=render using classic, 1=render using grid
+	/// Indicates the number of spaces between columns when 
+	/// the <see cref="ColumnCount"/> property is >1.
 	/// </summary>
-	public int RenderEngine = 1;
+	public int GutterWidth { get; set; } = 3;
+
+	/// <summary>
+	/// 0=render using classic, 1=render using grid
+	/// <para>Note: <see cref="ColumnCount"/> and <see cref="GutterWidth"/> are only 
+	/// applicable when rendering is set to grid</para>
+	/// </summary>
+	internal int RenderEngine = 1;
+
+	/// <summary>
+	/// TESTING! show margins, padding and filler
+	/// </summary>
+	internal bool ShowSpecial = false;
 
 
 	/// <summary>
@@ -177,7 +196,7 @@ public class Menu
 			if (RenderEngine == 0)
 			{ Render(); }
 			else
-			{ GRender(); }
+			{ Render_G(); }
 
 			//user input
 			var k = RK(Prompt?.TextStyled);
@@ -217,7 +236,7 @@ public class Menu
 		foreach (MenuOption opt in Options)
 		{ ShowOption(opt, width); }
 	}
-	private void GRender()
+	private void Render_G()
 	{
 		int colCount = ColumnCount;
 
@@ -229,9 +248,18 @@ public class Menu
 		{
 			var col = grid.AddColumn();
 			col.CellLayout.MarginLeft = 0;
+			col.CellLayout.MarginRight = GutterWidth;
+			if (ShowSpecial)
+			{
+				col.CellLayout.MarginLeftChar = 'm';
+				col.CellLayout.MarginRightChar = 'm';
+				col.CellLayout.PaddingLeftChar = 'p';
+				col.CellLayout.PaddingRightChar = 'p';
+			}
 			col.ContentStyle = OptionsStyle;
+			col.CellStyle = OptionsStyle;
 		}
-		grid.Columns.Last().CellLayout.MarginRight = 0;
+		grid.Columns[^1].CellLayout.MarginRight = 0;
 
 		if (Title != null)
 		{
@@ -257,35 +285,59 @@ public class Menu
 			if (opt is MenuSeperator && opt.Caption.Length == 1)
 			{ row.Cells[colIndex].FillerChar = opt.Caption[0]; }
 			else
-			{ row.Cells[colIndex].Content = opt.GetText(width); }
+			{
+				row.Cells[colIndex].Content = opt.GetText(width);
+				if (ShowSpecial)
+				{ row.Cells[colIndex].FillerChar = 'f'; }
+			}
 			if (opt.Style != null)
-			{ row.Cells[colIndex].ContentStyle = opt.Style; }
+			{
+				row.Cells[colIndex].ContentStyle = opt.Style;
+				row.Cells[colIndex].CellStyle = opt.Style;
+			}
+		}
+		for(int i = colIndex+1; i<colCount; i++)
+		{
+			row.Cells[i].ContentStyle = new TextStyle();
+			row.Cells[i].CellStyle = new TextStyle();
 		}
 
-		int colWidth = grid.Columns.Sum(col => col.ContentWidth);
-		if (colWidth < width)
+		//some experimental schemes to pad out the columns so the menu options match the width of the wider of the title/subtitle.
+		int colWidth = grid.Columns.Sum(col => col.TotalWidth);
+		if (colWidth < Math.Max(grid.TitleLength, grid.SubTitleLength))
 		{
+			//grid.Columns[^1].CellLayout.MarginRight += Math.Max(grid.TitleLength, grid.SubTitleLength) - colWidth;
+		}
+		if (false && colWidth < Math.Max(grid.TitleLength, grid.SubTitleLength))
+		{
+			width = Math.Max(grid.TitleLength, grid.SubTitleLength);
+
 			//var col2 = grid.AddColumn();
 			//col2.CellLayout.MarginLeft = 0;
 			//col2.CellLayout.MarginRight = 0;
 			//grid.Rows[0].Cells[1].Content = new string(' ', width - col.ContentWidth);
 			//grid.Columns[0].CellStyle = new(Color.White, System.Drawing.Color.HotPink);
 
-			if (colCount <= 2)
+			if (false && colCount <= 2)
 			{
 				grid.Columns[0].CellLayout.PaddingRight = width - colWidth;
+				//grid.Columns[0].CellLayout.MarginRight += width - colWidth;
 				//grid.Columns[0].CellLayout.PaddingRightChar = 'p';
 				//grid.Columns[0].Cells.SetFillerChar('f');
-				//grid.Columns[0].CellLayout.MarginRight = width - colWidth;
 				//grid.Columns[0].CellLayout.MarginRightChar = 'm';
 			}
 			else
 			{
-				int x = (width - colWidth) / (colCount - 1);
-				for (int i = 0; i < colCount - 1; i++)
+				//int x = (width - colWidth) / (colCount - 1);
+				int x = (width - colWidth) / colCount;
+				int x2 = (width - colWidth) % colCount;
+				//int x2 = (width - colWidth) - x * colCount;
+				for (int i = 0; i < colCount; i++)
 				{
-					grid.Columns[i].CellLayout.MarginRight = x;
+					//grid.Columns[i].CellLayout.MarginRight += x;
+					grid.Columns[i].CellLayout.PaddingRight = x;
 				}
+				grid.Columns[^1].CellLayout.PaddingRight += x2;
 			}
 		}
 
@@ -310,18 +362,6 @@ public class Menu
 	}
 
 	private static void ShowTitle(StyledText? title, int width)
-	{
-		if (title == null)
-		{ return; }
-
-		if (title.Text.Length == 1)
-		{ WL(title.StyleText(new string(title.Text[0], width))); }
-		else
-		{ WL(title.StyleText(title.Text.Center(width))); }
-	}
-
-	//todo: WIP/Cleanup
-	private static void ShowTitle2(StyledText? title, int width)
 	{
 		if (title == null)
 		{ return; }

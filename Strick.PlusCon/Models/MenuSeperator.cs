@@ -28,13 +28,4 @@ public class MenuSeperator : MenuOption
 
 		return new string(Caption[0], length);
 	}
-
-	//todo: WIP/Cleanup
-	public override string GetKeyText()
-	{
-		if (string.IsNullOrEmpty(Caption) || Caption.Length > 1)
-		{ return ""; }
-
-		return new string(Caption[0], 3);
-	}
 }

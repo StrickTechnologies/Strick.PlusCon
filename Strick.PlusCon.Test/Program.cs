@@ -4,6 +4,7 @@ using System.Drawing;
 using Strick.PlusCon.Models;
 using Strick.PlusCon.Test.Models;
 using Strick.PlusCon.Test.Models.Examples;
+using Strick.Utility;
 
 using static Strick.PlusCon.Helpers;
 
@@ -65,13 +66,14 @@ internal class Program
 		mainMenu.Options.Add(new MenuSeperator("time"));
 		var clock = mainMenu.Options.Last();
 		clock.BeforeShow += MainMenuClock_BeforeShow;
-		mainMenu.Options.Add(new MenuSeperator("-"));
-		mainMenu.Options.Add(new MenuOption("Show Doc Samples", 'S', DocSamples.Menu));
-		mainMenu.Options.Add(new MenuOption("Cursor Settings", 'C', CursorUtil.Menu));
-		mainMenu.Options.Add(new MenuOption("Test Menu", 'T', testMenu));
-		mainMenu.Options.Add(new MenuOption("Grid Menu", 'G', gridMenu));
-		mainMenu.Options.Add(new MenuOption("Show Version Info", 'V', ShowVersionInfo));
-		mainMenu.Options.Add(new MenuSeperator("-"));
+		mainMenu.Add(new MenuSeperator("-"));
+		mainMenu.Add(new MenuOption("Show Doc Samples", 'S', DocSamples.Menu));
+		mainMenu.Add(new MenuOption("Cursor Settings", 'C', CursorUtil.Menu));
+		mainMenu.Add(new("Menu tests", 'M', MenuTestsMenu));
+		mainMenu.Add(new MenuOption("Test Menu", 'T', testMenu));
+		mainMenu.Add(new MenuOption("Grid Menu", 'G', gridMenu));
+		mainMenu.Add(new MenuOption("Show Version Info", 'V', ShowVersionInfo));
+		mainMenu.Add(new MenuSeperator("-"));
 		//mainMenu.BeforeShow += Menu_BeforeShow;
 		mainMenu.Show();
 	}
@@ -724,6 +726,148 @@ internal class Program
 		CLS();
 		g.Show();
 		RK();
+	}
+
+
+	private static void MenuTestsMenu()
+	{
+		Menu menu = new PCMenu("Menu Tests");
+		menu.Add(new MenuOption("Test 1", '1', MenuTest1));
+		menu.Add(new MenuSeperator(" "));
+		menu.Add(new MenuOption("", 'O', MenuTestGetOptionCount));
+		menu.Options[^1].BeforeShow += MenuTestOptionCount_BeforeShow;
+		menu.Add(new MenuOption("", 'C', MenuTestGetColumns));
+		menu.Options[^1].BeforeShow += MenuTestColumns_BeforeShow;
+		menu.Add(new MenuOption("", 'G', MenuTestGetGutterWidth));
+		menu.Options[^1].BeforeShow += MenuTestGutterWidth_BeforeShow;
+		menu.Add(new MenuOption("", 'T', MenuTestGetTitleWidth));
+		menu.Options[^1].BeforeShow += MenuTestTitleWidth_BeforeShow;
+		menu.Add(new MenuOption("", 'R', MenuTestGetRender));
+		menu.Options[^1].BeforeShow += MenuTestRender_BeforeShow;
+		menu.Add(new MenuOption("", 'S', MenuTestGetShowSpecial));
+		menu.Options[^1].BeforeShow += MenuTestShowSpecial_BeforeShow;
+		menu.Show();
+	}
+
+	private static int MenuTests_OptionCount = 3;
+	private static int MenuTests_ColumnCount = 1;
+	private static int MenuTests_GutterWidth = 3;
+	private static int MenuTests_TitleWidth = 0;
+	private static char MenuTests_RenderEngine = 'G';
+	private static bool MenuTests_ShowSpecial = false;
+
+	private static void MenuTestGetOptionCount()
+	{
+		string? enteredVal = RL("Enter number of options (1+)");
+		if (!string.IsNullOrWhiteSpace(enteredVal) && enteredVal.IsAllDigits())
+		{
+			int value = int.Parse(enteredVal);
+			if (value > 0)
+			{ MenuTests_OptionCount = value; }
+		}
+	}
+	private static void MenuTestOptionCount_BeforeShow(object? sender, EventArgs e)
+	{
+		if (sender is null) return;
+
+		MenuOption option = (MenuOption)sender;
+		option.Caption = $"# of Options ({MenuTests_OptionCount.ToString()})";
+	}
+	private static void MenuTestGetTitleWidth()
+	{
+		string? width = RL("Enter width (0=auto)");
+		if (!string.IsNullOrWhiteSpace(width) && width.IsAllDigits())
+		{ MenuTests_TitleWidth = int.Parse(width); }
+	}
+	private static void MenuTestTitleWidth_BeforeShow(object? sender, EventArgs e)
+	{
+		if (sender is null) return;
+
+		MenuOption option = (MenuOption)sender;
+		option.Caption = $"Title Width ({(MenuTests_TitleWidth > 0 ? MenuTests_TitleWidth.ToString() : "auto")})";
+	}
+	private static void MenuTestGetColumns()
+	{
+		string? cols = RL("Enter column count (1+)");
+		if (!string.IsNullOrWhiteSpace(cols) && cols.IsAllDigits())
+		{
+			int colValue = int.Parse(cols);
+			if (colValue > 0)
+			{ MenuTests_ColumnCount = colValue; }
+		}
+	}
+	private static void MenuTestColumns_BeforeShow(object? sender, EventArgs e)
+	{
+		if (sender is null) return;
+
+		MenuOption option = (MenuOption)sender;
+		option.Caption = $"Columns ({MenuTests_ColumnCount.ToString()})";
+	}
+	private static void MenuTestGetGutterWidth()
+	{
+		string? cols = RL("Enter gutter width (0+)");
+		if (!string.IsNullOrWhiteSpace(cols) && cols.IsAllDigits())
+		{
+			int colValue = int.Parse(cols);
+			if (colValue >= 0)
+			{ MenuTests_GutterWidth = colValue; }
+		}
+	}
+	private static void MenuTestGutterWidth_BeforeShow(object? sender, EventArgs e)
+	{
+		if (sender is null) return;
+
+		MenuOption option = (MenuOption)sender;
+		option.Caption = $"Gutter Width ({MenuTests_GutterWidth.ToString()})";
+	}
+	private static void MenuTestGetRender()
+	{
+		ConsoleKeyInfo renderType = RK("Enter render type (G=grid, C=classic)");
+		if (renderType.KeyChar.In('g', 'G', 'C', 'c'))
+		{ MenuTests_RenderEngine = Char.ToUpper(renderType.KeyChar); }
+	}
+	private static void MenuTestRender_BeforeShow(object? sender, EventArgs e)
+	{
+		if (sender is null) return;
+
+		MenuOption option = (MenuOption)sender;
+		option.Caption = $"Render Type ({(MenuTests_RenderEngine == 'G' ? "Grid" : "Classic")})";
+	}
+	private static void MenuTestGetShowSpecial()
+	{
+		ConsoleKeyInfo renderType = RK("Show margins/padding? (Y/N)");
+		if (renderType.KeyChar.In('y', 'Y', 'N', 'n'))
+		{ MenuTests_ShowSpecial = Char.ToUpper(renderType.KeyChar) == 'Y'; }
+	}
+	private static void MenuTestShowSpecial_BeforeShow(object? sender, EventArgs e)
+	{
+		if (sender is null) return;
+
+		MenuOption option = (MenuOption)sender;
+		option.Caption = $"Show margins/padding ({MenuTests_ShowSpecial.YesNo()})";
+	}
+
+	private static void MenuTest1()
+	{
+		Menu menu = new Menu();
+		menu.Title = new StyledText("-", Color.White, Color.Gray);
+		if (MenuTests_TitleWidth > 0)
+		{ menu.Title.Text = Ruler.GetH(MenuTests_TitleWidth, colors: null); }
+		menu.Prompt.Style = menu.Title.Style;
+		menu.ColumnCount = MenuTests_ColumnCount;
+		menu.GutterWidth = MenuTests_GutterWidth;
+		menu.RenderEngine = MenuTests_RenderEngine == 'G' ? 1 : 0;
+		menu.OptionsStyle = new TextStyle(Color.White, Color.Blue);
+		menu.ShowSpecial = MenuTests_ShowSpecial;
+		char letter = 'A';
+		char key = '1';
+		for (int i = 0; i < MenuTests_OptionCount; i++)
+		{
+			menu.Add(new MenuOption($"option{letter}", key, ShowGreens));
+			letter++;
+			key++;
+		}
+		menu.Show();
 	}
 
 

@@ -35,6 +35,12 @@ contained in the menu's `ExitKeys` collection, the menu option takes precedent.
 If two (or more) options in the a menu's `Options` collection contain the same key in their `Keys` collection, 
 the option with the lowest index within the `Options` collection will take precedent.
 
+### Multi-column
+A menu can have multiple columns. Use the `ColumnCount` property to set the number of 
+columns for a menu (the default is 1). The menu's options are shown in a row, column 
+order on a muti-column menu. You can use the `GutterWidth` property to control the 
+spacing between columns (default is 3).
+
 ## Examples
 ```c#
 Menu subMenu = new("Example Submenu");

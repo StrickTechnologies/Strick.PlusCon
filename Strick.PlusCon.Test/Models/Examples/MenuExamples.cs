@@ -185,6 +185,7 @@ internal static class MenuExamples
 	{
 		Menu menu = new Menu("Example Menu - Multi-column", "-");
 		menu.ColumnCount = 3;
+		menu.GutterWidth = 4;
 
 		menu.Add(new MenuOption("Option 1", '1', ExampleMenuOption1));
 		menu.Add(new MenuOption("Option 2", '2', ExampleMenuOption2));
@@ -192,6 +193,9 @@ internal static class MenuExamples
 		menu.Add(new MenuSeperator("-"));
 		menu.Add(new MenuSeperator("="));
 		menu.Add(new MenuSeperator("-"));
+		menu.Add(new MenuOption("Option 4", '4', ExampleMenuOption3));
+		menu.Add(new MenuOption("Option 5", '5', ExampleMenuOption3));
+		menu.Add(new MenuOption("Option 6", '6', ExampleMenuOption3));
 
 		menu.Show();
 	}
