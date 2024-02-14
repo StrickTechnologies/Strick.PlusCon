@@ -12,43 +12,7 @@ internal static class DocSamples
 {
 	static DocSamples()
 	{
-		Samples = new List<DocSample>()
-		{
-			//new DocSample("qs1", "Example - Quick Start (1)", Basics.Ex_qs_1),
-			//new DocSample("esc1", "Example - Escape Sequences (1)", Basics.Ex_EscapeSeq_1),
-			//new DocSample("wwl1", "Example - W/WL (1)", Basics.Ex_wwl_1),
-			//new DocSample("wwl2", "Example - W/WL (2)", Basics.Ex_wwl_2),
-			//new DocSample("wwl3", "Example - W/WL (3)", Basics.Ex_wwl_3),
-			//new DocSample("wwl4", "Example - W/WL (4)", Basics.Ex_wwl_4),
-			//new DocSample("cls1", "Example - CLS (1)", Basics.Ex_cls_1),
-			//new DocSample("cls2", "Example - CLS (2)", Basics.Ex_cls_2),
-
-			//new DocSample("colorize1", "Example - Colorize (1)", ColorExamples.Ex_colorize_1),
-			//new DocSample("colorize2", "Example - Colorize (2)", ColorExamples.Ex_colorize_2),
-			//new DocSample("colorize3", "Example - Colorize (3)", ColorExamples.Ex_colorize_3),
-			//new DocSample("underline1", "Example - Underline", Basics.Ex_underline_1),
-			//new DocSample("reverse1", "Example - Reverse", Basics.Ex_reverse_1),
-			//new DocSample("gradient1", "Example - Gradient (1)", Gradient.Ex_gradient_1),
-			//new DocSample("gradient2", "Example - Gradient (2)", Gradient.Ex_gradient_2),
-			//new DocSample("gradient3", "Example - Gradient (3)", Gradient.Ex_gradient_3),
-			//new DocSample("combo1", "Example - Combinations", Basics.Ex_combo_1),
-			//new DocSample("notes1", "Example - Other Notes", Basics.Ex_notes_1),
-			//new DocSample("colorUtil1", "Example - Color Utilities (1)", ColorExamples.Ex_ColorUtil_1),
-
-			//new DocSample("formatUtil1", "Example - Format Utilities (1)", Basics.Ex_FormatUtil_1),
-
-			//new DocSample("textstyle1", "Example - TextStyle", TextStyleExamples.Ex_TextStyle_1),
-			//new DocSample("styledtext1", "Example - StyledText", TextStyleExamples.Ex_StyledText_1),
-
-			//new DocSample("menu1", "Example - Menu (1)", MenuExamples.Ex_Menu_1),
-			//new DocSample("menu2", "Example - Menu (2)", MenuExamples.Ex_Menu_2),
-			//new DocSample("menu3", "Example - Menu Events (3)", MenuExamples.Ex_Menu_3),
-
-			//new DocSample("grid1", "Example - Grid (1)", GridExamples.Ex_Grid_1),
-			//new DocSample("grid2", "Example - Grid (2)", GridExamples.Ex_Grid_2),
-
-			//new DocSample("ruler1", "Example - Ruler (1)", RulerExamples.Ex_Ruler_1),
-		};
+		Samples = new List<DocSample>();
 	}
 
 
@@ -111,7 +75,7 @@ internal static class DocSamples
 	}
 
 
-	public static Menu Menu
+	public static Menu Menu 
 	{
 		get
 		{

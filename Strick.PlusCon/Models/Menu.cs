@@ -236,6 +236,7 @@ public class Menu
 		foreach (MenuOption opt in Options)
 		{ ShowOption(opt, width); }
 	}
+
 	private void Render_G()
 	{
 		int colCount = ColumnCount;
@@ -303,43 +304,43 @@ public class Menu
 		}
 
 		//some experimental schemes to pad out the columns so the menu options match the width of the wider of the title/subtitle.
-		int colWidth = grid.Columns.Sum(col => col.TotalWidth);
-		if (colWidth < Math.Max(grid.TitleLength, grid.SubTitleLength))
-		{
-			//grid.Columns[^1].CellLayout.MarginRight += Math.Max(grid.TitleLength, grid.SubTitleLength) - colWidth;
-		}
-		if (false && colWidth < Math.Max(grid.TitleLength, grid.SubTitleLength))
-		{
-			width = Math.Max(grid.TitleLength, grid.SubTitleLength);
+		//int colWidth = grid.Columns.Sum(col => col.TotalWidth);
+		//if (colWidth < Math.Max(grid.TitleLength, grid.SubTitleLength))
+		//{
+		//	//grid.Columns[^1].CellLayout.MarginRight += Math.Max(grid.TitleLength, grid.SubTitleLength) - colWidth;
+		//}
+		//if (false && colWidth < Math.Max(grid.TitleLength, grid.SubTitleLength))
+		//{
+		//	width = Math.Max(grid.TitleLength, grid.SubTitleLength);
 
-			//var col2 = grid.AddColumn();
-			//col2.CellLayout.MarginLeft = 0;
-			//col2.CellLayout.MarginRight = 0;
-			//grid.Rows[0].Cells[1].Content = new string(' ', width - col.ContentWidth);
-			//grid.Columns[0].CellStyle = new(Color.White, System.Drawing.Color.HotPink);
+		//	//var col2 = grid.AddColumn();
+		//	//col2.CellLayout.MarginLeft = 0;
+		//	//col2.CellLayout.MarginRight = 0;
+		//	//grid.Rows[0].Cells[1].Content = new string(' ', width - col.ContentWidth);
+		//	//grid.Columns[0].CellStyle = new(Color.White, System.Drawing.Color.HotPink);
 
-			if (false && colCount <= 2)
-			{
-				grid.Columns[0].CellLayout.PaddingRight = width - colWidth;
-				//grid.Columns[0].CellLayout.MarginRight += width - colWidth;
-				//grid.Columns[0].CellLayout.PaddingRightChar = 'p';
-				//grid.Columns[0].Cells.SetFillerChar('f');
-				//grid.Columns[0].CellLayout.MarginRightChar = 'm';
-			}
-			else
-			{
-				//int x = (width - colWidth) / (colCount - 1);
-				int x = (width - colWidth) / colCount;
-				int x2 = (width - colWidth) % colCount;
-				//int x2 = (width - colWidth) - x * colCount;
-				for (int i = 0; i < colCount; i++)
-				{
-					//grid.Columns[i].CellLayout.MarginRight += x;
-					grid.Columns[i].CellLayout.PaddingRight = x;
-				}
-				grid.Columns[^1].CellLayout.PaddingRight += x2;
-			}
-		}
+		//	if (false && colCount <= 2)
+		//	{
+		//		grid.Columns[0].CellLayout.PaddingRight = width - colWidth;
+		//		//grid.Columns[0].CellLayout.MarginRight += width - colWidth;
+		//		//grid.Columns[0].CellLayout.PaddingRightChar = 'p';
+		//		//grid.Columns[0].Cells.SetFillerChar('f');
+		//		//grid.Columns[0].CellLayout.MarginRightChar = 'm';
+		//	}
+		//	else
+		//	{
+		//		//int x = (width - colWidth) / (colCount - 1);
+		//		int x = (width - colWidth) / colCount;
+		//		int x2 = (width - colWidth) % colCount;
+		//		//int x2 = (width - colWidth) - x * colCount;
+		//		for (int i = 0; i < colCount; i++)
+		//		{
+		//			//grid.Columns[i].CellLayout.MarginRight += x;
+		//			grid.Columns[i].CellLayout.PaddingRight = x;
+		//		}
+		//		grid.Columns[^1].CellLayout.PaddingRight += x2;
+		//	}
+		//}
 
 		CLS();
 		grid.Show();
