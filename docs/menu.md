@@ -3,7 +3,11 @@ The `Menu` and `MenuOption` classes provide a way to create a simple menu struct
 
 A menu can have one or more `Options`, and optionally a `Title`, `Subtitle` and `Prompt`. 
 The titles show at the top of the menu, above the options. 
-The prompt shows beneath the options, and the cursor is located next to the prompt while awaiting user input.
+The prompt shows beneath the options, and the cursor is located next to the prompt while 
+awaiting user input.
+
+Horizontal alignment of the `Title` and `Subtitle` can be controlled using the `TitleAlignment` 
+and `SubtitleAlignment` properties, respectively. The default for both is `HorizontalAlignment.Center`.
 
 There are three types of menu options:
 1. **Invokable Options**. Either invoke a submenu or an Action (a method that takes no arguments and returns no value). Use the `MenuOption` class.
@@ -38,8 +42,8 @@ the option with the lowest index within the `Options` collection will take prece
 ### Multi-column
 A menu can have multiple columns. Use the `ColumnCount` property to set the number of 
 columns for a menu (the default is 1). The menu's options are shown in a row, column 
-order on a muti-column menu. You can use the `GutterWidth` property to control the 
-spacing between columns (default is 3).
+order on a muti-column menu. Use the `GutterWidth` property to control the spacing 
+between columns (the default is 3).
 
 ## Examples
 ```c#
@@ -233,3 +237,41 @@ private static void ExampleMenuOption2()
 ```
 ![Example - Menu 3-1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_3-1.png)
 ![Example - Menu 3-2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_3-2.png)
+
+## Multi-column
+```c#
+TextStyle CatStyle = new TextStyle(Color.White, Color.Blue) { Underline = true };
+Menu menu = new Menu("Example Menu - Multi-column", "-");
+menu.OptionsStyle = new TextStyle(Color.White, Color.Gray);
+menu.ColumnCount = 3;
+menu.GutterWidth = 4;
+
+menu.Add(new MenuSeperator("Category A"));
+menu.Options[^1].Style = CatStyle;
+menu.Add(new MenuSeperator("Category B"));
+menu.Options[^1].Style = CatStyle;
+menu.Add(new MenuSeperator("Category C"));
+menu.Options[^1].Style = CatStyle;
+
+menu.Add(new MenuOption("Option 1", '1', ExampleMenuOption1));
+menu.Add(new MenuOption("Option 3", '3', ExampleMenuOption1));
+menu.Add(new MenuOption("Option 6", '6', ExampleMenuOption1));
+
+menu.Add(new MenuOption("Option 2", '2', ExampleMenuOption1));
+menu.Add(new MenuOption("Option 4", '4', ExampleMenuOption1));
+menu.Add(new MenuSeperator(""));
+
+menu.Add(new MenuSeperator(""));
+menu.Add(new MenuOption("Option 5", '5', ExampleMenuOption1));
+menu.Add(new MenuSeperator(""));
+
+menu.Show();
+
+private static void ExampleMenuOption1()
+{
+	CLS();
+	WL("This is Example Menu Option 1", Color.Red);
+	RK("press a key to return to the menu...");
+}
+```
+![Example - Menu 4-1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_4-1.png)

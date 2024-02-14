@@ -116,12 +116,6 @@ internal static class MenuExamples
 		RK("press a key to return to the menu...");
 	}
 
-	private static void ExampleMenuOption3()
-	{
-		CLS();
-		WL("This is Example Menu Option 3", Color.BlueViolet);
-		RK("press a key to return to the menu...");
-	}
 
 	internal static void Ex_Menu_3()
 	{
@@ -183,19 +177,30 @@ internal static class MenuExamples
 
 	internal static void Ex_Menu_4()
 	{
+		TextStyle CatStyle = new TextStyle(Color.White, Color.Blue) { Underline = true };
 		Menu menu = new Menu("Example Menu - Multi-column", "-");
+		menu.OptionsStyle = new TextStyle(Color.White, Color.Gray);
 		menu.ColumnCount = 3;
 		menu.GutterWidth = 4;
 
+		menu.Add(new MenuSeperator("Category A"));
+		menu.Options[^1].Style = CatStyle;
+		menu.Add(new MenuSeperator("Category B"));
+		menu.Options[^1].Style = CatStyle;
+		menu.Add(new MenuSeperator("Category C"));
+		menu.Options[^1].Style = CatStyle;
+
 		menu.Add(new MenuOption("Option 1", '1', ExampleMenuOption1));
-		menu.Add(new MenuOption("Option 2", '2', ExampleMenuOption2));
-		menu.Add(new MenuOption("Option 3", '3', ExampleMenuOption3));
-		menu.Add(new MenuSeperator("-"));
-		menu.Add(new MenuSeperator("="));
-		menu.Add(new MenuSeperator("-"));
-		menu.Add(new MenuOption("Option 4", '4', ExampleMenuOption3));
-		menu.Add(new MenuOption("Option 5", '5', ExampleMenuOption3));
-		menu.Add(new MenuOption("Option 6", '6', ExampleMenuOption3));
+		menu.Add(new MenuOption("Option 3", '3', ExampleMenuOption1));
+		menu.Add(new MenuOption("Option 6", '6', ExampleMenuOption1));
+
+		menu.Add(new MenuOption("Option 2", '2', ExampleMenuOption1));
+		menu.Add(new MenuOption("Option 4", '4', ExampleMenuOption1));
+		menu.Add(new MenuSeperator(""));
+
+		menu.Add(new MenuSeperator(""));
+		menu.Add(new MenuOption("Option 5", '5', ExampleMenuOption1));
+		menu.Add(new MenuSeperator(""));
 
 		menu.Show();
 	}
