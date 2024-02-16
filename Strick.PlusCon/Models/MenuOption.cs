@@ -105,7 +105,7 @@ public class MenuOption
 	/// <returns></returns>
 	public virtual string GetText(int length)
 	{
-		if (Keys == null || !Keys.Any())
+		if (!Keys.HasAny())
 		{ return Caption; }
 
 		return $"{Keys[0]}. {Caption}";

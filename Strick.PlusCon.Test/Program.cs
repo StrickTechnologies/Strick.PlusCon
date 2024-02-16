@@ -84,7 +84,7 @@ internal class Program
 
 		MenuOption clock = (MenuOption)sender;
 		//clock.Caption = DateTime.Now.ToString("G");
-		clock.Caption = DateTime.Now.ToString("G").Center(50, '*');
+		clock.Caption = $"Last refresh: {DateTime.Now.ToString("G")}"; //.Center(50, '*');
 	}
 
 	private static void Menu_BeforeShow(object? sender, EventArgs e)
@@ -853,6 +853,7 @@ internal class Program
 		menu.Title = new StyledText("-", Color.White, Color.Gray);
 		if (MenuTests_TitleWidth > 0)
 		{ menu.Title.Text = Ruler.GetH(MenuTests_TitleWidth, colors: null); }
+		menu.Subtitle = new StyledText("foo", Color.White, Color.Gray);
 		menu.Prompt.Style = menu.Title.Style;
 		menu.ColumnCount = MenuTests_ColumnCount;
 		menu.GutterWidth = MenuTests_GutterWidth;
@@ -863,6 +864,14 @@ internal class Program
 		char key = '1';
 		for (int i = 0; i < MenuTests_OptionCount; i++)
 		{ menu.Add(new MenuOption($"option{letter++}", key++, ShowGreens)); }
+		menu.Add(new MenuSeperator(""));
+		menu.Add(new MenuSeperator("foo bar baz xxx"));
+		menu.Add(new MenuSeperator(" "));
+		menu.Add(new MenuSeperator("x"));
+		menu.Options[^1].Style = new TextStyle(Color.LimeGreen, Color.Yellow);
+		menu.Add(new MenuSeperator("foobar"));
+		menu.Add(new MenuSeperator("z"));
+		menu.TitleAlignment = HorizontalAlignment.Right;
 		menu.Show();
 	}
 

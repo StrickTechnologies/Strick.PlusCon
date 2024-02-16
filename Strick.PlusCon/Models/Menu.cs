@@ -107,6 +107,11 @@ public class Menu
 	/// </summary>
 	public StyledText? Prompt { get; set; } = new StyledText("Select an option ");
 
+	/// <summary>
+	/// The length of the <see cref="Prompt"/> property. If <see cref="Prompt"/> is null or empty, 0 is returned. 
+	/// </summary>
+	public int PromptLength => Prompt == null ? 0 : Prompt.Text.Length;
+
 
 	/// <summary>
 	/// A collection of <see cref="MenuOption"/> objects. 
@@ -239,9 +244,14 @@ public class Menu
 
 	private void Render_G()
 	{
+		CLS();
+		Render_GetGrid().Show();
+	}
+
+	private Grid Render_GetGrid()
+	{
 		int colCount = Math.Min(ColumnCount, Options.Count);
 
-		var width = Width;
 		Grid grid = new Grid();
 		grid.ShowColumnHeaders = false;
 
@@ -258,7 +268,6 @@ public class Menu
 				col.CellLayout.PaddingRightChar = 'p';
 			}
 			col.ContentStyle = OptionsStyle;
-			col.CellStyle = OptionsStyle;
 		}
 		grid.Columns[^1].CellLayout.MarginRight = 0;
 
@@ -284,10 +293,13 @@ public class Menu
 				row = grid.AddRow();
 			}
 			if (opt is MenuSeperator && opt.Caption.Length == 1)
-			{ row.Cells[colIndex].FillerChar = opt.Caption[0]; }
+			{
+				row.Cells[colIndex].FillerChar = opt.Caption[0];
+				row.Cells[colIndex].CellStyle = OptionsStyle;
+			}
 			else
 			{
-				row.Cells[colIndex].Content = opt.GetText(width);
+				row.Cells[colIndex].Content = opt.GetText(0);
 				if (ShowSpecial)
 				{ row.Cells[colIndex].FillerChar = 'f'; }
 			}
@@ -304,8 +316,12 @@ public class Menu
 			row.Cells[i].CellStyle = new TextStyle();
 		}
 
-		CLS();
-		grid.Show();
+		int colWidth = grid.Columns.Sum(col => col.TotalWidth);
+		int chromeWidth = Math.Max(Math.Max(TitleLength, SubTitleLength), PromptLength);
+		if (colWidth < chromeWidth)
+		{ grid.Columns[^1].CellLayout.PaddingRight += chromeWidth - colWidth; }
+
+		return grid;
 	}
 
 
@@ -342,20 +358,10 @@ public class Menu
 	/// <summary>
 	/// Returns an int value which represents the maximum width of the menu when displayed. 
 	/// Calculated based on the max width of <see cref="Title"/>, <see cref="Subtitle"/>, <see cref="Prompt"/>, 
-	/// and all the <see cref="Options"/> (+3 for the Key, a period,  and space; e.g. "x. ").
+	/// all the <see cref="Options"/> (+3 for the Key, a period,  and space; e.g. "x. "), 
+	/// and <see cref="GutterWidth"/> for multi-column menus (<see cref="ColumnCount"/>).
 	/// </summary>
-	public int Width
-	{
-		get
-		{
-			var l = Options.Max(o => o.Width);
-
-			if (Prompt != null)
-			{ l = Math.Max(l, Prompt.Text.Length); }
-
-			return Math.Max(l, Math.Max(TitleLength, SubTitleLength));
-		}
-	}
+	public int Width => Render_GetGrid().Width;
 
 
 	#region EVENTS
