@@ -183,24 +183,32 @@ internal static class MenuExamples
 		menu.ColumnCount = 3;
 		menu.GutterWidth = 4;
 
+		//"headers"
 		menu.Add(new MenuSeperator("Category A"));
 		menu.Options[^1].Style = CatStyle;
 		menu.Add(new MenuSeperator("Category B"));
 		menu.Options[^1].Style = CatStyle;
 		menu.Add(new MenuSeperator("Category C"));
 		menu.Options[^1].Style = CatStyle;
-
+		
+		//row 1
 		menu.Add(new MenuOption("Option 1", '1', ExampleMenuOption1));
 		menu.Add(new MenuOption("Option 3", '3', ExampleMenuOption1));
 		menu.Add(new MenuOption("Option 6", '6', ExampleMenuOption1));
 
+		//row 2
 		menu.Add(new MenuOption("Option 2", '2', ExampleMenuOption1));
+		menu.Add(new MenuSeperator(" "));
+		menu.Add(new MenuSeperator(""));
+
+		//row 3
+		menu.Add(new MenuSeperator(""));
 		menu.Add(new MenuOption("Option 4", '4', ExampleMenuOption1));
 		menu.Add(new MenuSeperator(""));
 
+		//row 4
 		menu.Add(new MenuSeperator(""));
 		menu.Add(new MenuOption("Option 5", '5', ExampleMenuOption1));
-		menu.Add(new MenuSeperator(""));
 
 		menu.Show();
 	}

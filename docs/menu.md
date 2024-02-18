@@ -1,5 +1,5 @@
 ## `Menu`, `MenuOption` classes
-The `Menu` and `MenuOption` classes provide a way to create a simple menu structure for a console app. 
+The `Menu` and `MenuOption` classes provide a way to create a simple menu structure for a console app.
 
 A menu can have one or more `Options`, and optionally a `Title`, `Subtitle` and `Prompt`. 
 The titles show at the top of the menu, above the options. 
@@ -10,19 +10,25 @@ Horizontal alignment of the `Title` and `Subtitle` can be controlled using the `
 and `SubtitleAlignment` properties, respectively. The default for both is `HorizontalAlignment.Center`.
 
 There are three types of menu options:
-1. **Invokable Options**. Either invoke a submenu or an Action (a method that takes no arguments and returns no value). Use the `MenuOption` class.
+1. **Invokable Options**. Either invoke a submenu or an Action 
+(a method that takes no arguments and returns no value). Use the `MenuOption` class.
 2. **Separator Options**. Shows as an option with NO key. Use the `MenuSeperator` class. 
-Setting the `Caption` property to any single character (e.g. "-") will repeat that character for the width of the menu.
-3. **Exit Menu Options**. Exits the menu when selected/invoked by the user. Use the `MenuBackOption` class.
+Setting the `Caption` property to any single character (e.g. "-") will repeat that 
+character for the width of the menu (or column in a multi-column menu).
+3. **Exit Menu Options**. Exits the menu when selected/invoked by the user. 
+Use the `MenuBackOption` class.
 
-The user selects, or invokes, an option by pressing the "key" (typically a letter or digit) shown next to the option.
-Options can have multiple keys associated with them, but only the first key will be displayed on the menu.
+The user selects, or invokes, an option by pressing the "key" (typically a letter or digit) 
+shown next to the option.
+Options can have multiple keys associated with them, but only the first key will be displayed 
+on the menu.
 
 A menu can have multiple `ExitKeys` associated with it. An "Exit Key" is a key that will close the menu.
-The default `ExitKeys` for a menu are: *0 (the digit zero)*, *Space (" ")*, *Escape*, *Enter*, and *Backspace*. 
+The default `ExitKeys` for a menu are: *0 (the digit zero)*, *Space (" ")*, *Escape*, 
+*Enter*, and *Backspace*. 
 These can be overridden via the `ExitKeys` property.
 
-If a prompt is not desired, set the `Prompt` property to null (as opposed to setting Prompt.Text).
+If a prompt is not desired, set the `Prompt` property to null (as opposed to setting `Prompt.Text`).
 ```c#
 Menu myMenu = new("Example Menu");
 ...
@@ -36,16 +42,22 @@ myMenu.Prompt.Text = ""; //results in an exception
 ### Key collisions
 If an option in a menu's `Options` collection contains a key in its `Keys` collection that is also 
 contained in the menu's `ExitKeys` collection, the menu option takes precedent.
-If two (or more) options in the a menu's `Options` collection contain the same key in their `Keys` collection, 
-the option with the lowest index within the `Options` collection will take precedent.
+If two (or more) options in the a menu's `Options` collection contain the same key in their 
+`Keys` collection, the option with the lowest index within the `Options` collection 
+(i.e. the one added first) will take precedent.
 
 ### Multi-column
 A menu can have multiple columns. Use the `ColumnCount` property to set the number of 
-columns for a menu (the default is 1). The menu's options are shown in a row, column 
-order on a muti-column menu. Use the `GutterWidth` property to control the spacing 
-between columns (the default is 3).
+columns for a menu (the default is 1), and the `GutterWidth` property to control 
+the spacing between columns (the default is 3). 
+
+For multi-column menus, the options are shown in a **row, column order**. 
+Use `MenuSeperator` options to create "headers" and groupings to help keep larger 
+menus simply and intuitively organized.
 
 ## Examples
+### Example 1 - Basics
+
 ```c#
 Menu subMenu = new("Example Submenu");
 //lambda
@@ -92,6 +104,7 @@ private static void ExampleMenuOption2()
 ![Example - Menu 1 (main menu)](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_1-1.png)
 ![Example - Menu 1 (sub menu)](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_1-2.png)
 
+### Example 2 - Styling
 Colors for menu titles and menu options can easily be set. 
 At the menu level, both titles (`Title`, `Subtitle`) and `Prompt` have `Style` properties.
 The menu has an `OptionsStyle` property, which sets the style for ALL menu options.
@@ -158,7 +171,7 @@ private static void ExampleMenuOption2()
 ![Example - Menu 2 (main menu)](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_2-1.png)
 ![Example - Menu 2 (sub menu)](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_2-2.png)
 
-## Events
+### Example 3 - Events
 The `Menu` and `MenuOption` classes both have a `BeforeShow` event. As the name suggests, 
 the event is fired **before** the `Menu` or `MenuOption` is rendered. In the event handler 
 for `Menu`, you can manipulate any of the menu's properties or options. In the event handler 
@@ -238,7 +251,7 @@ private static void ExampleMenuOption2()
 ![Example - Menu 3-1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_3-1.png)
 ![Example - Menu 3-2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_menu_3-2.png)
 
-## Multi-column
+### Example 4 - Multi-column
 ```c#
 TextStyle CatStyle = new TextStyle(Color.White, Color.Blue) { Underline = true };
 Menu menu = new Menu("Example Menu - Multi-column", "-");
@@ -246,24 +259,32 @@ menu.OptionsStyle = new TextStyle(Color.White, Color.Gray);
 menu.ColumnCount = 3;
 menu.GutterWidth = 4;
 
+//"headers"
 menu.Add(new MenuSeperator("Category A"));
 menu.Options[^1].Style = CatStyle;
 menu.Add(new MenuSeperator("Category B"));
 menu.Options[^1].Style = CatStyle;
 menu.Add(new MenuSeperator("Category C"));
 menu.Options[^1].Style = CatStyle;
-
+		
+//row 1
 menu.Add(new MenuOption("Option 1", '1', ExampleMenuOption1));
 menu.Add(new MenuOption("Option 3", '3', ExampleMenuOption1));
 menu.Add(new MenuOption("Option 6", '6', ExampleMenuOption1));
 
+//row 2
 menu.Add(new MenuOption("Option 2", '2', ExampleMenuOption1));
+menu.Add(new MenuSeperator(" "));
+menu.Add(new MenuSeperator(""));
+
+//row 3
+menu.Add(new MenuSeperator(""));
 menu.Add(new MenuOption("Option 4", '4', ExampleMenuOption1));
 menu.Add(new MenuSeperator(""));
 
+//row 4
 menu.Add(new MenuSeperator(""));
 menu.Add(new MenuOption("Option 5", '5', ExampleMenuOption1));
-menu.Add(new MenuSeperator(""));
 
 menu.Show();
 
