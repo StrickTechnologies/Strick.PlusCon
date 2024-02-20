@@ -14,6 +14,15 @@ The styling for the titles and footer can also be customized.
 To create a grid, use the `Grid` class. Add columns and rows. 
 Then use the `Show` method to display the grid.
 
+Columns can be added using any of the various `AddColumn` methods or the 
+grid's `Columns` collection. 
+Rows can be added using any of the various `AddRow` methods or the grid's 
+`Rows` collection. 
+There is also an `AddSeparatorRow` method that will add a 
+"separator" row to the grid. A separator row is just a normal row with 
+each cell's `FillerChar` property set to the value of the `fillerChar` 
+argument, and each cell's `Content` property set to `null`. 
+
 Styling for all the grid's cells can be set via the `CellStyle`, and `CellContentStyle` properties. 
 These styles can be overridden at the column, row, and cell level.
 
@@ -82,7 +91,8 @@ A row always has a `Cells` collection, which always contains the same number of
 The `HasCells` property returns a boolean indicating whether or not the row has any cells 
 (i.e. whether or not the grid has any columns).
 If a column is added to the grid, cells are automatically added to each row. 
-If a column is removed from the grid, the corresponding cell is automatically removed from each row. 
+If a column is removed from the grid, the corresponding cell is automatically removed from 
+each row. 
 *The `Cells` collection is readonly -- to add columns to a grid, use the `Columns` 
 collection, or one of the `AddColumn` methods of the `Grid` object.*
 
@@ -137,6 +147,21 @@ number of characters specified by  the `MarginLeft`, `MarginLeftChar`,
 Padding and "filler" are part of the cell and styled using the cell's `CellStyle` 
 (or the cell style inherited from the row, column or grid). 
 Margins are NOT part of the cell, and no styling is applied to the margins. 
+
+### Extensions
+There are a couple of extension methods that operate on a sequence of `GridCell` 
+objects. 
+
+The `Find` extension method operates on any collection of cells and takes a 
+`GridSearchExpression` parameter. The cells can be any sequence of cells 
+from a grid, such as all the cells from a single row, or column, all the cells
+from the grid, any subset of cells from a grid, row, column, or 
+any combination thereof. As with the `Find` methods for the grid, row or column, 
+it will return a sequence of matching cells.
+
+The `SetFillerChar` extension method also operates on any collection of cells and 
+takes a `char` argument. The `FillerChar` property of each cell in the sequence 
+is set to the value of the `char` argument.
 
 ## `GridHeaderCell` Class
 A header cell contains the content and styling for a column header. The header for a column 
