@@ -112,9 +112,9 @@ internal static class GridExamples
 		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
 		row = grid.AddRow(" row 3 ");
 		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;
-		grid.AddRow(""); //"empty" (zero-length) content
+		grid.AddRow(""); //"empty" (zero-length) content -- will have padding
 		grid.AddRow(" ");
-		grid.AddRow(); //no content
+		grid.AddRow(); //null (no content) -- no padding
 		grid.AddRow(" row 7 - wider ");
 
 		col.Header.Content = Ruler.GetH(col.ContentWidth, colors: null);

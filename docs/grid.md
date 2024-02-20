@@ -99,10 +99,12 @@ the first matching cell (`FindFirst`),
 or the first matching column (`FindFirstColumn`). 
 
 ## `GridCell` Class
-The content to be displayed in a given cell can be accessed via it's (read/write) `Content` property. 
+The content to be displayed in a given cell can be accessed via it's (read/write) 
+`Content` property. 
 The `Content` property is a string value, so to display a value from any other type of 
-object, convert the value to a string. An empty string or `null` value are acceptable 
-and both result in the cell rendering as empty (i.e. having no content).
+object, convert the value to a string. Empty string and `null` values are acceptable. 
+A null indicates the cell has no content, and an empty string is considered to be 
+"empty" content.
 
 A cell has two types of text styling: cell styling and content styling. 
 Cell styling applies to the whole cell (i.e. the non-content area of the cell). 
@@ -253,9 +255,9 @@ row = grid.AddRow(" row 2 ");
 row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
 row = grid.AddRow(" row 3 ");
 row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;
-grid.AddRow(""); //"empty" (zero-length) content
+grid.AddRow(""); //"empty" (zero-length) content -- will have padding
 grid.AddRow(" ");
-grid.AddRow(); //no content
+grid.AddRow(); //null (no content) -- no padding
 grid.AddRow(" row 7 - wider ");
 
 col.Header.Content = Ruler.GetH(col.ContentWidth, colors: null);
