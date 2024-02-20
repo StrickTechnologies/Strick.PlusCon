@@ -118,9 +118,7 @@ internal static class GridExamples
 		grid.AddRow(" row 7 - wider ");
 
 		col.Header.Content = Ruler.GetH(col.ContentWidth, colors: null);
-
-		foreach (GridCell cell in col.Cells)
-		{ cell.FillerChar = 'f'; }
+		col.Cells.SetFillerChar('f');
 
 		CLS(background);
 		W(EscapeCodes.ColorReset_Back);

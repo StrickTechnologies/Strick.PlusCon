@@ -4,10 +4,10 @@
 A `Grid` consists of rows and columns of data that is displayed in a tabular format. 
 Each Column is sized automatically to fit its widest content. 
 In addition to the rows and columns, grids can also have a `Title`, `Subtitle` and `Footer`. 
-The titles are shown above the rows/columns, the footer is beneath beneath the rows/columns. 
+The titles are shown above the rows/columns, the footer is beneath the rows/columns. 
 
-The appearance and layout of the grid's columns, rows, and cells can be customized through the 
-use of properties available at the various levels. 
+The appearance and layout of the grid's columns, rows, and cells can be customized through 
+the use of properties available at the various levels. 
 The styling for the titles and footer can also be customized. 
 
 ## `Grid` Class
@@ -84,7 +84,7 @@ The `HasCells` property returns a boolean indicating whether or not the row has 
 If a column is added to the grid, cells are automatically added to each row. 
 If a column is removed from the grid, the corresponding cell is automatically removed from each row. 
 *The `Cells` collection is readonly -- to add columns to a grid, use the `Columns` 
-collection of the `Grid` object.*
+collection, or one of the `AddColumn` methods of the `Grid` object.*
 
 The styling for a row's cells can be set through its `CellStyle` and `ContentStyle` properties. 
 Setting these styles will override the styles inherited from the column or grid.
@@ -117,7 +117,8 @@ cell's `HorizontalAlignment` property. The cell's other layout properties (margi
 cannot be overridden.
 
 A cell has readonly properties for `Column`, `ColumnIndex`, `Row`, and `RowIndex`. 
-These return information regarding the cell's position within the grid.
+These return information regarding the cell's position within the grid. 
+Both the `ColumnIndex` and `RowIndex` properties are zero-based.
 
 When a cell is rendered for display in the grid, the cell's content is styled 
 using the cell's `ContentStyle` (or the content style inherited from the 
@@ -161,7 +162,7 @@ The `Type` property specifies the type of search to perform, and the `Comparison
 property designates the comparison type used for the search. 
 
 ## Examples
-
+### Basics
 ```c#
 Grid g = new();
 g.Title = new("Grid".SpaceOut());
@@ -185,7 +186,7 @@ RK();
 ```
 ![Example - Grid 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_grid_1.png)
 
-
+### Styling
 ```c#
 Grid g = new();
 g.Title = new("Grid".SpaceOut(), new TextStyle(Color.Silver, Color.Gray, Color.Silver) { BackColor = Color.LimeGreen, Reverse = true });
@@ -226,8 +227,8 @@ RK();
 ![Example - Grid 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_grid_2.png)
 
 ### Cell Rendering & Layout
-This example illustrates how cells are structured (including content, margins, padding, and filler) 
-when a grid is rendered.
+This example illustrates how cells are structured (including content, margins, padding, 
+and filler) when a grid is rendered.
 
 ```c#
 Color text = Color.White;
@@ -258,9 +259,7 @@ grid.AddRow(); //no content
 grid.AddRow(" row 7 - wider ");
 
 col.Header.Content = Ruler.GetH(col.ContentWidth, colors: null);
-
-foreach (GridCell cell in col.Cells)
-{ cell.FillerChar = 'f'; }
+col.Cells.SetFillerChar('f');
 
 CLS(background);
 W(EscapeCodes.ColorReset_Back);
