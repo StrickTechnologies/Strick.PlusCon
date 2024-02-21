@@ -48,7 +48,7 @@ The find method takes a `GridSearchExpression` argument.
 Represents a column in a grid.
 
 A column has a `Header` property that returns a `GridHeaderCell` object for its header cell. 
-The `Header` property will always have a non-null value. 
+The read-only `Header` property will always have a non-null value. 
 The various properties of the `Header` object can be used to control the content, appearance and layout 
 of the column's header.
 
