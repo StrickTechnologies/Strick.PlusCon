@@ -7,7 +7,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Version>$(VersionPrefix)1.3.0</Version>
     <Description>Utilities that make working with console apps in .Net easier and more useful.</Description>
-    <Copyright>Copyright (c) 2022-2023 Strick Technologies, LLC. All rights reserved.</Copyright>
+    <Copyright>Copyright (c) 2022-2024 Strick Technologies, LLC. All rights reserved.</Copyright>
     <Company>Strick Technologies, LLC.</Company>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/StrickTechnologies/Strick.PlusCon</RepositoryUrl>
