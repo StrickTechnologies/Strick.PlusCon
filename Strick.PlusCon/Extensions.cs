@@ -27,4 +27,10 @@ internal static class Extensions
 	/// <typeparam name="T"></typeparam>
 	/// <param name="sequence"></param>
 	internal static bool HasAny<T>([NotNullWhen(true)] this IEnumerable<T>? sequence) => sequence != null && sequence.Any();
+
+
+	/// <summary>
+	/// Returns a Boolean indicating whether or not Value is a defined member of the Enum
+	/// </summary>
+	internal static bool Exists(this Enum Value) => Enum.IsDefined(Value.GetType(), Value);
 }

@@ -27,36 +27,23 @@ public static class GridExtensions
 		if (cells == null)
 		{ return Enumerable.Empty<GridCell>(); }
 
-		if(searchExpression == null)
+		if (searchExpression == null)
 		{ return cells.Where(cell => cell.Content == null); }
 
 		if (string.IsNullOrEmpty(searchExpression.Text))
 		{ return cells.Where(cell => cell.Content == searchExpression.Text); }
 
-		switch (searchExpression.Type)
-		{
-			case SearchType.Contains:
-			{
-				return cells.Where(cell => cell.Content != null && cell.Content.Contains(searchExpression.Text, searchExpression.ComparisonType));
-			}
+		if (searchExpression.Type == SearchType.Contains)
+		{ return cells.Where(cell => cell.Content != null && cell.Content.Contains(searchExpression.Text, searchExpression.ComparisonType)); }
 
-			case SearchType.Equals:
-			{
-				return cells.Where(cell => searchExpression.Text.Equals(cell.Content, searchExpression.ComparisonType));
-			}
+		else if (searchExpression.Type == SearchType.Equals)
+		{ return cells.Where(cell => searchExpression.Text.Equals(cell.Content, searchExpression.ComparisonType)); }
 
-			case SearchType.StartsWith:
-			{
-				return cells.Where(cell => cell.Content != null && cell.Content.StartsWith(searchExpression.Text, searchExpression.ComparisonType));
-			}
+		else if (searchExpression.Type == SearchType.StartsWith)
+		{ return cells.Where(cell => cell.Content != null && cell.Content.StartsWith(searchExpression.Text, searchExpression.ComparisonType)); }
 
-			case SearchType.EndsWith:
-			{
-				return cells.Where(cell => cell.Content != null && cell.Content.EndsWith(searchExpression.Text, searchExpression.ComparisonType));
-			}
-		}
-
-		throw new ArgumentOutOfRangeException(nameof(searchExpression.Type), "Invalid search type");
+		else //if (searchExpression.Type == SearchType.EndsWith)
+		{ return cells.Where(cell => cell.Content != null && cell.Content.EndsWith(searchExpression.Text, searchExpression.ComparisonType)); }
 	}
 
 	/// <summary>
