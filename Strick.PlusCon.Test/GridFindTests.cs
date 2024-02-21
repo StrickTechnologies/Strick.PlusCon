@@ -127,7 +127,7 @@ public class GridFindTests
 		CheckRowFind(row1, new("Col2", SearchType.EndsWith, StringComparison.OrdinalIgnoreCase), row1.Cells[1]);
 		CheckRowFind(row1, new("Col2", SearchType.Equals, StringComparison.OrdinalIgnoreCase));
 		CheckRowFind(row1, new("Col2", SearchType.StartsWith, StringComparison.OrdinalIgnoreCase));
-		
+
 		CheckRowFind(row5, new("", SearchType.Contains), row5.Cells[1]);
 		CheckRowFind(row5, new("", SearchType.StartsWith), row5.Cells[1]);
 		CheckRowFind(row5, new("", SearchType.EndsWith), row5.Cells[1]);
@@ -175,31 +175,49 @@ public class GridFindTests
 	public void GridSearchExpressionTests()
 	{
 		GridSearchExpression searchExpression = new();
-		Assert.IsInstanceOfType(searchExpression, typeof(GridSearchExpression));
-		Assert.IsNull(searchExpression.Text);
-		Assert.AreEqual(SearchType.Equals, searchExpression.Type);
-		Assert.AreEqual(StringComparison.OrdinalIgnoreCase, searchExpression.ComparisonType);
+		CheckSearchExpressionState(searchExpression, null, SearchType.Equals, StringComparison.OrdinalIgnoreCase);
+
+		searchExpression.Text = "";
+		CheckSearchExpressionState(searchExpression, "", SearchType.Equals, StringComparison.OrdinalIgnoreCase);
+
 		searchExpression.Text = "foo";
-		Assert.IsInstanceOfType(searchExpression, typeof(GridSearchExpression));
-		Assert.AreEqual("foo",searchExpression.Text);
-		Assert.AreEqual(SearchType.Equals, searchExpression.Type);
-		Assert.AreEqual(StringComparison.OrdinalIgnoreCase, searchExpression.ComparisonType);
+		CheckSearchExpressionState(searchExpression, "foo", SearchType.Equals, StringComparison.OrdinalIgnoreCase);
+
 		searchExpression.Type = SearchType.Contains;
-		Assert.IsInstanceOfType(searchExpression, typeof(GridSearchExpression));
-		Assert.AreEqual("foo",searchExpression.Text);
-		Assert.AreEqual(SearchType.Contains, searchExpression.Type);
-		Assert.AreEqual(StringComparison.OrdinalIgnoreCase, searchExpression.ComparisonType);
-		searchExpression.ComparisonType= StringComparison.Ordinal;
-		Assert.IsInstanceOfType(searchExpression, typeof(GridSearchExpression));
-		Assert.AreEqual("foo",searchExpression.Text);
-		Assert.AreEqual(SearchType.Contains, searchExpression.Type);
-		Assert.AreEqual(StringComparison.Ordinal, searchExpression.ComparisonType);
+		CheckSearchExpressionState(searchExpression, "foo", SearchType.Contains, StringComparison.OrdinalIgnoreCase);
+		searchExpression.Type = SearchType.EndsWith;
+		CheckSearchExpressionState(searchExpression, "foo", SearchType.EndsWith, StringComparison.OrdinalIgnoreCase);
+		searchExpression.Type = SearchType.Equals;
+		CheckSearchExpressionState(searchExpression, "foo", SearchType.Equals, StringComparison.OrdinalIgnoreCase);
+		searchExpression.Type = SearchType.StartsWith;
+		CheckSearchExpressionState(searchExpression, "foo", SearchType.StartsWith, StringComparison.OrdinalIgnoreCase);
+		Assert.ThrowsException<ArgumentOutOfRangeException>(() => searchExpression.Type = (SearchType)(-1));
+		Assert.ThrowsException<ArgumentOutOfRangeException>(() => searchExpression.Type = (SearchType)999);
+
+		searchExpression.ComparisonType = StringComparison.CurrentCulture;
+		CheckSearchExpressionState(searchExpression, "foo", SearchType.StartsWith, StringComparison.CurrentCulture);
+		searchExpression.ComparisonType = StringComparison.CurrentCultureIgnoreCase;
+		CheckSearchExpressionState(searchExpression, "foo", SearchType.StartsWith, StringComparison.CurrentCultureIgnoreCase);
+		searchExpression.ComparisonType = StringComparison.InvariantCulture;
+		CheckSearchExpressionState(searchExpression, "foo", SearchType.StartsWith, StringComparison.InvariantCulture);
+		searchExpression.ComparisonType = StringComparison.InvariantCultureIgnoreCase;
+		CheckSearchExpressionState(searchExpression, "foo", SearchType.StartsWith, StringComparison.InvariantCultureIgnoreCase);
+		searchExpression.ComparisonType = StringComparison.Ordinal;
+		CheckSearchExpressionState(searchExpression, "foo", SearchType.StartsWith, StringComparison.Ordinal);
+		searchExpression.ComparisonType = StringComparison.OrdinalIgnoreCase;
+		CheckSearchExpressionState(searchExpression, "foo", SearchType.StartsWith, StringComparison.OrdinalIgnoreCase);
+		Assert.ThrowsException<ArgumentOutOfRangeException>(() => searchExpression.ComparisonType = (StringComparison)(-1));
+		Assert.ThrowsException<ArgumentOutOfRangeException>(() => searchExpression.ComparisonType = (StringComparison)999);
+
+
+		searchExpression = new("bar");
+		CheckSearchExpressionState(searchExpression, "bar", SearchType.Equals, StringComparison.OrdinalIgnoreCase);
+
+		searchExpression = new("bar", SearchType.StartsWith);
+		CheckSearchExpressionState(searchExpression, "bar", SearchType.StartsWith, StringComparison.OrdinalIgnoreCase);
 
 		searchExpression = new("bar", SearchType.StartsWith, StringComparison.CurrentCulture);
-		Assert.IsInstanceOfType(searchExpression, typeof(GridSearchExpression));
-		Assert.AreEqual("bar",searchExpression.Text);
-		Assert.AreEqual(SearchType.StartsWith, searchExpression.Type);
-		Assert.AreEqual(StringComparison.CurrentCulture, searchExpression.ComparisonType);
+		CheckSearchExpressionState(searchExpression, "bar", SearchType.StartsWith, StringComparison.CurrentCulture);
 	}
 
 
@@ -276,5 +294,13 @@ public class GridFindTests
 		{
 			Assert.AreEqual(expectedRows[i], rows.ElementAt(i));
 		}
+	}
+
+	private static void CheckSearchExpressionState(GridSearchExpression searchExpression, string? expectedText, SearchType expectedType, StringComparison expectedComparisonType)
+	{
+		Assert.IsNotNull(searchExpression);
+		Assert.AreEqual(expectedText, searchExpression.Text);
+		Assert.AreEqual(expectedType, searchExpression.Type);
+		Assert.AreEqual(expectedComparisonType, searchExpression.ComparisonType);
 	}
 }
