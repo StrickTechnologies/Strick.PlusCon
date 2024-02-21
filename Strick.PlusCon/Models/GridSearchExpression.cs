@@ -14,15 +14,15 @@ namespace Strick.PlusCon.Models;
 public class GridSearchExpression
 {
 	/// <summary>
-	/// Creates a new instance that will search cells for a null value using default 
-	/// values for <see cref="SearchType"/> and <see cref="ComparisonType"/>.
+	/// Creates a new instance with default values for <see cref="Text"/>, 
+	/// <see cref="Type"/>, and <see cref="ComparisonType"/>.
 	/// </summary>
 	public GridSearchExpression() { }
 
 	/// <summary>
-	/// Creates a new instance that will search cells for the value specified by the 
-	/// <paramref name="searchText"/> argument using default values for 
-	/// <see cref="SearchType"/> and <see cref="ComparisonType"/>.
+	/// Creates a new instance with the <see cref="Text"/> property set to 
+	/// the <paramref name="searchText"/> argument, and default values for 
+	/// <see cref="Type"/> and <see cref="ComparisonType"/>.
 	/// </summary>
 	public GridSearchExpression(string? searchText)
 	{
@@ -30,9 +30,10 @@ public class GridSearchExpression
 	}
 
 	/// <summary>
-	/// Creates a new instance that will search cells for the value specified by the 
-	/// <paramref name="searchText"/> argument using the <see cref="SearchType"/> specified 
-	/// by the <paramref name="searchType"/> argument and the default value for <see cref="ComparisonType"/>.
+	/// Creates a new instance with the <see cref="Text"/> property set to 
+	/// the <paramref name="searchText"/> argument, 
+	/// the <see cref="Type"/> property set to the <paramref name="searchType"/> argument 
+	/// and the default value for <see cref="ComparisonType"/>.
 	/// </summary>
 	public GridSearchExpression(string? searchText, SearchType searchType) : this(searchText)
 	{
@@ -40,10 +41,10 @@ public class GridSearchExpression
 	}
 
 	/// <summary>
-	/// Creates a new instance that will search cells for the value specified by the 
-	/// <paramref name="searchText"/> argument using the <see cref="SearchType"/> specified 
-	/// by the <paramref name="searchType"/> argument and the <see cref="StringComparison"/> 
-	/// specified by the <paramref name="comparisonType"/> argument.
+	/// Creates a new instance with the <see cref="Text"/> property set to 
+	/// the <paramref name="searchText"/> argument, 
+	/// the <see cref="Type"/> property set to the <paramref name="searchType"/> argument 
+	/// and the <see cref="ComparisonType"/> property set to the <paramref name="comparisonType"/> argument.
 	/// </summary>
 	public GridSearchExpression(string? searchText, SearchType searchType, StringComparison comparisonType) : this(searchText, searchType)
 	{
@@ -52,7 +53,8 @@ public class GridSearchExpression
 
 
 	/// <summary>
-	/// The text to search for. Null or an empty string are acceptable, and search for cells containing those values, respectively.
+	/// The text to search for. Null (the default) or an empty string are acceptable, 
+	/// and search for cells containing those values, respectively.
 	/// </summary>
 	public string? Text { get; set; }
 
@@ -61,7 +63,7 @@ public class GridSearchExpression
 
 	/// <summary>
 	/// The type of search to perform. 
-	/// Default is <see cref="SearchType.Equals"/>.
+	/// The default is <see cref="SearchType.Equals"/>.
 	/// </summary>
 	public SearchType Type
 	{
@@ -79,7 +81,7 @@ public class GridSearchExpression
 
 	/// <summary>
 	/// The comparison type used for the search. 
-	/// Default is <see cref="StringComparison.OrdinalIgnoreCase"/>.
+	/// The default is <see cref="StringComparison.OrdinalIgnoreCase"/>.
 	/// </summary>
 	public StringComparison ComparisonType
 	{
@@ -88,7 +90,7 @@ public class GridSearchExpression
 		{
 			if (!value.Exists())
 			{ throw new ArgumentOutOfRangeException(nameof(value)); }
-			
+
 			compType = value;
 		}
 	}

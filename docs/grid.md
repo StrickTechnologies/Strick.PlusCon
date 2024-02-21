@@ -152,8 +152,8 @@ Margins are NOT part of the cell, and no styling is applied to the margins.
 There are a couple of extension methods that operate on a sequence of `GridCell` 
 objects. 
 
-The `Find` extension method operates on any collection of cells and takes a 
-`GridSearchExpression` parameter. The cells can be any sequence of cells 
+The `Find` extension method operates on any collection (that implements IEnumerable) 
+of cells and takes a `GridSearchExpression` parameter. The cells can be any sequence of cells 
 from a grid, such as all the cells from a single row, or column, all the cells
 from the grid, any subset of cells from a grid, row, column, or 
 any combination thereof. As with the `Find` methods for the grid, row or column, 
@@ -179,14 +179,18 @@ When a grid cell is rendered, Padding is part of the cell, Margins are outside t
 
 ## `GridSearchExpression` Class
 
-The `GridSearchExpression` class can be used to search the cells of a `Grid`, 
-`GridColumn`, or `GridRow` object. 
+The `GridSearchExpression` class represents a search expression that is used by 
+the `Find` methods for `Grid`, `GridColumn`, `GridRow` and the 
+`IEnumerable<GridCell>` extension. 
 
 The `Text` property specifies the text to search for. Both `null` and empty string are 
 acceptable, and search for cells containing those values, respectively.
 
-The `Type` property specifies the type of search to perform, and the `ComparisonType` 
-property designates the comparison type used for the search. 
+The `Type` property (`SearchType` enum) specifies the type of search to perform. 
+The default is `Equals`.
+
+The `ComparisonType` property (`System.StringComparison`) designates the comparison 
+type used for the search. The default is `OrdinalIgnoreCase`.
 
 ## Examples
 ### Basics
