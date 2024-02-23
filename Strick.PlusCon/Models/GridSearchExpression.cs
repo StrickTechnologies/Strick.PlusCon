@@ -24,6 +24,7 @@ public class GridSearchExpression
 	/// the <paramref name="searchText"/> argument, and default values for 
 	/// <see cref="Type"/> and <see cref="ComparisonType"/>.
 	/// </summary>
+	/// <param name="searchText"><inheritdoc cref="Text" path="/summary"/></param>
 	public GridSearchExpression(string? searchText)
 	{
 		Text = searchText;
@@ -35,6 +36,8 @@ public class GridSearchExpression
 	/// the <see cref="Type"/> property set to the <paramref name="searchType"/> argument 
 	/// and the default value for <see cref="ComparisonType"/>.
 	/// </summary>
+	/// <param name="searchText"><inheritdoc cref="GridSearchExpression(string?)" path="/param[@name='searchText']"/></param>
+	/// <param name="searchType"><inheritdoc cref="SearchType" path="/summary"/></param>
 	public GridSearchExpression(string? searchText, SearchType searchType) : this(searchText)
 	{
 		Type = searchType;
@@ -46,6 +49,9 @@ public class GridSearchExpression
 	/// the <see cref="Type"/> property set to the <paramref name="searchType"/> argument 
 	/// and the <see cref="ComparisonType"/> property set to the <paramref name="comparisonType"/> argument.
 	/// </summary>
+	/// <param name="searchText"><inheritdoc cref="GridSearchExpression(string?)" path="/param[@name='searchText']"/></param>
+	/// <param name="searchType"><inheritdoc cref="GridSearchExpression(string?, SearchType)" path="/param[@name='searchType']"/></param>
+	/// <param name="comparisonType"><inheritdoc cref="ComparisonType" path="/summary"/></param>
 	public GridSearchExpression(string? searchText, SearchType searchType, StringComparison comparisonType) : this(searchText, searchType)
 	{
 		ComparisonType = comparisonType;
