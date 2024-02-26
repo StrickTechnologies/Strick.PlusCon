@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add missing XML docs in `GridSearchExpression` class
 - `GridSearchExpression` doc updates
 
+
 ## [1.3.0] - 2024-02-21
 ### New Features
 - `StyledText` - new constructor overloads to accept colors
@@ -48,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `W`, `WL` - Improved null/empty string support
 - `RK`, `RL` - Improved null/empty string support for prompts
 - Miscellaneous doc updates/improvements
+
 
 ## [1.2.0] - 2023-11-14
 ### New Features
@@ -82,6 +84,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2022-09-01
 
-## [0.9.1] - 2022-08-08
+## 0.9.1 - 2022-08-08
 
-## [0.9.0] - 2022-08-08
+## 0.9.0 - 2022-08-08
+
+
+[1.3.1]: https://github.com/StrickTechnologies/Strick.PlusCon/compare/v1.3.0...v1.3.1
+[1.3.0]: https://github.com/StrickTechnologies/Strick.PlusCon/compare/v1.2.0...v1.3.0
+[1.2.0]: https://github.com/StrickTechnologies/Strick.PlusCon/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/StrickTechnologies/Strick.PlusCon/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/StrickTechnologies/Strick.PlusCon/releases/tag/v1.0.0
