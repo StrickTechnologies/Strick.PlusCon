@@ -8,16 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### New Features
-- none yet... :-(
-- 
+- Add CHANGELOG.md
+- Grids
+  - New constructors to take `Title`, `Subtitle`, `Footer` arguments.
+
 ### Changes/Fixes
 - Add missing XML comments for `GridSearchExpression` constructor parameters
 
 
 ## [1.3.1] - 2024-02-23
 ### Changes/Fixes
-- Corrections in `GridSearchExpression` to ensure `Type` and `ComparisonType` 
-properties always have valid values
+- Corrections in `GridSearchExpression` to ensure `Type` and `ComparisonType` properties always have valid values
 - Add missing XML docs in `GridSearchExpression` class
 - `GridSearchExpression` doc updates
 

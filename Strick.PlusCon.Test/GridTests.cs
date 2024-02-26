@@ -575,6 +575,31 @@ public class GridTests
 		CheckTitleRendering(g, g.Title, "foo bar baz", "foo bar baz", "foo bar baz", Expectations.ForeColorRed, Expectations.ForeColorReset);
 		g.Title.Text = "-";
 		CheckTitleRendering(g, g.Title, tfill, tfill, tfill, Expectations.ForeColorRed, Expectations.ForeColorReset);
+
+		g = new Grid("foo");
+		CheckGridState(g, 0, 0);
+		Assert.IsNotNull(g.Title);
+		Assert.IsNull(g.Subtitle);
+		Assert.IsNull(g.Footer);
+		CheckTitleRendering(g, g.Title, "foo", "foo", "foo");
+
+		g = new Grid("foo", "bar");
+		CheckGridState(g, 0, 0);
+		Assert.IsNotNull(g.Title);
+		Assert.IsNotNull(g.Subtitle);
+		Assert.IsNull(g.Footer);
+		CheckTitleRendering(g, g.Title, "foo", "foo", "foo");
+		CheckTitleRendering(g, g.Subtitle, "bar", "bar", "bar");
+		Assert.IsNull(g.Footer);
+
+		g = new Grid("foo", "bar", "baz");
+		Assert.IsNotNull(g.Title);
+		Assert.IsNotNull(g.Subtitle);
+		Assert.IsNotNull(g.Footer);
+		CheckGridState(g, 0, 0);
+		CheckTitleRendering(g, g.Title, "foo", "foo", "foo");
+		CheckTitleRendering(g, g.Subtitle, "bar", "bar", "bar");
+		CheckTitleRendering(g, g.Footer, "baz", "baz", "baz");
 	}
 
 

@@ -23,6 +23,33 @@ public class Grid
 		Rows = new List<GridRow>();
 	}
 
+	/// <summary>
+	/// Creates a new instance with the <see cref="Title"/> property set to <paramref name="title"/>.
+	/// </summary>
+	public Grid(string title) : this()
+	{
+		Title = new StyledText(title);
+	}
+
+	/// <summary>
+	/// Creates a new instance with the <see cref="Title"/> property set to <paramref name="title"/>, 
+	/// and the <see cref="Subtitle"/> property set to <paramref name="subTitle"/>.
+	/// </summary>
+	public Grid(string title, string subTitle) : this(title)
+	{
+		Subtitle = new StyledText(subTitle);
+	}
+
+	/// <summary>
+	/// Creates a new instance with the <see cref="Title"/> property set to <paramref name="title"/>, 
+	/// the <see cref="Subtitle"/> property set to <paramref name="subTitle"/>, and 
+	/// the <see cref="Footer"/> property set to <paramref name="footer"/>.
+	/// </summary>
+	public Grid(string title, string subTitle, string footer) : this(title, subTitle)
+	{
+		Footer = new StyledText(footer);
+	}
+
 
 	#region COLUMNS
 
