@@ -130,68 +130,76 @@ public class TextStyleTests
 		Assert.AreEqual(expectedUnder, ts.Underline);
 		Assert.AreEqual(expectedRev, ts.Reverse);
 
-		TestTextStyle_StyleText(ts, expectedFore, expectedBack, expectedGStart, expectedGMid, expectedGEnd, expectedUnder, expectedRev);
+		TestTextStyle_StyleText(null, ts, expectedFore, expectedBack, expectedGStart, expectedGMid, expectedGEnd, expectedUnder, expectedRev);
+		TestTextStyle_StyleText("", ts, expectedFore, expectedBack, expectedGStart, expectedGMid, expectedGEnd, expectedUnder, expectedRev);
+		TestTextStyle_StyleText(foobar, ts, expectedFore, expectedBack, expectedGStart, expectedGMid, expectedGEnd, expectedUnder, expectedRev);
 	}
 
-	internal static void TestTextStyle_StyleText(TextStyle ts, Color? expectedFore, Color? expectedBack, Color? expectedGStart, Color? expectedGMid, Color? expectedGEnd, bool expectedUnder, bool expectedRev)
+	internal static void TestTextStyle_StyleText(string? src, TextStyle ts, Color? expectedFore, Color? expectedBack, Color? expectedGStart, Color? expectedGMid, Color? expectedGEnd, bool expectedUnder, bool expectedRev)
 	{
-		string src;
-		if (expectedGStart == null)
-		{ src = foobar; }
-		else if (expectedGMid == null)
-		{ src = "12"; }
-		else
-		{ src = "123"; }
+		//simplify gradient testing (more advanced gradient tests done in FormattingTests)
+		if (!string.IsNullOrEmpty(src) && expectedGStart != null)
+		{
+			if (expectedGMid == null)
+			{ src = "12"; }
+			else
+			{ src = "123"; }
+		}
 
 		string res = ts.StyleText(src);
-
-
-		//underline
-		if (expectedUnder)
+		if (src == null)
+		{ Assert.AreEqual("", res); }
+		else
 		{
-			Assert.IsTrue(res.StartsWith(Underline));
-			Assert.IsTrue(res.EndsWith(UnderlineReset));
-			res = res.Replace(Underline, "").Replace(UnderlineReset, "");
-		}
+			//underline
+			if (expectedUnder)
+			{
+				Assert.IsTrue(res.StartsWith(Underline));
+				Assert.IsTrue(res.EndsWith(UnderlineReset));
+				res = res.Replace(Underline, "").Replace(UnderlineReset, "");
+			}
 
-		//reverse
-		if (expectedRev)
-		{
-			Assert.IsTrue(res.StartsWith(Reverse));
-			Assert.IsTrue(res.EndsWith(ReverseReset));
-			res = res.Replace(Reverse, "").Replace(ReverseReset, "");
-		}
+			//reverse
+			if (expectedRev)
+			{
+				Assert.IsTrue(res.StartsWith(Reverse));
+				Assert.IsTrue(res.EndsWith(ReverseReset));
+				res = res.Replace(Reverse, "").Replace(ReverseReset, "");
+			}
 
-		//fore
-		if (expectedFore != null)
-		{
-			string s = expectedFore.Value.ForeColorString();
+			//fore
+			if (expectedFore != null)
+			{
+				string s = expectedFore.Value.ForeColorString();
 
-			Assert.IsTrue(res.StartsWith(s));
-			Assert.IsTrue(res.EndsWith(ForeColorReset));
-			res = res.Substring(s.Length, res.Length - s.Length - ForeColorReset.Length);
-		}
+				Assert.IsTrue(res.StartsWith(s));
+				Assert.IsTrue(res.EndsWith(ForeColorReset));
+				res = res.Substring(s.Length, res.Length - s.Length - ForeColorReset.Length);
+			}
 
-		//back
-		if (expectedBack != null)
-		{
-			string s = expectedBack.Value.BackColorString();
+			//back
+			if (expectedBack != null)
+			{
+				string s = expectedBack.Value.BackColorString();
 
-			Assert.IsTrue(res.StartsWith(s));
-			Assert.IsTrue(res.EndsWith(BackColorReset));
-			res = res.Substring(s.Length, res.Length - s.Length - BackColorReset.Length);
-		}
+				Assert.IsTrue(res.StartsWith(s));
+				Assert.IsTrue(res.EndsWith(BackColorReset));
+				res = res.Substring(s.Length, res.Length - s.Length - BackColorReset.Length);
+			}
 
-		//gradient
-		if (expectedGStart != null)
-		{
-			if (expectedGEnd == null)
-			{ Assert.Fail("Only one expected gradient color is invalid"); }
+			//gradient
+			if (expectedGStart != null)
+			{
+				if (expectedGEnd == null)
+				{ Assert.Fail("Only one expected gradient color is invalid"); }
 
-			if (expectedGMid == null)
-			{ FormattingTests.TestGResult(src, res, expectedGStart.Value, expectedGEnd.Value); }
-			else
-			{ FormattingTests.TestGResult(src, res, expectedGStart.Value, expectedGMid.Value, expectedGEnd.Value); }
+				if (string.IsNullOrEmpty(src))
+				{ Assert.AreEqual("", res); }
+				else if (expectedGMid == null)
+				{ FormattingTests.TestGResult(src, res, expectedGStart.Value, expectedGEnd.Value); }
+				else
+				{ FormattingTests.TestGResult(src, res, expectedGStart.Value, expectedGMid.Value, expectedGEnd.Value); }
+			}
 		}
 	}
 

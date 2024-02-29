@@ -21,9 +21,19 @@ public class StyledTextTests
 		Assert.IsNull(st);
 		Assert.ThrowsException<NullReferenceException>(() => _ = st.Text);
 
-		Assert.ThrowsException<ArgumentNullException>(() => new StyledText(null!));
-		Assert.ThrowsException<ArgumentNullException>(() => new StyledText(""));
-		Assert.ThrowsException<ArgumentNullException>(() => new StyledText(text));
+		st = new(null);
+		Assert.IsNotNull(st);
+		Assert.IsNotNull(st.Style);
+		Assert.AreEqual(null, st.Text);
+		Assert.AreEqual("", st.TextStyled);
+		Assert.AreEqual("foo", st.StyleText("foo"));
+
+		st = new("");
+		Assert.IsNotNull(st);
+		Assert.IsNotNull(st.Style);
+		Assert.AreEqual("", st.Text);
+		Assert.AreEqual("", st.TextStyled);
+		Assert.AreEqual("foo", st.StyleText("foo"));
 
 		st = new(" ");
 		Assert.IsNotNull(st);
@@ -94,6 +104,21 @@ public class StyledTextTests
 		Assert.AreEqual(blue, st.Style.GradientMiddle);
 		Assert.AreEqual(green, st.Style.GradientEnd);
 		FormattingTests.TestGResult(st.Text, st.TextStyled, green, blue, green);
+
+		st = new StyledText(null, blue);
+		Assert.IsNotNull(st);
+		Assert.IsNotNull(st.Style);
+		Assert.AreEqual(null, st.Text);
+		Assert.AreEqual(blue, st.Style.ForeColor);
+		Assert.AreEqual("", st.TextStyled);
+		FormattingTests.TestColorizedString("foobar", st.StyleText("foobar"), blue, null);
+
+		st = new StyledText("", blue);
+		Assert.IsNotNull(st);
+		Assert.IsNotNull(st.Style);
+		Assert.AreEqual("", st.Text);
+		FormattingTests.TestColorizedString(st.Text, st.TextStyled, blue, null);
+		FormattingTests.TestColorizedString("foobar", st.StyleText("foobar"), blue, null);
 	}
 
 	[TestMethod]
@@ -101,7 +126,7 @@ public class StyledTextTests
 	{
 		//just some basic style tests here... More extensive style tests are done in TextStyleTests
 
-		string text = default!;
+		//string text = default!;
 
 		StyledText st = new("foo");
 		Assert.IsNotNull(st);
@@ -109,10 +134,19 @@ public class StyledTextTests
 		Assert.AreEqual("foo", st.TextStyled);
 		Assert.AreEqual("foobar", st.StyleText("foobar"));
 
-		Assert.ThrowsException<ArgumentNullException>(() => { st.Text = null!; });
-		Assert.ThrowsException<ArgumentNullException>(() => { st.Text = ""; });
-		Assert.ThrowsException<ArgumentNullException>(() => { st.Text = text; });
+		//Assert.ThrowsException<ArgumentNullException>(() => { st.Text = null!; });
+		//Assert.ThrowsException<ArgumentNullException>(() => { st.Text = ""; });
+		//Assert.ThrowsException<ArgumentNullException>(() => { st.Text = text; });
 
+		st.Text = null;
+		Assert.AreEqual(null, st.Text);
+		Assert.AreEqual("", st.TextStyled);
+
+		st.Text = "";
+		Assert.AreEqual("", st.Text);
+		Assert.AreEqual("", st.TextStyled);
+
+		st.Text = "foo";
 		Assert.AreEqual("foo", st.Text);
 		Assert.AreEqual("foo", st.TextStyled);
 
@@ -153,5 +187,12 @@ public class StyledTextTests
 			Assert.AreEqual(expectedStyledText.Text, styledText.Text);
 			TextStyleTests.CheckTextStyleEquality(styledText.Style, expectedStyledText.Style);
 		}
+	}
+
+	internal static void TestStyling(StyledText st, string? expectedText, string expectedStyledText)
+	{
+		Assert.IsNotNull(st);
+		Assert.AreEqual(expectedText, st.Text);
+		Assert.AreEqual(expectedStyledText, st.TextStyled);
 	}
 }

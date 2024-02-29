@@ -22,7 +22,7 @@ public class StyledText
 	/// An <see cref="ArgumentNullException"/> exception is thrown if <paramref name="text"/> is null or empty string.
 	/// </param>
 	/// <exception cref="ArgumentNullException"></exception>
-	public StyledText(string text) : this(text, null) { }
+	public StyledText(string? text) : this(text, null) { }
 
 	/// <summary>
 	/// <inheritdoc cref="StyledText(string)"/>
@@ -32,7 +32,7 @@ public class StyledText
 	/// <param name="style">A <see cref="TextStyle"/> object. The <see cref="Style"/> property is set 
 	/// to the value of this argument. If null, the <see cref="Style"/> property will be set to a 
 	/// new <see cref="TextStyle"/> object.</param>
-	public StyledText(string text, TextStyle? style)
+	public StyledText(string? text, TextStyle? style)
 	{
 		Text = text;
 
@@ -49,7 +49,7 @@ public class StyledText
 	/// </summary>
 	/// <param name="text"><inheritdoc cref="StyledText(string)" path="/param[@name='text']"/></param>
 	/// <param name="foreColor"><inheritdoc cref="TextStyle(Color)" path="/param[@name='foreColor']"/></param>
-	public StyledText(string text, Color foreColor) : this(text, new TextStyle(foreColor))
+	public StyledText(string? text, Color foreColor) : this(text, new TextStyle(foreColor))
 	{ }
 
 	/// <summary>
@@ -60,7 +60,7 @@ public class StyledText
 	/// <param name="text"><inheritdoc cref="StyledText(string)" path="/param[@name='text']"/></param>
 	/// <param name="foreColor"><inheritdoc cref="TextStyle(Color)" path="/param[@name='foreColor']"/></param>
 	/// <param name="backColor"><inheritdoc cref="TextStyle(Color, Color)" path="/param[@name='backColor']"/></param>
-	public StyledText(string text, Color foreColor, Color backColor) : this(text, new TextStyle(foreColor, backColor))
+	public StyledText(string? text, Color foreColor, Color backColor) : this(text, new TextStyle(foreColor, backColor))
 	{ }
 
 	/// <summary>
@@ -72,7 +72,7 @@ public class StyledText
 	/// <param name="gradientStart"><inheritdoc cref="TextStyle(Color, Color?, Color)" path="/param[@name='gradientStart']"/></param>
 	/// <param name="gradientMiddle"><inheritdoc cref="TextStyle(Color, Color?, Color)" path="/param[@name='gradientMiddle']"/></param>
 	/// <param name="gradientEnd"><inheritdoc cref="TextStyle(Color, Color?, Color)" path="/param[@name='gradientEnd']"/></param>
-	public StyledText(string text, Color gradientStart, Color? gradientMiddle, Color gradientEnd) : this(text)
+	public StyledText(string? text, Color gradientStart, Color? gradientMiddle, Color gradientEnd) : this(text)
 	{
 		if (gradientMiddle == null)
 		{ Style.SetGradientColors(gradientStart, gradientEnd); }
@@ -84,22 +84,16 @@ public class StyledText
 	/// <summary>
 	/// Backer field for the Text property.
 	/// </summary>
-	protected string txt = default!;
+	protected string? txt = default!;
 
 	/// <summary>
 	/// The text to be styled. Throws an <see cref="ArgumentNullException"/> if set to a null or empty string.
 	/// </summary>
 	/// <exception cref="ArgumentNullException"></exception>
-	public string Text
+	public string? Text
 	{
 		get => txt;
-		set
-		{
-			if (string.IsNullOrEmpty(value))
-			{ throw new ArgumentNullException(nameof(value)); }
-
-			txt = value;
-		}
+		set => txt = value;
 	}
 
 
@@ -113,10 +107,10 @@ public class StyledText
 	/// Adds styling to <paramref name="altText"/> based on the values of the various properties of the <see cref="Style"/> property, and returns the resulting string.
 	/// </summary>
 	/// <param name="altText">The text to be styled.</param>
-	public string StyleText(string altText)
+	public string StyleText(string? altText)
 	{
 		if (Style == null)
-		{ return altText; }
+		{ return altText ?? ""; }
 
 		return Style.StyleText(altText);
 	}

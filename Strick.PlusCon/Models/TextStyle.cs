@@ -171,10 +171,10 @@ public class TextStyle
 	/// <param name="text">The text to style. If null or empty string, an exception is thrown.</param>
 	/// <returns></returns>
 	/// <exception cref="ArgumentNullException"></exception>
-	public string StyleText(string text)
+	public string StyleText(string? text)
 	{
-		if (string.IsNullOrEmpty(text))
-		{ throw new ArgumentNullException(text); }
+		if (text == null)
+		{ return ""; }
 
 		StringBuilder sb = new();
 

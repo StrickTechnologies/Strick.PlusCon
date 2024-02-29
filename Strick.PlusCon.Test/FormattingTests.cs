@@ -155,12 +155,16 @@ public class FormattingTests
 	[TestMethod]
 	public void GradientTests()
 	{
-		string val = "";
-		string result = val.Gradient(red, blue);
-		Assert.AreEqual($"", result);
+		string? val = null;
+		string result = val!.Gradient(red, blue);
+		Assert.AreEqual("", result);
+
+		val = "";
+		result = val.Gradient(red, blue);
+		Assert.AreEqual("", result);
 
 		result = val.Gradient(red, white, blue);
-		Assert.AreEqual($"", result);
+		Assert.AreEqual("", result);
 
 		val = "1";
 		result = val.Gradient(red, blue);
