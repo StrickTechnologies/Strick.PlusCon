@@ -191,7 +191,7 @@ public class Grid
 	/// <summary>
 	/// The length of the <see cref="Title"/> property. If <see cref="Title"/> is null or empty, 0 is returned. 
 	/// </summary>
-	public int TitleLength => Title == null ? 0 : Title.Text.Length;
+	public int TitleLength => Title != null && Title.Text != null ? Title.Text.Length : 0;
 
 	/// <summary>
 	/// The subtitle of the grid. Shown at the top of the grid, beneath the <see cref="Title"/>, above the rows/columns.
@@ -208,7 +208,7 @@ public class Grid
 	/// <summary>
 	/// The length of the <see cref="Subtitle"/> property. If <see cref="Subtitle"/> is null or empty, 0 is returned. 
 	/// </summary>
-	public int SubTitleLength => Subtitle == null ? 0 : Subtitle.Text.Length;
+	public int SubTitleLength => Subtitle != null && Subtitle.Text != null ? Subtitle.Text.Length : 0;
 
 	/// <summary>
 	/// The footer of the grid. Shown at the bottom of the grid, beneath the the rows/columns.
@@ -225,7 +225,7 @@ public class Grid
 	/// <summary>
 	/// The length of the <see cref="Footer"/> property. If <see cref="Footer"/> is null or empty, 0 is returned. 
 	/// </summary>
-	public int FooterLength => Footer == null ? 0 : Footer.Text.Length;
+	public int FooterLength => Footer != null && Footer.Text != null ? Footer.Text.Length : 0;
 
 	#endregion CHROME
 
@@ -297,16 +297,8 @@ public class Grid
 		int col = Console.CursorLeft;
 
 		//TITLES
-		if (Title != null)
-		{
-			ShowTitle(Title, TitleAlignment);
-			MoveToStartOfNextRow(col);
-		}
-		if (Subtitle != null)
-		{
-			ShowTitle(Subtitle, SubtitleAlignment);
-			MoveToStartOfNextRow(col);
-		}
+		ShowChromeElement(Title, TitleAlignment, col);
+		ShowChromeElement(Subtitle, SubtitleAlignment, col);
 
 		//COLUMN HEADERS
 		if (ShowColumnHeaders && Columns.Any(c => c.Header != null))
@@ -347,31 +339,31 @@ public class Grid
 		}
 
 		//FOOTER
-		if (Footer != null)
-		{
-			ShowTitle(Footer, FooterAlignment);
-			MoveToStartOfNextRow(col);
-		}
+		ShowChromeElement(Footer, FooterAlignment, col);
 	}
 
-	private void ShowTitle(StyledText? title, HorizontalAlignment alignment)
+	private void ShowChromeElement(StyledText? element, HorizontalAlignment alignment, int left)
 	{
-		if (title == null)
+		if (element == null || element.Text == null)
 		{ return; }
 
-		W(RenderTitle(title, alignment));
+		W(RenderChromeElement(element, alignment));
+		MoveToStartOfNextRow(left);
 	}
 
-	internal string RenderTitle(StyledText title, HorizontalAlignment alignment)
+	internal string RenderChromeElement(StyledText element, HorizontalAlignment alignment)
 	{
-		if (title.Text.Length == 1)
-		{ return title.StyleText(new string(title.Text[0], Width)); }
-		else if (title.Text.Length > Width || alignment == HorizontalAlignment.Left)
-		{ return title.StyleText(title.Text.PadRight(Width)); }
+		if (element.Text == null)
+		{ throw new ArgumentException("title text cannot be null"); }
+
+		if (element.Text.Length == 1)
+		{ return element.StyleText(new string(element.Text[0], Width)); }
+		else if (element.Text.Length > Width || alignment == HorizontalAlignment.Left)
+		{ return element.StyleText(element.Text.PadRight(Width)); }
 		else if (alignment == HorizontalAlignment.Center)
-		{ return title.StyleText(title.Text.Center(Width)); }
+		{ return element.StyleText(element.Text.Center(Width)); }
 		else //if (alignment == HorizontalAlignment.Right)
-		{ return title.StyleText(title.Text.PadLeft(Width)); }
+		{ return element.StyleText(element.Text.PadLeft(Width)); }
 	}
 
 

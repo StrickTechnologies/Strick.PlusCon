@@ -724,8 +724,8 @@ public class GridTests
 
 	internal static void CheckTitleRendering(Grid g, StyledText title, string expectedLeft, string expectedCenter, string expectedRight, string pre = "", string post = "")
 	{
-		Assert.AreEqual(pre + expectedLeft + post, g.RenderTitle(title, HorizontalAlignment.Left));
-		Assert.AreEqual(pre + expectedCenter + post, g.RenderTitle(title, HorizontalAlignment.Center));
-		Assert.AreEqual(pre + expectedRight + post, g.RenderTitle(title, HorizontalAlignment.Right));
+		Assert.AreEqual(pre + expectedLeft + post, g.RenderChromeElement(title, HorizontalAlignment.Left));
+		Assert.AreEqual(pre + expectedCenter + post, g.RenderChromeElement(title, HorizontalAlignment.Center));
+		Assert.AreEqual(pre + expectedRight + post, g.RenderChromeElement(title, HorizontalAlignment.Right));
 	}
 }

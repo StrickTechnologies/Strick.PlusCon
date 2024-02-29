@@ -82,7 +82,7 @@ public class Menu
 	/// <summary>
 	/// The length of the <see cref="Title"/> property. If <see cref="Title"/> is null or empty, 0 is returned. 
 	/// </summary>
-	public int TitleLength => Title == null ? 0 : Title.Text.Length;
+	public int TitleLength => Title != null && Title.Text != null ? Title.Text.Length : 0;
 
 
 	/// <summary>
@@ -99,18 +99,19 @@ public class Menu
 	/// <summary>
 	/// The length of the <see cref="Subtitle"/> property. If <see cref="Subtitle"/> is null or empty, 0 is returned. 
 	/// </summary>
-	public int SubTitleLength => Subtitle == null ? 0 : Subtitle.Text.Length;
+	public int SubTitleLength => Subtitle != null && Subtitle.Text != null ? Subtitle.Text.Length : 0;
 
 
 	/// <summary>
-	/// The prompt displayed beneath the menu options when awaiting user input
+	/// The prompt is displayed beneath the menu options when awaiting user input. 
+	/// Set to null if no prompt is desired.
 	/// </summary>
 	public StyledText? Prompt { get; set; } = new StyledText("Select an option ");
 
 	/// <summary>
 	/// The length of the <see cref="Prompt"/> property. If <see cref="Prompt"/> is null or empty, 0 is returned. 
 	/// </summary>
-	public int PromptLength => Prompt == null ? 0 : Prompt.Text.Length;
+	public int PromptLength => Prompt != null && Prompt.Text != null ? Prompt.Text.Length : 0;
 
 
 	/// <summary>
@@ -234,8 +235,8 @@ public class Menu
 		CLS();
 
 		//show titles
-		ShowTitle(Title, width);
-		ShowTitle(Subtitle, width);
+		RenderChromeElement(Title, width);
+		RenderChromeElement(Subtitle, width);
 
 		//show options
 		foreach (MenuOption opt in Options)
@@ -340,15 +341,15 @@ public class Menu
 		{ WL(opt.GetText(width)); }
 	}
 
-	private static void ShowTitle(StyledText? title, int width)
+	private static void RenderChromeElement(StyledText? element, int width)
 	{
-		if (title == null)
+		if (element == null || element.Text == null)
 		{ return; }
 
-		if (title.Text.Length == 1)
-		{ WL(title.StyleText(new string(title.Text[0], width))); }
+		if (element.Text.Length == 1)
+		{ WL(element.StyleText(new string(element.Text[0], width))); }
 		else
-		{ WL(title.StyleText(title.Text.Center(width))); }
+		{ WL(element.StyleText(element.Text.Center(width))); }
 	}
 
 	private MenuOption? FindOption(ConsoleKeyInfo k)
