@@ -107,8 +107,8 @@ internal static class GridExamples
 		col.CellLayout.PaddingRightChar = 'p';
 		col.Header.FillerChar = 'f';
 
-		GridRow row = grid.AddRow(" row 1 ");
-		row = grid.AddRow(" row 2 ");
+		grid.AddRow(" row 1 ");
+		GridRow row = grid.AddRow(" row 2 ");
 		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Center;
 		row = grid.AddRow(" row 3 ");
 		row.Cells[0].HorizontalAlignment = HorizontalAlignment.Right;

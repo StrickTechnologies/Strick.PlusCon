@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes/Fixes
 - Add missing XML comments for `GridSearchExpression` constructor parameters
+- Miscellaneous cleanup, corrections in docs and examples
 
 
 ## [1.3.1] - 2024-02-23
