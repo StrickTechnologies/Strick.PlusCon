@@ -474,8 +474,8 @@ public class GridTests
 		g.Columns.Add("foo");
 		g.Columns.Add("bar", HorizontalAlignment.Center);
 		g.Columns.Add("baz", HorizontalAlignment.Right);
-		g.Columns.Last().CellLayout.MarginLeft = 0;
-		g.Columns.Last().CellLayout.MarginRight = 0;
+		g.Columns[^1].CellLayout.MarginLeft = 0;
+		g.Columns[^1].CellLayout.MarginRight = 0;
 		g.Columns.Add("");
 
 		g.AddRow("1", "2", "3", "4");

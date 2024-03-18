@@ -65,10 +65,13 @@ public class MenuTests
 	{
 		Menu m = new("title", "subtitle");
 		Assert.IsNotNull(m);
+		Assert.IsNotNull(m.Title);
+		Assert.IsNotNull(m.Subtitle);
+		Assert.IsNotNull(m.Prompt);
 
 		MenuSeperator fbb = new MenuSeperator("foo bar baz");
-		MenuOption f = new MenuOption("foo", 'f', () => { });
-		MenuOption b = new MenuOption("bar", 'b', () => { });
+		MenuOption f = new MenuOption("foo", 'f', DummyAction);
+		MenuOption b = new MenuOption("bar", 'b', DummyAction);
 		MenuOption z = new MenuBackOption("baz", 'z');
 		m.Add(fbb);
 		m.Add(f);
@@ -77,19 +80,20 @@ public class MenuTests
 		Assert.IsNotNull(m.Options);
 		Assert.AreEqual(4, m.Options.Count);
 
+		Assert.IsNotNull(defaultPrompt.Text);
 		Assert.AreEqual(defaultPrompt.Text.Length, m.Width);
 
-		m.Title!.Text = new string(' ', 20);
+		m.Title.Text = new string(' ', 20);
 		Assert.AreEqual(20, m.Width);
 
-		m.Subtitle!.Text = new string(' ', 21);
+		m.Subtitle.Text = new string(' ', 21);
 		Assert.AreEqual(21, m.Width);
 
 		m.Title.Text = "title";
 		m.Subtitle.Text = "subtitle";
 		Assert.AreEqual(defaultPrompt.Text.Length, m.Width);
 
-		m.Prompt!.Text = "short";
+		m.Prompt.Text = "short";
 		Assert.AreEqual(11, m.Width);
 
 		f.Caption = "foo bar baz";
@@ -98,7 +102,34 @@ public class MenuTests
 		f.Caption = "foo";
 		z.Caption = "foo bar baz";
 		Assert.AreEqual(14, m.Width);
+
+		m = new Menu();
+		Assert.IsNotNull(m.Prompt);
+		m.ColumnCount = 2;
+		m.GutterWidth = 1;
+		m.Add(new MenuOption("abc", 'a', DummyAction));
+		Assert.AreEqual(6, m.Options[^1].Width);
+		Assert.AreEqual(defaultPrompt.Text.Length, m.Width);
+		m.Prompt.Text = "";
+		Assert.AreEqual(6, m.Width);
+		m.Add(new MenuOption("def", 'd', DummyAction));
+		Assert.AreEqual(6, m.Options[^1].Width);
+		Assert.AreEqual(13, m.Width);
+		m.Prompt.Text = defaultPrompt.Text;
+		Assert.AreEqual(defaultPrompt.Text.Length, m.Width);
+		m.Add(new MenuOption("longer option", 'l', DummyAction));
+		Assert.AreEqual(16, m.Options[^1].Width);
+		Assert.AreEqual(23, m.Width);
+		m.Prompt.Text = defaultPrompt.Text;
+		Assert.AreEqual(23, m.Width);
+		m.ColumnCount = 3;
+		Assert.AreEqual(30, m.Width);
+		m.ColumnCount = 1;
+		Assert.AreEqual(defaultPrompt.Text.Length, m.Width);
 	}
+
+
+	private static void DummyAction() { }
 
 
 	private static void TestMenuState(Menu m, StyledText? expectedTitle, StyledText? expectedSubtitle, StyledText? expectedPrompt, IEnumerable<MenuOption>? expectedOptions, IEnumerable<char>? expectedExitKeys)

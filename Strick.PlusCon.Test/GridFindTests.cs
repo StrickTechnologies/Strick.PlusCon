@@ -226,7 +226,7 @@ public class GridFindTests
 		Assert.IsNotNull(row);
 		Assert.IsNotNull(expectedCells);
 
-		int expectedCount = expectedCells.Count();
+		int expectedCount = expectedCells.Length;
 
 		//CELLS
 		CheckCellsFind(row.Find(searchExpression), expectedCells);
@@ -250,7 +250,7 @@ public class GridFindTests
 		Assert.IsNotNull(col);
 		Assert.IsNotNull(expectedCells);
 
-		int expectedCount = expectedCells.Count();
+		int expectedCount = expectedCells.Length;
 
 		//CELLS
 		CheckCellsFind(col.Find(searchExpression), expectedCells);
@@ -271,7 +271,7 @@ public class GridFindTests
 
 	private static void CheckCellsFind(IEnumerable<GridCell> cells, params GridCell[] expectedCells)
 	{
-		Assert.AreEqual(expectedCells.Count(), cells.Count());
+		Assert.AreEqual(expectedCells.Length, cells.Count());
 		for (int i = 0; i < cells.Count(); i++)
 		{
 			Assert.AreEqual(expectedCells[i], cells.ElementAt(i));
@@ -280,7 +280,7 @@ public class GridFindTests
 
 	private static void CheckColumnsFind(IEnumerable<GridColumn> columns, params GridColumn[] expectedColumns)
 	{
-		Assert.AreEqual(expectedColumns.Count(), columns.Count());
+		Assert.AreEqual(expectedColumns.Length, columns.Count());
 		for (int i = 0; i < columns.Count(); i++)
 		{
 			Assert.AreEqual(expectedColumns[i], columns.ElementAt(i));
@@ -289,7 +289,7 @@ public class GridFindTests
 
 	private static void CheckRowsFind(IEnumerable<GridRow> rows, params GridRow[] expectedRows)
 	{
-		Assert.AreEqual(expectedRows.Count(), rows.Count());
+		Assert.AreEqual(expectedRows.Length, rows.Count());
 		for (int i = 0; i < rows.Count(); i++)
 		{
 			Assert.AreEqual(expectedRows[i], rows.ElementAt(i));
