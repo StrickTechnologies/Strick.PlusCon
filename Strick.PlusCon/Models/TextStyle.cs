@@ -38,10 +38,10 @@ public class TextStyle
 	}
 
 	/// <summary>
-	/// Creates an instance and sets the <see cref="GradientStart"/>, <paramref name="gradientMiddle"/>, and <paramref name="gradientEnd"/> 
+	/// Creates an instance and sets the <see cref="GradientStart"/>, <see cref="GradientMiddle"/>, and <see cref="GradientEnd"/> 
 	/// property values to the corresponding arguments.
-	/// <para>Note: for a two-color gradient pass <paramref name="gradientMiddle"/> as null. 
-	/// Alternatively, use the <see cref="TextStyle"/> constructor and the <see cref="SetGradientColors(Color, Color)"/> method.</para>
+	/// <para>For a two-color gradient pass null for the <paramref name="gradientMiddle"/> argument. 
+	/// Alternatively, use the <see cref="TextStyle"/> (empty) constructor and the <see cref="SetGradientColors(Color, Color)"/> method.</para>
 	/// </summary>
 	/// <param name="gradientStart"><inheritdoc cref="Formatting.Gradient(string, Color, Color)" path="/param[@name='start']"/></param>
 	/// <param name="gradientMiddle"><inheritdoc cref="Formatting.Gradient(string, Color, Color, Color)" path="/param[@name='middle']"/>
