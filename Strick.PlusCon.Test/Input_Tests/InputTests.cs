@@ -17,6 +17,7 @@ public class InputTests
 		itMenu.Add(new MenuOption("Select", 'S', InputTests_Select));
 		itMenu.Add(new MenuOption("Number", 'N', InputTests_Number));
 		itMenu.Add(new MenuOption("Text", 'X', InputTestsText));
+		itMenu.Add(new MenuOption("Date", 'D', InputTests_Date));
 		itMenu.Add(new MenuOption("Time", 'T', InputTests_Time));
 
 		return itMenu;
@@ -100,6 +101,19 @@ public class InputTests
 		{ Input.Any("null"); }
 		else
 		{ Input.Any(txt); }
+	}
+
+	internal static void InputTests_Date()
+	{
+		InputDateArguments args = new InputDateArguments("date ");
+		args.Min = new DateOnly(2000,1,1);
+		args.Max = DateOnly.FromDateTime(DateTime.Today);
+
+		var dt = Input.Date(args);
+		if (dt == null)
+		{ Input.Any("null"); }
+		else
+		{ Input.Any(dt.Value.ToShortDateString()); }
 	}
 
 	internal static void InputTests_Time()

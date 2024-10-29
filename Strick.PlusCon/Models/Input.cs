@@ -171,7 +171,7 @@ public static class Input
 			{ break; }
 
 			//time = DateTimeUtil.ParseTime2(strTm);
-			time = TimeOnly.Parse(strTm);
+			time = ParseTime(strTm);
 			if (time != null && arguments.Validate(time.Value))
 			{
 				ResetCursorPosition(posLeft, posTop, arguments.Prompt, strTm.Length);
@@ -187,32 +187,50 @@ public static class Input
 		return time;
 	}
 
+	private static TimeOnly? ParseTime(string time)
+	{
+		if (TimeOnly.TryParse(time, out TimeOnly tm))
+		{ return tm; }
 
-	public static DateOnly? Date(string? prompt)
+		return null;
+	}
+
+
+	public static DateOnly? Date(string? prompt)=>Date(new InputDateArguments() { Prompt = prompt });
+
+	public static DateOnly? Date(InputDateArguments arguments)
 	{
 		var (posLeft, posTop) = Console.GetCursorPosition();
 		DateOnly? date = null;
 		do
 		{
-			var strDt = RL(prompt);
+			var strDt = RL(arguments.Prompt);
 			if (string.IsNullOrWhiteSpace(strDt))
 			{ break; }
 
 			//date = DateTimeUtil.ParseDate2(strDt);
-			date = DateOnly.Parse(strDt);
-			if (date != null)
+			date = ParseDate(strDt);
+			if (date != null && arguments.Validate(date.Value))
 			{
-				ResetCursorPosition(posLeft, posTop, prompt, strDt.Length);
-				WL(prompt + date.Value.ToShortDateString());
+				ResetCursorPosition(posLeft, posTop, arguments.Prompt, strDt.Length);
+				WL(arguments.Prompt + date.Value.ToShortDateString());
 				break;
 			}
 
 			date = null;
-			ResetCursorPosition(posLeft, posTop, prompt, strDt.Length);
+			ResetCursorPosition(posLeft, posTop, arguments.Prompt, strDt.Length);
 
 		} while (true);
 
 		return date;
+	}
+
+	private static DateOnly? ParseDate(string date)
+	{
+		if (DateOnly.TryParse(date, out DateOnly dt))
+		{ return dt; }
+
+		return null;
 	}
 
 
@@ -455,6 +473,41 @@ public class InputTextArguments : InputArguments<string>
 	protected bool ValidateLength(string value)
 	{
 		return value.Length.WithinRange(MinLength, MaxLength);
+	}
+}
+
+/// <summary>
+/// <inheritdoc cref="InputArguments{T}"/> 
+/// Used to retrieve a <see cref="DateOnly"/> (date) value.
+/// </summary>
+public class InputDateArguments : InputArguments<DateOnly>
+{
+	public InputDateArguments() { }
+
+	public InputDateArguments(string? prompt) : this(prompt, null, null) { }
+
+	public InputDateArguments(DateOnly? min, DateOnly? max) : this(null, min, max) { }
+
+	public InputDateArguments(string? prompt, DateOnly? min, DateOnly? max)
+	{
+		Prompt = prompt;
+		Min = min;
+		Max = max;
+	}
+
+
+	public DateOnly? Min { get; set; }
+
+	public DateOnly? Max { get; set; }
+
+	internal override bool Validate(DateOnly value)
+	{
+		return ValidateRange(value);
+	}
+
+	protected bool ValidateRange(DateOnly value)
+	{
+		return value.WithinRange(Min, Max);
 	}
 }
 
