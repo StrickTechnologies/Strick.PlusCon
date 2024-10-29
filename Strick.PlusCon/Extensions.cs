@@ -33,4 +33,29 @@ internal static class Extensions
 	/// Returns a Boolean indicating whether or not Value is a defined member of the Enum
 	/// </summary>
 	internal static bool Exists(this Enum Value) => Enum.IsDefined(Value.GetType(), Value);
+
+
+	/// <summary>
+	/// If the <paramref name="value"/> argument is true, returns <b>Yes</b>, otherwise returns <b>No</b>.
+	/// </summary>
+	/// <param name="value"></param>
+	public static string YesNo(this bool value)
+	{
+		return value ? "Yes" : "No";
+	}
+
+	/// <summary>
+	/// <inheritdoc cref="YesNo(bool)"/>.
+	/// <para>If the <paramref name="value"/> argument is null (does NOT have a value), it is treated as if its value is false.</para>
+	/// </summary>
+	/// <param name="value"></param>
+	public static string YesNo(this bool? value)
+	{
+		if (value.HasValue)
+		{
+			return value.Value.YesNo();
+		}
+
+		return YesNo(value: (bool?)false);
+	}
 }
