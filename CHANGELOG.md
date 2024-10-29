@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - New constructors to take `Title`, `Subtitle`, `Footer` arguments.
 
 ### Changes/Fixes
+- Update target framework to .Net 8.0
 - Add missing XML comments for `GridSearchExpression` constructor parameters
 - Miscellaneous cleanup, corrections in docs and examples
 - `TextStyle`, `StyledText`
