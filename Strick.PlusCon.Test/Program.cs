@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Drawing;
+﻿using System.Drawing;
 
 using Strick.PlusCon.Models;
 using Strick.PlusCon.Test.Models;
@@ -49,17 +48,22 @@ internal class Program
 
 	private static void Menu()
 	{
-		Menu testMenu = new PCMenu("Test Menu");
-		testMenu.Add(new("Show Named Greens  ", 'G', ShowGreens));
-		testMenu.Add(new MenuOption("color lighten/darken", 'c', BrightenDarkenColors));
-		testMenu.Options[0].Style = new TextStyle(Color.LightGreen, null, Color.DarkGreen) { BackColor = Color.White, Reverse = true };
-		testMenu.Add(new("TextStyle tests", 'T', TextStyleTests));
-		testMenu.Add(new("Ruler tests", 'R', RulerTests));
-		testMenu.Add(new MenuBackOption("back", 'X'));
+		Menu styleMenu = new PCMenu("Style Menu");
+		styleMenu.Add(new("TextStyle tests", 'T', TextStyleTests));
+		styleMenu.Add(new MenuBackOption("back", 'X'));
+		
+		Menu rulerMenu = new PCMenu("Ruler Menu");
+		rulerMenu.Add(new("Ruler tests", 'R', RulerTests));
+		rulerMenu.Add(new MenuBackOption("back", 'X'));
 
 		Menu gridMenu = new PCMenu("Grid Menu");
 		gridMenu.Options.Add(new("Show test grid", 'G', GridTest));
 		gridMenu.Options.Add(new("Show test grid 2", '2', GridTest2));
+
+		Menu colorsMenu = new PCMenu("Colors Menu");
+		colorsMenu.Add(new("Show Named Greens  ", 'G', ShowGreens));
+		colorsMenu.Options[0].Style = new TextStyle(Color.LightGreen, null, Color.DarkGreen) { BackColor = Color.White, Reverse = true };
+		colorsMenu.Add(new MenuOption("color lighten/darken", 'L', BrightenDarkenColors));
 
 		Menu mainMenu = new PCMenu("Main Menu");
 
@@ -67,11 +71,15 @@ internal class Program
 		var clock = mainMenu.Options.Last();
 		clock.BeforeShow += MainMenuClock_BeforeShow;
 		mainMenu.Add(new MenuSeperator("-"));
-		mainMenu.Add(new MenuOption("Show Doc Samples", 'S', DocSamples.Menu));
-		mainMenu.Add(new MenuOption("Cursor Settings", 'C', CursorUtil.Menu));
+		mainMenu.Add(new MenuOption("Doc Samples Menu", 'D', DocSamples.Menu));
+		mainMenu.Add(new MenuSeperator(""));
+		mainMenu.Add(new MenuOption("Cursor Settings", 'U', CursorUtil.Menu));
 		mainMenu.Add(new("Menu tests", 'M', MenuTestsMenu));
-		mainMenu.Add(new MenuOption("Test Menu", 'T', testMenu));
+		mainMenu.Add(new("Colors Menu", 'C', colorsMenu));
+		mainMenu.Add(new("Style Menu", 'S', styleMenu));
+		mainMenu.Add(new MenuOption("Ruler Menu", 'R', rulerMenu));
 		mainMenu.Add(new MenuOption("Grid Menu", 'G', gridMenu));
+		mainMenu.Add(new MenuSeperator(""));
 		mainMenu.Add(new MenuOption("Show Version Info", 'V', ShowVersionInfo));
 		mainMenu.Add(new MenuSeperator("-"));
 		//mainMenu.BeforeShow += Menu_BeforeShow;
