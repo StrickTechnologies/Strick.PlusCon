@@ -77,7 +77,7 @@ internal class Program
 		mainMenu.Add(new("Style Menu", 'S', styleMenu));
 		mainMenu.Add(new MenuOption("Ruler Menu", 'R', rulerMenu));
 		mainMenu.Add(new MenuOption("Grid Menu", 'G', gridMenu));
-		mainMenu.Add(new MenuOption("Input Menu", 'I', Input_Tests.InputTests.InputTestsMenu()));
+		mainMenu.Add(new MenuOption("Input Menu", 'I', Input_Tests.InputTests.Menu()));
 		mainMenu.Add(new MenuSeperator(""));
 		mainMenu.Add(new MenuOption("Show Version Info", 'V', ShowVersionInfo));
 		mainMenu.Add(new MenuSeperator("-"));

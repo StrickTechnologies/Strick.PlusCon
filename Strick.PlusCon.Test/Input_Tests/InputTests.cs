@@ -8,12 +8,14 @@ using static Strick.PlusCon.Helpers;
 namespace Strick.PlusCon.Test.Input_Tests;
 
 
+[TestClass]
 public class InputTests
 {
-	internal static Menu InputTestsMenu()
+	internal static Menu Menu()
 	{
 		Menu itMenu = new Menu("Input Tests");
 		itMenu.Add(new MenuOption("Any", 'A', InputTests_Any));
+		itMenu.Add(new MenuOption("YN", 'Y', InputTests_YN));
 		itMenu.Add(new MenuOption("Select", 'S', InputTests_Select));
 		itMenu.Add(new MenuOption("Number", 'N', InputTests_Number));
 		itMenu.Add(new MenuOption("Text", 'X', InputTestsText));
@@ -41,11 +43,11 @@ public class InputTests
 		else
 		{ WL(b.Value.ToString()); }
 
-		byte? b6 = Input.Number<byte>("(6) byte ");
-		if (b6 == null)
-		{ WL("null"); }
-		else
-		{ WL(b6.Value.ToString()); }
+		//byte? b6 = Input.Number<byte>("(6) byte ");
+		//if (b6 == null)
+		//{ WL("null"); }
+		//else
+		//{ WL(b6.Value.ToString()); }
 
 		sbyte? sb = Input.Number<sbyte>("s-byte ");
 		if (sb == null)
@@ -53,11 +55,11 @@ public class InputTests
 		else
 		{ WL(sb.Value.ToString()); }
 
-		sbyte? sb6 = Input.Number6<sbyte>("(6) s-byte ");
-		if (sb6 == null)
-		{ WL("null"); }
-		else
-		{ WL(sb6.Value.ToString()); }
+		//sbyte? sb6 = Input.Number6<sbyte>("(6) s-byte ");
+		//if (sb6 == null)
+		//{ WL("null"); }
+		//else
+		//{ WL(sb6.Value.ToString()); }
 
 		char? c = Input.Number<char>("char ");
 		if (c == null)
@@ -93,6 +95,15 @@ public class InputTests
 		Input.Any("");
 	}
 
+	internal static void InputTests_YN()
+	{
+		WL();
+		bool yn = Input.YN("Yes or No? ");
+		WL();
+
+		Input.Any(yn.YesNo());
+	}
+
 	internal static void InputTestsText()
 	{
 		InputTextArguments args = new InputTextArguments() { Prompt = "text ", MinLength = 3, MaxLength = 6 };
@@ -103,12 +114,15 @@ public class InputTests
 		{ Input.Any(txt); }
 	}
 
+
 	internal static void InputTests_Date()
 	{
-		InputDateArguments args = new InputDateArguments("date ");
-		args.Min = new DateOnly(2000,1,1);
+		InputDateArguments args = new InputDateArguments("Enter a date: ");
+		args.Min = new DateOnly(2000, 1, 1);
 		args.Max = DateOnly.FromDateTime(DateTime.Today);
+		args.ParseFunction = ParseDateSample;
 
+		WL();
 		var dt = Input.Date(args);
 		if (dt == null)
 		{ Input.Any("null"); }
@@ -116,18 +130,84 @@ public class InputTests
 		{ Input.Any(dt.Value.ToShortDateString()); }
 	}
 
+	internal static bool ParseDateSample(string date, out DateOnly result)
+	{
+		//Today
+		if (date.Equals("t", StringComparison.OrdinalIgnoreCase))
+		{
+			result = DateOnly.FromDateTime(DateTime.Today);
+			return true;
+		}
+
+		//One month from today
+		if (date.Equals("1m", StringComparison.OrdinalIgnoreCase))
+		{
+			result = DateOnly.FromDateTime(DateTime.Today.AddMonths(1));
+			return true;
+		}
+
+		//One month ago
+		if (date.Equals("-1m", StringComparison.OrdinalIgnoreCase))
+		{
+			result = DateOnly.FromDateTime(DateTime.Today.AddMonths(-1));
+			return true;
+		}
+
+		if (DateOnly.TryParse(date, out DateOnly dt))
+		{
+			result = dt;
+			return true;
+		}
+
+		result = default;
+		return false;
+	}
+
+
 	internal static void InputTests_Time()
 	{
-		InputTimeArguments args = new InputTimeArguments("time ");
+		InputTimeArguments args = new InputTimeArguments("Enter a time: ");
 		args.Min = new TimeOnly(10, 0);
 		args.Max = new TimeOnly(13, 45);
+		args.ParseFunction = ParseTimeSample;
 
+		WL();
 		var t = Input.Time(args);
 		if (t == null)
 		{ Input.Any("null"); }
 		else
 		{ Input.Any(t.Value.ToLongTimeString()); }
 	}
+
+	internal static bool ParseTimeSample(string time, out TimeOnly result)
+	{
+		//Now
+		if(time.Equals( "n",  StringComparison.OrdinalIgnoreCase))
+		{
+			result = TimeOnly.FromDateTime(DateTime.Now);
+			return true;
+		}
+
+		TimeOnly tm;
+
+		//assume it's a 1- or 2-digit hour value (e.g. "1" or "10" for 1:00am or 10:00am, "13" for 1:00pm, etc.)
+		if (time.Length <= 2 && TimeOnly.TryParse(time + ":00", out tm))
+		{
+			result = tm;
+			return true;
+		}
+
+		if (TimeOnly.TryParse(time, out tm))
+		{
+			result = tm;
+			return true;
+		}
+
+		result = default;
+		return false;
+
+	}
+
 
 	internal static void InputTests_Select()
 	{
@@ -154,5 +234,20 @@ public class InputTests
 		WL(yn.HasValue ? (yn.Value ? "Yes" : "No") : "escape");
 
 		RK();
+	}
+
+	[TestMethod]
+	public void SomeStuff()
+	{
+		DateOnly result;
+		//Assert.IsTrue(DateOnly.TryParse("10", out result));
+		Assert.IsTrue(DateOnly.TryParse("10.20", out result));
+		Assert.AreEqual(new DateOnly(DateTime.Today.Year, 10, 20), result);
+		Assert.IsTrue(DateOnly.TryParse("10-21", out result));
+		Assert.AreEqual(new DateOnly(DateTime.Today.Year, 10, 21), result);
+		Assert.IsTrue(DateOnly.TryParse("10/22", out result));
+		Assert.AreEqual(new DateOnly(DateTime.Today.Year, 10, 22), result);
+		Assert.IsTrue(DateOnly.TryParse("10 23", out result));
+		Assert.AreEqual(new DateOnly(DateTime.Today.Year, 10, 23), result);
 	}
 }

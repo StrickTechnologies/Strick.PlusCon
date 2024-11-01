@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
 
@@ -16,12 +15,13 @@ public static class Input
 	/// Prompts for input of a single char. The entered char must be one of <b>YyNn</b>. 
 	/// If Y or y, true is returned. If N or n, false is returned.
 	/// </summary>
-	/// <param name="prompt"></param>
+	/// <param name="prompt">The prompt that is displayed</param>
 	public static bool YN(string? prompt)
 	{
-		var key = Ch(new InputChArguments(prompt, new[] { 'Y', 'y', 'N', 'n' }));
-		return char.ToUpper(key.KeyChar, System.Globalization.CultureInfo.InvariantCulture) == 'Y';
+		var key = Ch(new InputChArguments(prompt, ['Y', 'y', 'N', 'n']));
+		return char.ToUpperInvariant(key.KeyChar) == 'Y';
 	}
+
 
 	/// <summary>
 	/// <inheritdoc cref="Any(string?)"/>
@@ -47,6 +47,7 @@ public static class Input
 		return Ch(args);
 	}
 
+
 	/// <summary>
 	/// Prompts for input of a single char
 	/// </summary>
@@ -60,7 +61,6 @@ public static class Input
 			if (arguments.Validate(key.KeyChar))
 			{ return key; }
 
-			//Console.SetCursorPosition(posLeft, posTop);
 			ResetCursorPosition(posLeft, posTop, "", 0);
 		} while (true);
 	}
@@ -69,20 +69,6 @@ public static class Input
 	public static T? Number<T>(string? prompt) where T : struct, INumber<T>
 	{
 		return Number(new InputNumberArguments<T>(prompt));
-		//var (posLeft, posTop) = Console.GetCursorPosition();
-		//do
-		//{
-		//	string? entry = RL(prompt);
-		//	if (string.IsNullOrEmpty(entry))
-		//	{ return default; }
-
-		//	if (T.TryParse(entry, null, out T value))
-		//	{ return value; }
-
-		//	Console.SetCursorPosition(posLeft, posTop);
-		//	W(prompt + new string(' ', entry.Length));
-		//	Console.SetCursorPosition(posLeft, posTop);
-		//} while (true);
 	}
 
 	public static T? Number<T>(InputNumberArguments<T> arguments) where T : struct, INumber<T>
@@ -100,40 +86,7 @@ public static class Input
 				{ return value; }
 			}
 
-			//Console.SetCursorPosition(posLeft, posTop);
-			//W(arguments.Prompt + new string(' ', entry.Length));
-			//Console.SetCursorPosition(posLeft, posTop);
 			ResetCursorPosition(posLeft, posTop, arguments.Prompt, entry.Length);
-		} while (true);
-	}
-
-	//a version to work in .Net 6.0 (which does not have INumber<T>, IParsable<T>)
-	public static T? Number6<T>(string? prompt) where T : struct, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable
-	{
-		var (posLeft, posTop) = Console.GetCursorPosition();
-		TypeConverter? converter = null;
-
-		do
-		{
-			string? entry = RL(prompt);
-			if (string.IsNullOrEmpty(entry))
-			{ return default; }
-
-			//here's the problem...
-			//if (T.TryParse(entry, null, out T value))
-			//{ return value; }
-			if (converter == null)
-			{
-				converter = TypeDescriptor.GetConverter(typeof(T));
-				if (converter == null)
-				{ throw new Exception("Cannot create converter"); }
-			}
-			if (converter.IsValid(entry))
-			{ return (T?)converter.ConvertFromString(entry); }
-
-			Console.SetCursorPosition(posLeft, posTop);
-			W(prompt + new string(' ', entry.Length));
-			Console.SetCursorPosition(posLeft, posTop);
 		} while (true);
 	}
 
@@ -152,7 +105,6 @@ public static class Input
 			{ return txt; }
 
 			ResetCursorPosition(posLeft, posTop, arguments.Prompt, txt == null ? 0 : txt.Length);
-
 		} while (true);
 	}
 
@@ -163,72 +115,54 @@ public static class Input
 	{
 		var (posLeft, posTop) = Console.GetCursorPosition();
 
-		TimeOnly? time = null;
 		do
 		{
 			var strTm = RL(arguments.Prompt);
 			if (string.IsNullOrWhiteSpace(strTm))
 			{ break; }
 
-			//time = DateTimeUtil.ParseTime2(strTm);
-			time = ParseTime(strTm);
-			if (time != null && arguments.Validate(time.Value))
+			if (arguments.ParseFunction(strTm, out TimeOnly time))
 			{
-				ResetCursorPosition(posLeft, posTop, arguments.Prompt, strTm.Length);
-				WL(arguments.Prompt + time.Value.ToLongTimeString());
-				break;
+				if (arguments.Validate(time))
+				{
+					ResetCursorPosition(posLeft, posTop, arguments.Prompt, strTm.Length);
+					WL(arguments.Prompt + time.ToLongTimeString());
+					return time;
+				}
 			}
 
-			time = null;
 			ResetCursorPosition(posLeft, posTop, arguments.Prompt, strTm.Length);
 
 		} while (true);
-
-		return time;
-	}
-
-	private static TimeOnly? ParseTime(string time)
-	{
-		if (TimeOnly.TryParse(time, out TimeOnly tm))
-		{ return tm; }
 
 		return null;
 	}
 
 
-	public static DateOnly? Date(string? prompt)=>Date(new InputDateArguments() { Prompt = prompt });
+	public static DateOnly? Date(string? prompt) => Date(new InputDateArguments() { Prompt = prompt });
 
 	public static DateOnly? Date(InputDateArguments arguments)
 	{
 		var (posLeft, posTop) = Console.GetCursorPosition();
-		DateOnly? date = null;
 		do
 		{
 			var strDt = RL(arguments.Prompt);
 			if (string.IsNullOrWhiteSpace(strDt))
 			{ break; }
 
-			//date = DateTimeUtil.ParseDate2(strDt);
-			date = ParseDate(strDt);
-			if (date != null && arguments.Validate(date.Value))
+			if (arguments.ParseFunction(strDt, out DateOnly date))
 			{
-				ResetCursorPosition(posLeft, posTop, arguments.Prompt, strDt.Length);
-				WL(arguments.Prompt + date.Value.ToShortDateString());
-				break;
+				if (arguments.Validate(date))
+				{
+					ResetCursorPosition(posLeft, posTop, arguments.Prompt, strDt.Length);
+					WL(arguments.Prompt + date.ToShortDateString());
+					return date;
+				}
 			}
 
-			date = null;
 			ResetCursorPosition(posLeft, posTop, arguments.Prompt, strDt.Length);
 
 		} while (true);
-
-		return date;
-	}
-
-	private static DateOnly? ParseDate(string date)
-	{
-		if (DateOnly.TryParse(date, out DateOnly dt))
-		{ return dt; }
 
 		return null;
 	}
@@ -317,7 +251,7 @@ public abstract class InputArguments<T>
 	/// </summary>
 	public string? Prompt { get; set; }
 
-	internal abstract bool Validate(T value);
+	internal virtual bool Validate(T value) => true;
 }
 
 public interface IInputArguments<T>
@@ -325,6 +259,7 @@ public interface IInputArguments<T>
 	public string? Prompt { get; set; }
 	public abstract bool Validate(T value);
 }
+
 
 /// <summary>
 /// <inheritdoc cref="InputArguments{T}"/> 
@@ -427,16 +362,6 @@ public class InputNumberArguments<T> : InputArguments<T> where T : struct, INumb
 	protected bool ValidateRange(T value)
 	{
 		return value.WithinRange(Min, Max);
-		//if (Min == null && Max == null)
-		//{ return true; }
-
-		//if (Min != null && Max != null)
-		//{ return value >= Min && value <= Max; }
-
-		//if (Max != null)
-		//{ return value <= Max; }
-
-		//return value >= Min;
 	}
 }
 
@@ -500,6 +425,10 @@ public class InputDateArguments : InputArguments<DateOnly>
 
 	public DateOnly? Max { get; set; }
 
+
+	public InputEntryParseDelegate<DateOnly> ParseFunction { get; set; } = DateOnly.TryParse; //Input.ParseDate2;
+
+
 	internal override bool Validate(DateOnly value)
 	{
 		return ValidateRange(value);
@@ -535,6 +464,10 @@ public class InputTimeArguments : InputArguments<TimeOnly>
 
 	public TimeOnly? Max { get; set; }
 
+
+	public InputEntryParseDelegate<TimeOnly> ParseFunction { get; set; } = TimeOnly.TryParse;
+
+
 	internal override bool Validate(TimeOnly value)
 	{
 		return ValidateRange(value);
@@ -543,16 +476,6 @@ public class InputTimeArguments : InputArguments<TimeOnly>
 	protected bool ValidateRange(TimeOnly value)
 	{
 		return value.WithinRange(Min, Max);
-		//if (Min == null && Max == null)
-		//{ return true; }
-
-		//if (Min != null && Max != null)
-		//{ return value >= Min && value <= Max; }
-
-		//if (Max != null)
-		//{ return value <= Max; }
-
-		//return value >= Min;
 	}
 }
 
@@ -607,9 +530,9 @@ public class InputSelectArguments<T> : InputArguments<T>
 
 	public bool Wrap { get; set; } = true;
 
-	public List<char> SelectNextKeys { get; } = new List<char>(new[] { ' ', (char)ConsoleKey.RightArrow, (char)ConsoleKey.DownArrow });
+	public List<char> SelectNextKeys { get; } = new List<char>([' ', (char)ConsoleKey.RightArrow, (char)ConsoleKey.DownArrow]);
 
-	public List<char> SelectPreviousKeys { get; } = new List<char>(new[] { (char)ConsoleKey.LeftArrow, (char)ConsoleKey.UpArrow });
+	public List<char> SelectPreviousKeys { get; } = new List<char>([(char)ConsoleKey.LeftArrow, (char)ConsoleKey.UpArrow]);
 
 
 	public void SelectNext()
@@ -637,7 +560,7 @@ public class InputSelectArguments<T> : InputArguments<T>
 		else
 		{ SelectedOption = Options[index - 1]; }
 	}
-
-
-	internal override bool Validate(T value) => true;
 }
+
+
+public delegate bool InputEntryParseDelegate<T>(string input, out T result);
