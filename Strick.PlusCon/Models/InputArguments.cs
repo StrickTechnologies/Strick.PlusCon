@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-
-
-namespace Strick.PlusCon.Models;
+﻿namespace Strick.PlusCon.Models;
 
 
 /// <summary>

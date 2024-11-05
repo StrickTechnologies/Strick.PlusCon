@@ -9,6 +9,7 @@ using static Strick.PlusCon.Helpers;
 
 namespace Strick.PlusCon.Models;
 
+
 /// <summary>
 /// Methods to prompt for various types of keyboard input from the user.
 /// </summary>
