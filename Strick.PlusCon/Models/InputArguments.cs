@@ -13,7 +13,8 @@ public abstract class InputArguments<T>
 	public string? Prompt { get; set; }
 
 	/// <summary>
-	/// The style to apply to the prompt
+	/// The style to apply to the prompt. 
+	/// If null, no styling is applied.
 	/// </summary>
 	public TextStyle? PromptStyle { get; set; }
 

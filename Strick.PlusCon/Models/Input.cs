@@ -45,9 +45,21 @@ public static class Input
 	/// If Y or y, true is returned. If N or n, false is returned.
 	/// </summary>
 	/// <param name="prompt"><inheritdoc cref="Ch(string?)" path="/param[@name='prompt']"/></param>
-	public static bool YN(string? prompt)
+	public static bool YN(string? prompt) => YN(prompt, null);
+
+	/// <summary>
+	/// <inheritdoc cref="YN(string?)"/> 
+	/// </summary>
+	/// <param name="prompt"><inheritdoc cref="Ch(string?)" path="/param[@name='prompt']"/></param>
+	/// <param name="promptStyle"><inheritdoc cref="InputArguments{T}.PromptStyle" path="/summary"/></param>
+	public static bool YN(string? prompt, TextStyle? promptStyle)
 	{
-		var key = Ch(new InputArgumentsCh(prompt, ['Y', 'y', 'N', 'n']));
+		InputArgumentsCh args = new InputArgumentsCh(prompt, ['Y', 'y', 'N', 'n'])
+		{
+			PromptStyle = promptStyle
+		};
+
+		var key = Ch(args);
 		return char.ToUpperInvariant(key.KeyChar) == 'Y';
 	}
 
@@ -66,9 +78,22 @@ public static class Input
 	/// <param name="prompt"><inheritdoc cref="Ch(string?)" path="/param[@name='prompt']"/>. 
 	/// Omit, or pass null to show the default prompt of "Press Any Key ". 
 	/// To display no prompt, pass an empty string for the <paramref name="prompt"/> argument.</param>
-	public static ConsoleKeyInfo Any(string? prompt)
+	public static ConsoleKeyInfo Any(string? prompt) => Any(prompt, null);
+
+	/// <summary>
+	/// <inheritdoc cref="Any(string?)"/>
+	/// </summary>
+	/// <param name="prompt"><inheritdoc cref="Ch(string?)" path="/param[@name='prompt']"/>. 
+	/// Omit, or pass null to show the default prompt of "Press Any Key ". 
+	/// To display no prompt, pass an empty string for the <paramref name="prompt"/> argument.</param>
+	/// <param name="promptStyle"><inheritdoc cref="InputArguments{T}.PromptStyle" path="/summary"/></param>
+	public static ConsoleKeyInfo Any(string? prompt, TextStyle? promptStyle)
 	{
-		InputArgumentsCh args = new();
+		InputArgumentsCh args = new()
+		{
+			PromptStyle = promptStyle
+		};
+
 		if (prompt != null)
 		{ args.Prompt = prompt; }
 		else

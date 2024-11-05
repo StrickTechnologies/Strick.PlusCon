@@ -33,14 +33,15 @@ public class InputTests
 
 	internal static void InputTests_Any()
 	{
+		TextStyle promptStyle = new TextStyle(Color.DodgerBlue);
 		WL();
 		Input.Any();
 		WL();
-		Input.Any(null);
+		Input.Any(null, promptStyle);
 		WL();
-		Input.Any("");
+		Input.Any("", promptStyle);
 
-		W("\r\nPress anything ");
+		W("\r\nPress anything ", promptStyle);
 		Input.Any("");
 	}
 
@@ -257,6 +258,11 @@ public class InputTests
 	{
 		WL();
 		var yn = Input.YN("Yes or No? ");
+		WL();
+		Input.Any(yn.YesNo());
+
+		WL();
+		yn = Input.YN("Again with style. Yes or No? ", new TextStyle(Color.DodgerBlue));
 		WL();
 		Input.Any(yn.YesNo());
 	}
