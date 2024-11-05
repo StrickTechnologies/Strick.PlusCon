@@ -18,7 +18,7 @@ internal class Program
 		ConsoleUtilities.EnableVirtualTerminal();
 		ConsoleSize.Set(120, 40);
 		Cursor.Shape(CursorShape.Block_Blink);
-		Console.Title = BannerText.Trim();
+		Console.Title = Sys.BannerText.Trim();
 		Menu();
 
 		//Banner(); WL();
@@ -43,8 +43,6 @@ internal class Program
 		//Console.Clear();
 		//W("foo bar");
 	}
-
-	internal static string BannerText => $" {About.ProductName} ".SpaceOut();
 
 	private static void Menu()
 	{
@@ -106,7 +104,8 @@ internal class Program
 	private static void ShowVersionInfo()
 	{
 		CLS();
-		WL($"{About.ProductName} version {About.Version}");
+		WL(Sys.BannerText.Trim(), Sys.TitleStyle_Alt);
+		WL($"Version [{About.Version}]", Color.Red);
 		RK();
 	}
 

@@ -10,14 +10,8 @@ internal class PCMenu : Menu
 {
 	public PCMenu(string subTitle) : base()
 	{
-		TextStyle menuTitleStyle = new TextStyle(Color.White, Color.Red, Color.White)
-		{
-			BackColor = Color.DarkSlateGray,
-			Reverse = true
-		};
-
-		Title = new(Program.BannerText, menuTitleStyle);
-		Subtitle = new(subTitle.SpaceOut(), menuTitleStyle);
+		Title = new(Sys.BannerText, Sys.TitleStyle);
+		Subtitle = new(subTitle.SpaceOut(), Sys.TitleStyle);
 		OptionsStyle = new(Color.White);
 
 		Prompt!.Style = new(Color.LightGreen);
