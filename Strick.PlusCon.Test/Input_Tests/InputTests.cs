@@ -13,17 +13,54 @@ public class InputTests
 {
 	internal static Menu Menu()
 	{
+		Menu YNMenu = new Menu("Yes/No Input Tests");
+		YNMenu.Add(new MenuOption("YN", 'Y', InputTests_YN));
+		YNMenu.Add(new MenuOption("Select Yes/No", 'S', InputTests_SelectYesNo));
+
 		Menu itMenu = new Menu("Input Tests");
 		itMenu.Add(new MenuOption("Any", 'A', InputTests_Any));
-		itMenu.Add(new MenuOption("YN", 'Y', InputTests_YN));
-		itMenu.Add(new MenuOption("Select", 'S', InputTests_Select));
+		itMenu.Add(new MenuOption("Ch", 'C', InputTests_Ch));
 		itMenu.Add(new MenuOption("Number", 'N', InputTests_Number));
 		itMenu.Add(new MenuOption("Text", 'X', InputTestsText));
 		itMenu.Add(new MenuOption("Date", 'D', InputTests_Date));
 		itMenu.Add(new MenuOption("Time", 'T', InputTests_Time));
+		itMenu.Add(new MenuOption("Select", 'S', InputTests_Select));
+		itMenu.Add(new MenuOption("Yes/No Menu", 'Y', YNMenu));
 
 		return itMenu;
 	}
+
+
+	internal static void InputTests_Any()
+	{
+		WL();
+		Input.Any();
+		WL();
+		Input.Any(null);
+		WL();
+		Input.Any("");
+
+		W("\r\nPress anything ");
+		Input.Any("");
+	}
+
+	internal static void InputTests_Ch()
+	{
+		WL();
+		var c = Input.Ch("Press any key ");
+		WL();
+		Input.Any($"You pressed '{c.KeyChar}'");
+
+		InputArgumentsCh args = new("Press any of these ('a', 'b', 'c') ", ['a', 'b', 'c'])
+		{
+			PromptStyle = new(Color.DodgerBlue)
+		};
+		WL();
+		c = Input.Ch(args);
+		WL();
+		Input.Any($"You pressed '{c.KeyChar}'");
+	}
+
 
 	internal static void InputTests_Number()
 	{
@@ -73,7 +110,11 @@ public class InputTests
 		else
 		{ WL(i.Value.ToString()); }
 
-		decimal? d = Input.Number<decimal>("dec ");
+		InputArgumentsNumber<decimal> argsDec = new("dec ")
+		{
+			PromptStyle = new TextStyle(Color.DodgerBlue)
+		};
+		decimal? d = Input.Number<decimal>(argsDec);
 		if (d == null)
 		{ WL("null"); }
 		else
@@ -82,31 +123,9 @@ public class InputTests
 		RK();
 	}
 
-	internal static void InputTests_Any()
-	{
-		WL();
-		Input.Any();
-		WL();
-		Input.Any(null);
-		WL();
-		Input.Any("");
-
-		W("\r\nPress anything ");
-		Input.Any("");
-	}
-
-	internal static void InputTests_YN()
-	{
-		WL();
-		bool yn = Input.YN("Yes or No? ");
-		WL();
-
-		Input.Any(yn.YesNo());
-	}
-
 	internal static void InputTestsText()
 	{
-		InputTextArguments args = new InputTextArguments() { Prompt = "text ", MinLength = 3, MaxLength = 6 };
+		InputArgumentsText args = new InputArgumentsText() { Prompt = "text ", MinLength = 3, MaxLength = 6 };
 		string? txt = Input.Text(args);
 		if (txt == null)
 		{ Input.Any("null"); }
@@ -117,7 +136,7 @@ public class InputTests
 
 	internal static void InputTests_Date()
 	{
-		InputDateArguments args = new InputDateArguments("Enter a date: ");
+		InputArgumentsDate args = new InputArgumentsDate("Enter a date: ");
 		args.Min = new DateOnly(2000, 1, 1);
 		args.Max = DateOnly.FromDateTime(DateTime.Today);
 		args.ParseFunction = ParseDateSample;
@@ -166,7 +185,7 @@ public class InputTests
 
 	internal static void InputTests_Time()
 	{
-		InputTimeArguments args = new InputTimeArguments("Enter a time: ");
+		InputArgumentsTime args = new InputArgumentsTime("Enter a time: ");
 		args.Min = new TimeOnly(10, 0);
 		args.Max = new TimeOnly(13, 45);
 		args.ParseFunction = ParseTimeSample;
@@ -182,7 +201,7 @@ public class InputTests
 	internal static bool ParseTimeSample(string time, out TimeOnly result)
 	{
 		//Now
-		if(time.Equals( "n",  StringComparison.OrdinalIgnoreCase))
+		if (time.Equals("n", StringComparison.OrdinalIgnoreCase))
 		{
 			result = TimeOnly.FromDateTime(DateTime.Now);
 			return true;
@@ -205,7 +224,6 @@ public class InputTests
 
 		result = default;
 		return false;
-
 	}
 
 
@@ -213,28 +231,56 @@ public class InputTests
 	{
 		WL();
 
-		List<string> choices = new() { "foo", "bar", "baz", "foo bar" };
-		var args = new InputSelectArguments<string>("select one ", choices, "bar") { SelectionOptionStyle = new(Color.White, Color.Red) };
+		List<string> choices = ["foo", "bar", "baz", "foo bar"];
+		var args = new InputArgumentsSelect<string>("select one ", choices, "bar") { SelectionOptionStyle = new(Color.White, Color.Red) };
 		string? sel = Input.Select(args);
 		WL();
-		WL($"selected {sel}");
+		if (sel != null)
+		{ WL($"selected {sel}"); }
+		else
+		{ WL("espace"); }
 
-		List<int?> choices2 = new() { 1, 2, 3 };
-		var args2 = new InputSelectArguments<int?>("select one ", choices2, 2) { Wrap = false };
+		List<int?> choices2 = [1, 2, 3];
+		var args2 = new InputArgumentsSelect<int?>("select one ", choices2, 2) { Wrap = false };
 		int? sel2 = Input.Select(args2);
 		WL();
-		WL($"selected {sel2}");
-
-		var yn = Input.SelectYesNo("Yes or No: ");
-		WL();
-		WL(yn.HasValue ? yn.YesNo() : "escape");
-
-		yn = Input.SelectYesNo("Yes or No 2: ", yn);
-		WL();
-		WL(yn.HasValue ? (yn.Value ? "Yes" : "No") : "escape");
+		if (sel2 != null)
+		{ WL($"selected {sel2}"); }
+		else
+		{ WL("espace"); }
 
 		RK();
 	}
+
+
+	internal static void InputTests_YN()
+	{
+		WL();
+		var yn = Input.YN("Yes or No? ");
+		WL();
+		Input.Any(yn.YesNo());
+	}
+
+	internal static void InputTests_SelectYesNo()
+	{
+		WL();
+		var yn = Input.SelectYesNo("Yes or No: ");
+		WL();
+		Input.Any(YNEsc(yn));
+
+		WL();
+		yn = Input.SelectYesNo("Yes or No 2: ", yn);
+		WL();
+		Input.Any(YNEsc(yn));
+
+		WL();
+		yn = Input.SelectYesNo("Yes or No 3: ", "no");
+		WL();
+		Input.Any(YNEsc(yn));
+	}
+
+	private static string YNEsc(bool? value) => value.HasValue ? value.YesNo() : "escape";
+
 
 	[TestMethod]
 	public void SomeStuff()
