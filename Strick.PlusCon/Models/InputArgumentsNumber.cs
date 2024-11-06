@@ -68,7 +68,12 @@ public class InputArgumentsNumber<T> : InputArguments<T> where T : struct, INumb
 		return ValidateRange(value);
 	}
 
-	private bool ValidateRange(T value)
+	/// <summary>
+	/// Returns true if the <paramref name="value"/> argument is between (inclusive) 
+	/// the <see cref="Min"/> and <see cref="Max"/> values.
+	/// </summary>
+	/// <param name="value">The value to compare to the <see cref="Min"/> and <see cref="Max"/> values.</param>
+	protected virtual bool ValidateRange(T value)
 	{
 		return value.WithinRange(Min, Max);
 	}

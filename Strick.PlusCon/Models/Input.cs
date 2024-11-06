@@ -11,7 +11,7 @@ namespace Strick.PlusCon.Models;
 
 
 /// <summary>
-/// Methods to prompt for various types of keyboard input from the user.
+/// Methods to collect various types of keyboard input from the user.
 /// </summary>
 public static class Input
 {

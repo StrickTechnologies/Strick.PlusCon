@@ -83,20 +83,20 @@ public class InputArgumentsSelect<T> : InputArguments<T>
 
 
 	/// <summary>
-	/// The currently selected option.
+	/// The option selected by the user.
 	/// </summary>
 	public T? SelectedOption { get; protected set; }
 
 	/// <summary>
 	/// Clears the current selection.
 	/// </summary>
-	public void ClearSelection() => SelectedOption = default;
+	internal void ClearSelection() => SelectedOption = default;
 
 
 	private readonly List<T> theOptions;
 
 	/// <summary>
-	/// The options that are presented to the user. The collection must be non-null and contain at least one element.
+	/// The options that are presented to the user. The collection must be non-null and contain at least <b>two</b> elements.
 	/// </summary>
 	public IReadOnlyList<T> Options => theOptions;
 

@@ -56,8 +56,9 @@ public class InputArgumentsText : InputArguments<string>
 	private int? minL;
 
 	/// <summary>
-	/// The minimum length for the entered string value. 
-	/// Must be zero or greater, otherwise an <see cref="ArgumentOutOfRangeException"/> is thrown.
+	/// If non-null, represents the minimum length for the entered string value. 
+	/// Must be zero or greater, otherwise an <see cref="ArgumentOutOfRangeException"/> is thrown. 
+	/// If null, the minimum length is not checked.
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public int? MinLength
@@ -75,8 +76,9 @@ public class InputArgumentsText : InputArguments<string>
 	private int? maxL;
 
 	/// <summary>
-	/// The maximum length for the entered string value. 
+	/// If non-null, represents the maximum length for the entered string value. 
 	/// Must be greater than zero, otherwise an <see cref="ArgumentOutOfRangeException"/> is thrown.
+	/// If null, the maximum length is not checked.
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
 	public int? MaxLength
@@ -97,7 +99,12 @@ public class InputArgumentsText : InputArguments<string>
 		return ValidateLength(value);
 	}
 
-	private bool ValidateLength(string value)
+	/// <summary>
+	/// Returns true if the length of the <paramref name="value"/> argument is between (inclusive) 
+	/// the <see cref="MinLength"/> and <see cref="MaxLength"/> values.
+	/// </summary>
+	/// <param name="value">The value whose length will be compared to the <see cref="MinLength"/> and <see cref="MaxLength"/> values.</param>
+	protected virtual bool ValidateLength(string value)
 	{
 		return value.Length.WithinRange(MinLength, MaxLength);
 	}

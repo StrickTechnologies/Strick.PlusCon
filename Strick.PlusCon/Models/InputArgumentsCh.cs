@@ -64,7 +64,12 @@ public class InputArgumentsCh : InputArguments<char>
 		return ValidateAllowed(value);
 	}
 
-	private bool ValidateAllowed(char value)
+	/// <summary>
+	/// Returns true if the <see cref="Allowed"/> sequence contains 
+	/// the <paramref name="value"/> argument, otherwise, returns false. Returns false if the <see cref="Allowed"/> sequence is null or empty.
+	/// </summary>
+	/// <param name="value">The char value to locate in the <see cref="Allowed"/> sequence.</param>
+	protected virtual bool ValidateAllowed(char value)
 	{
 		if (!Allowed.HasAny())
 		{ return true; }

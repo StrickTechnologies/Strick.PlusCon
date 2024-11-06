@@ -25,6 +25,7 @@ public abstract class InputArguments<T>
 /// A delegate that can be used to override the parse method on some InputArguments classes.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-/// <param name="input"></param>
-/// <param name="result"></param>
+/// <param name="input">A string containing the characters representing the value to convert.</param>
+/// <param name="result">When the method returns, contains the <typeparamref name="T"/> value equivalent 
+/// to the value contained in <paramref name="input"/>, if the conversion succeeded.</param>
 public delegate bool InputEntryParseDelegate<T>(string input, out T result);

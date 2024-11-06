@@ -77,7 +77,12 @@ public class InputArgumentsDate : InputArguments<DateOnly>
 		return ValidateRange(value);
 	}
 
-	private bool ValidateRange(DateOnly value)
+	/// <summary>
+	/// Returns true if the <paramref name="value"/> argument is between (inclusive) 
+	/// the <see cref="Min"/> and <see cref="Max"/> values.
+	/// </summary>
+	/// <param name="value">The value to compare to the <see cref="Min"/> and <see cref="Max"/> values.</param>
+	protected virtual bool ValidateRange(DateOnly value)
 	{
 		return value.WithinRange(Min, Max);
 	}
