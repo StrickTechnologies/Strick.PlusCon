@@ -61,17 +61,14 @@ public class InputArgumentsSelect<T> : InputArguments<T>
 	/// <inheritdoc cref="InputArgumentsCh(string?)" path="/summary/span[@id='summary-all-other']"/>
 	/// </summary>
 	/// <param name="prompt"><inheritdoc cref="InputArguments{T}.Prompt" path="/summary"/></param>
-	/// <param name="options"><inheritdoc cref="InputArgumentsSelect{T}.InputArgumentsSelect(IEnumerable{T})" path="/param[@name='options']"/></param>
+	/// <param name="options"><inheritdoc cref="InputArgumentsSelect{T}.Options" path="/summary"/></param>
 	/// <param name="selectedOption"><inheritdoc cref="InputArgumentsSelect(IEnumerable{T}, T?)" path="/param[@name='selectedOption']"/></param>
 	public InputArgumentsSelect(string? prompt, IEnumerable<T> options, T? selectedOption)
 	{
-		if (options == null || options.Count() < 2)
-		{ throw new ArgumentNullException(nameof(options), "Must have at least two options"); }
-
 		if (selectedOption != null && !options.Contains(selectedOption))
 		{ throw new ArgumentOutOfRangeException(nameof(selectedOption), "Must be in the list of options"); }
 
-		theOptions = options.ToList();
+		SetOptions(options);
 
 		Prompt = prompt;
 
@@ -82,10 +79,35 @@ public class InputArgumentsSelect<T> : InputArguments<T>
 	}
 
 
+	private readonly List<T> theOptions = [];
+
+	/// <summary>
+	/// The options that are presented to the user. The collection must be non-null and contain at least <b>two</b> elements.
+	/// </summary>
+	public IReadOnlyList<T> Options => theOptions;
+
+	/// <summary>
+	/// <inheritdoc cref="Options" path="/summary"/>
+	/// </summary>
+	/// <param name="options"></param>
+	/// <exception cref="ArgumentNullException"></exception>
+	/// <exception cref="ArgumentException"></exception>
+	internal void SetOptions(IEnumerable<T> options)
+	{
+		ArgumentNullException.ThrowIfNull(options);
+
+		if (options.Count() < 2)
+		{ throw new ArgumentException(nameof(options), "Must have at least two options"); }
+
+		theOptions.Clear();
+		theOptions.AddRange(options);
+	}
+
+
 	/// <summary>
 	/// The option selected by the user.
 	/// </summary>
-	public T? SelectedOption { get; protected set; }
+	public T? SelectedOption { get; internal set; }
 
 	/// <summary>
 	/// Clears the current selection.
@@ -93,18 +115,11 @@ public class InputArgumentsSelect<T> : InputArguments<T>
 	internal void ClearSelection() => SelectedOption = default;
 
 
-	private readonly List<T> theOptions;
-
-	/// <summary>
-	/// The options that are presented to the user. The collection must be non-null and contain at least <b>two</b> elements.
-	/// </summary>
-	public IReadOnlyList<T> Options => theOptions;
-
-
 	/// <summary>
 	/// The <see cref="TextStyle"/> used to format the options when displayed for selection.
 	/// </summary>
 	public TextStyle SelectionOptionStyle { get; set; } = new TextStyle() { Reverse = true };
+
 
 	/// <summary>
 	/// Indicates whether or not to "wrap" the displayed option. 
@@ -113,7 +128,6 @@ public class InputArgumentsSelect<T> : InputArguments<T>
 	/// If false, these keypresses are ignored.
 	/// </summary>
 	public bool Wrap { get; set; } = true;
-	//todo: consider whether this property should be named Loop, Cycle, Circle/Circular, or something else "WrapOptions" "LoopOptions", "CycleOptions", etc.
 
 	/// <summary>
 	/// A collection of char values that can be used to move to the next option when the user presses the key.
