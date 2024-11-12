@@ -12,7 +12,7 @@ public class InputArgumentsTime : InputArguments<TimeOnly>
 	/// <summary>
 	/// <inheritdoc cref="InputArgumentsCh.InputArgumentsCh()"/>
 	/// </summary>
-	public InputArgumentsTime() { }
+	public InputArgumentsTime() : this(null, null, null) { }
 
 	/// <summary>
 	/// <inheritdoc cref="InputArgumentsCh()" path="/summary/span[@id='summary-init']"/>
@@ -48,20 +48,21 @@ public class InputArgumentsTime : InputArguments<TimeOnly>
 	public InputArgumentsTime(string? prompt, TimeOnly? min, TimeOnly? max)
 	{
 		Prompt = prompt;
-		Min = min;
-		Max = max;
+		MinMax=new Range<TimeOnly>(min, max);
 	}
 
+
+	private Range<TimeOnly> MinMax { get; }
 
 	/// <summary>
 	/// <inheritdoc cref="InputArgumentsNumber{T}.Min" path="/summary"/>
 	/// </summary>
-	public TimeOnly? Min { get; set; }
+	public TimeOnly? Min => MinMax.Min;
 
 	/// <summary>
 	/// <inheritdoc cref="InputArgumentsNumber{T}.Max" path="/summary"/>
 	/// </summary>
-	public TimeOnly? Max { get; set; }
+	public TimeOnly? Max => MinMax.Max;
 
 
 	/// <summary>
@@ -84,6 +85,6 @@ public class InputArgumentsTime : InputArguments<TimeOnly>
 	/// <param name="value">The value to compare to the <see cref="Min"/> and <see cref="Max"/> values.</param>
 	protected virtual bool ValidateRange(TimeOnly value)
 	{
-		return value.WithinRange(Min, Max);
+		return MinMax.InRange(value);
 	}
 }

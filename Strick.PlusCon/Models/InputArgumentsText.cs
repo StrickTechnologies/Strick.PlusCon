@@ -12,7 +12,7 @@ public class InputArgumentsText : InputArguments<string>
 	/// <summary>
 	/// <inheritdoc cref="InputArgumentsCh.InputArgumentsCh()"/>
 	/// </summary>
-	public InputArgumentsText() { }
+	public InputArgumentsText() : this(null, null, null) { }
 
 	/// <summary>
 	/// <inheritdoc cref="InputArgumentsCh()" path="/summary/span[@id='summary-init']"/>
@@ -47,13 +47,18 @@ public class InputArgumentsText : InputArguments<string>
 	/// <param name="maxLength"><inheritdoc cref="MaxLength" path="/summary"/></param>
 	public InputArgumentsText(string? prompt, int? minLength, int? maxLength)
 	{
+		if (minLength < 0)
+		{ throw new ArgumentOutOfRangeException(nameof(minLength)); }
+
+		if (maxLength <= 0)
+		{ throw new ArgumentOutOfRangeException(nameof(maxLength)); }
+
 		Prompt = prompt;
-		MinLength = minLength;
-		MaxLength = maxLength;
+		LengthRange = new Range<int>(minLength, maxLength);
 	}
 
 
-	private int? minL;
+	private Range<int> LengthRange { get; }
 
 	/// <summary>
 	/// If non-null, represents the minimum length for the entered string value. 
@@ -61,19 +66,7 @@ public class InputArgumentsText : InputArguments<string>
 	/// If null, the minimum length is not checked.
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
-	public int? MinLength
-	{
-		get => minL;
-		set
-		{
-			if (value < 0)
-			{ throw new ArgumentOutOfRangeException(nameof(value)); }
-
-			minL = value;
-		}
-	}
-
-	private int? maxL;
+	public int? MinLength => LengthRange.Min;
 
 	/// <summary>
 	/// If non-null, represents the maximum length for the entered string value. 
@@ -81,17 +74,7 @@ public class InputArgumentsText : InputArguments<string>
 	/// If null, the maximum length is not checked.
 	/// </summary>
 	/// <exception cref="ArgumentOutOfRangeException"></exception>
-	public int? MaxLength
-	{
-		get => maxL;
-		set
-		{
-			if (value <= 0)
-			{ throw new ArgumentOutOfRangeException(nameof(value)); }
-
-			maxL = value;
-		}
-	}
+	public int? MaxLength => LengthRange.Max;
 
 
 	internal override bool Validate(string value)
@@ -106,6 +89,6 @@ public class InputArgumentsText : InputArguments<string>
 	/// <param name="value">The value whose length will be compared to the <see cref="MinLength"/> and <see cref="MaxLength"/> values.</param>
 	protected virtual bool ValidateLength(string value)
 	{
-		return value.Length.WithinRange(MinLength, MaxLength);
+		return LengthRange.InRange(value.Length);
 	}
 }

@@ -11,7 +11,7 @@ namespace Strick.PlusCon.Models;
 
 
 /// <summary>
-/// Methods to collect various types of keyboard input from the user.
+/// Methods to collect various types of keyboard input.
 /// </summary>
 public static class Input
 {
@@ -334,20 +334,5 @@ public static class Input
 		Console.SetCursorPosition(posLeft, posTop);
 		W(prompt + new string(' ', entryLength));
 		Console.SetCursorPosition(posLeft, posTop);
-	}
-
-
-	internal static bool WithinRange<T>(this T value, T? min, T? max) where T : struct, IComparable<T>
-	{
-		if (min == null && max == null)
-		{ return true; }
-
-		if (min != null && value.CompareTo(min.Value) < 0)
-		{ return false; }
-
-		if (max != null && value.CompareTo(max.Value) > 0)
-		{ return false; }
-
-		return true;
 	}
 }

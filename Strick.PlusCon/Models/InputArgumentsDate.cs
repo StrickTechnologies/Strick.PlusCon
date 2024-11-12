@@ -12,7 +12,7 @@ public class InputArgumentsDate : InputArguments<DateOnly>
 	/// <summary>
 	/// <inheritdoc cref="InputArgumentsCh.InputArgumentsCh()"/>
 	/// </summary>
-	public InputArgumentsDate() { }
+	public InputArgumentsDate() : this(null, null, null) { }
 
 	/// <summary>
 	/// <inheritdoc cref="InputArgumentsCh()" path="/summary/span[@id='summary-init']"/>
@@ -48,20 +48,21 @@ public class InputArgumentsDate : InputArguments<DateOnly>
 	public InputArgumentsDate(string? prompt, DateOnly? min, DateOnly? max)
 	{
 		Prompt = prompt;
-		Min = min;
-		Max = max;
+		MinMax = new(min, max);
 	}
 
+
+	private Range<DateOnly> MinMax { get; }
 
 	/// <summary>
 	/// <inheritdoc cref="InputArgumentsNumber{T}.Min" path="/summary"/>
 	/// </summary>
-	public DateOnly? Min { get; set; }
+	public DateOnly? Min => MinMax.Min;
 
 	/// <summary>
 	/// <inheritdoc cref="InputArgumentsNumber{T}.Max" path="/summary"/>
 	/// </summary>
-	public DateOnly? Max { get; set; }
+	public DateOnly? Max => MinMax.Max;
 
 
 	/// <summary>
@@ -84,6 +85,6 @@ public class InputArgumentsDate : InputArguments<DateOnly>
 	/// <param name="value">The value to compare to the <see cref="Min"/> and <see cref="Max"/> values.</param>
 	protected virtual bool ValidateRange(DateOnly value)
 	{
-		return value.WithinRange(Min, Max);
+		return MinMax.InRange(value);
 	}
 }

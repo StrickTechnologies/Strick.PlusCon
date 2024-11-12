@@ -1,4 +1,6 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 
 
 namespace Strick.PlusCon.Models;
@@ -13,7 +15,7 @@ public class InputArgumentsNumber<T> : InputArguments<T> where T : struct, INumb
 	/// <summary>
 	/// <inheritdoc cref="InputArgumentsCh()"/>
 	/// </summary>
-	public InputArgumentsNumber() { }
+	public InputArgumentsNumber() : this(null, null, null) { }
 
 	/// <summary>
 	/// <inheritdoc cref="InputArgumentsCh()" path="/summary/span[@id='summary-init']"/>
@@ -48,20 +50,22 @@ public class InputArgumentsNumber<T> : InputArguments<T> where T : struct, INumb
 	public InputArgumentsNumber(string? prompt, T? min, T? max)
 	{
 		Prompt = prompt;
-		Min = min;
-		Max = max;
+		MinMax = new Range<T>(min, max);
 	}
 
+
+	private Range<T> MinMax { get; }
 
 	/// <summary>
 	/// The minimum acceptable value. If null (the default), no minimum is checked. 
 	/// </summary>
-	public T? Min { get; set; }
+	public T? Min => MinMax.Min;
 
 	/// <summary>
 	/// The maximum acceptable value. If null (the default), no maximum is checked.
 	/// </summary>
-	public T? Max { get; set; }
+	public T? Max => MinMax.Max;
+
 
 	internal override bool Validate(T value)
 	{
@@ -75,6 +79,6 @@ public class InputArgumentsNumber<T> : InputArguments<T> where T : struct, INumb
 	/// <param name="value">The value to compare to the <see cref="Min"/> and <see cref="Max"/> values.</param>
 	protected virtual bool ValidateRange(T value)
 	{
-		return value.WithinRange(Min, Max);
+		return MinMax.InRange(value);
 	}
 }
