@@ -126,7 +126,7 @@ public class InputTests
 
 	internal static void InputTestsText()
 	{
-		InputArgumentsText args = new InputArgumentsText() { Prompt = "text ", MinLength = 3, MaxLength = 6 };
+		InputArgumentsText args = new InputArgumentsText("text ", 3, 6);
 		string? txt = Input.Text(args);
 		if (txt == null)
 		{ Input.Any("null"); }
@@ -137,9 +137,7 @@ public class InputTests
 
 	internal static void InputTests_Date()
 	{
-		InputArgumentsDate args = new InputArgumentsDate("Enter a date: ");
-		args.Min = new DateOnly(2000, 1, 1);
-		args.Max = DateOnly.FromDateTime(DateTime.Today);
+		InputArgumentsDate args = new InputArgumentsDate("Enter a date: ", new DateOnly(2000, 1, 1), DateOnly.FromDateTime(DateTime.Today));
 		args.ParseFunction = ParseDateSample;
 
 		WL();
@@ -186,9 +184,7 @@ public class InputTests
 
 	internal static void InputTests_Time()
 	{
-		InputArgumentsTime args = new InputArgumentsTime("Enter a time: ");
-		args.Min = new TimeOnly(10, 0);
-		args.Max = new TimeOnly(13, 45);
+		InputArgumentsTime args = new InputArgumentsTime("Enter a time: ", new TimeOnly(10, 0), new TimeOnly(13, 45));
 		args.ParseFunction = ParseTimeSample;
 
 		WL();
