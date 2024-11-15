@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
@@ -27,14 +28,16 @@ public static class Input
 	/// <param name="arguments">The arguments that contol how the input is collected and validated.</param>
 	public static ConsoleKeyInfo Ch(InputArgumentsCh arguments)
 	{
-		var (posLeft, posTop) = Console.GetCursorPosition();
+		var pos = GetCursorPosition();
+
 		do
 		{
 			var key = RK(arguments.Prompt, arguments.PromptStyle);
 			if (arguments.Validate(key.KeyChar))
 			{ return key; }
 
-			ResetCursorPosition(posLeft, posTop, "", 0);
+			if (pos != null)
+			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, "", 0); }
 		} while (true);
 	}
 
@@ -122,7 +125,8 @@ public static class Input
 	/// <param name="arguments"><inheritdoc cref="Ch(InputArgumentsCh)" path="/param[@name='arguments']"/></param>
 	public static T? Number<T>(InputArgumentsNumber<T> arguments) where T : struct, INumber<T>
 	{
-		var (posLeft, posTop) = Console.GetCursorPosition();
+		var pos = GetCursorPosition();
+
 		do
 		{
 			string? entry = RL(arguments.Prompt, arguments.PromptStyle);
@@ -135,7 +139,8 @@ public static class Input
 				{ return value; }
 			}
 
-			ResetCursorPosition(posLeft, posTop, arguments.Prompt, entry.Length);
+			if (pos != null)
+			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt, entry.Length); }
 		} while (true);
 	}
 
@@ -154,7 +159,7 @@ public static class Input
 	/// <param name="arguments"><inheritdoc cref="Ch(InputArgumentsCh)" path="/param[@name='arguments']"/></param>
 	public static string? Text(InputArgumentsText arguments)
 	{
-		var (posLeft, posTop) = Console.GetCursorPosition();
+		var pos = GetCursorPosition();
 
 		do
 		{
@@ -163,7 +168,8 @@ public static class Input
 			if (txt != null && arguments.Validate(txt))
 			{ return txt; }
 
-			ResetCursorPosition(posLeft, posTop, arguments.Prompt, txt == null ? 0 : txt.Length);
+			if (pos != null)
+			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt, txt == null ? 0 : txt.Length); }
 		} while (true);
 	}
 
@@ -182,7 +188,7 @@ public static class Input
 	/// <param name="arguments"><inheritdoc cref="Ch(InputArgumentsCh)" path="/param[@name='arguments']"/></param>
 	public static TimeOnly? Time(InputArgumentsTime arguments)
 	{
-		var (posLeft, posTop) = Console.GetCursorPosition();
+		var pos = GetCursorPosition();
 
 		do
 		{
@@ -194,13 +200,15 @@ public static class Input
 			{
 				if (arguments.Validate(time))
 				{
-					ResetCursorPosition(posLeft, posTop, arguments.Prompt, strTm.Length);
+					if (pos != null)
+					{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt, strTm.Length); }
 					WL(arguments.Prompt + time.ToLongTimeString());
 					return time;
 				}
 			}
 
-			ResetCursorPosition(posLeft, posTop, arguments.Prompt, strTm.Length);
+			if (pos != null)
+			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt, strTm.Length); }
 
 		} while (true);
 
@@ -222,7 +230,8 @@ public static class Input
 	/// <param name="arguments"><inheritdoc cref="Ch(InputArgumentsCh)" path="/param[@name='arguments']"/></param>
 	public static DateOnly? Date(InputArgumentsDate arguments)
 	{
-		var (posLeft, posTop) = Console.GetCursorPosition();
+		var pos = GetCursorPosition();
+
 		do
 		{
 			var strDt = RL(arguments.Prompt, arguments.PromptStyle);
@@ -233,13 +242,15 @@ public static class Input
 			{
 				if (arguments.Validate(date))
 				{
-					ResetCursorPosition(posLeft, posTop, arguments.Prompt, strDt.Length);
+					if (pos != null)
+					{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt, strDt.Length); }
 					WL(arguments.Prompt + date.ToShortDateString());
 					return date;
 				}
 			}
 
-			ResetCursorPosition(posLeft, posTop, arguments.Prompt, strDt.Length);
+			if (pos != null)
+			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt, strDt.Length); }
 
 		} while (true);
 
@@ -302,7 +313,8 @@ public static class Input
 	{
 		ArgumentNullException.ThrowIfNull(arguments);
 
-		var (posLeft, posTop) = Console.GetCursorPosition();
+		var pos = GetCursorPosition();
+
 		do
 		{
 			W(arguments.Prompt + arguments.SelectionOptionStyle.StyleText(arguments.SelectedOption!.ToString()!));
@@ -317,7 +329,8 @@ public static class Input
 				break;
 			}
 
-			ResetCursorPosition(posLeft, posTop, arguments.Prompt, arguments.SelectedOption!.ToString()!.Length);
+			if (pos != null)
+			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt, arguments.SelectedOption!.ToString()!.Length); }
 			if (arguments.SelectNextKeys.Contains((char)k.Key))
 			{ arguments.SelectNext(); }
 			if (arguments.SelectPreviousKeys.Contains((char)k.Key))
@@ -328,6 +341,20 @@ public static class Input
 		return arguments.SelectedOption;
 	}
 
+
+	private static Point? GetCursorPosition()
+	{
+		//if the console input stream is redirected, Console.GetCursorPosition will throw an exception
+		try
+		{
+			var (posLeft, posTop) = Console.GetCursorPosition();
+			return new Point(posLeft, posTop);
+		}
+		catch
+		{ }
+
+		return null;
+	}
 
 	private static void ResetCursorPosition(int posLeft, int posTop, string? prompt, int entryLength)
 	{
