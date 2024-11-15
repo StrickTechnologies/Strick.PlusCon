@@ -18,9 +18,9 @@ public class InputArgumentsNumber_Tests
 		CheckArgs(args, null, null, null, byte.MinValue, byte.MaxValue);
 		args = new("foo");
 		CheckArgs(args, "foo", null, null, byte.MinValue, byte.MaxValue);
-		args.Prompt = "bar";
+		args.Prompt.Text = "bar";
 		CheckArgs(args, "bar", null, null, byte.MinValue, byte.MaxValue);
-		args.Prompt = null;
+		args.Prompt.Text = null;
 		CheckArgs(args, null, null, null, byte.MinValue, byte.MaxValue);
 
 		args = new(20, 50);
@@ -149,7 +149,7 @@ public class InputArgumentsNumber_Tests
 	private void CheckArgs<T>(InputArgumentsNumber<T> args, string? expectedPrompt, T? expectedMin, T? expectedMax, T min, T max) where T : struct, INumber<T>, IComparable<T>
 	{
 		Assert.IsNotNull(args);
-		Assert.AreEqual(expectedPrompt, args.Prompt);
+		Assert.AreEqual(expectedPrompt, args.Prompt.Text);
 		Assert.AreEqual(expectedMin, args.Min);
 		Assert.AreEqual(expectedMax, args.Max);
 

@@ -25,7 +25,7 @@ public class InputArgumentsCh : InputArguments<char>
 	/// <param name="prompt"><inheritdoc cref="InputArguments{T}.Prompt" path="/summary"/></param>
 	public InputArgumentsCh(string? prompt) : this()
 	{
-		Prompt = prompt;
+		Prompt.Text = prompt;
 	}
 
 	/// <summary>

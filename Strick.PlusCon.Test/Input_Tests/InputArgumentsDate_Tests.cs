@@ -28,7 +28,7 @@ public class InputArgumentsDate_Tests
 	private void CheckArgs(InputArgumentsDate args, string? expectedPrompt, DateOnly? expectedMin, DateOnly? expectedMax, DateOnly min, DateOnly max)
 	{
 		Assert.IsNotNull(args);
-		Assert.AreEqual(expectedPrompt, args.Prompt);
+		Assert.AreEqual(expectedPrompt, args.Prompt.Text);
 		Assert.AreEqual(expectedMin, args.Min);
 		Assert.AreEqual(expectedMax, args.Max);
 

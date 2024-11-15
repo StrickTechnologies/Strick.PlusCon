@@ -59,7 +59,7 @@ public class InputArgumentsSelect_Tests
 	private void CheckArgs<T>(InputArgumentsSelect<T> args, string? expectedPrompt, IEnumerable<T> expectedOptions, T expectedSelected)
 	{
 		Assert.IsNotNull(args);
-		Assert.AreEqual(expectedPrompt, args.Prompt);
+		Assert.AreEqual(expectedPrompt, args.Prompt.Text);
 
 		Assert.IsNotNull(args.Options);
 		Assert.IsNotNull(expectedOptions);

@@ -47,7 +47,7 @@ public class InputArgumentsDate : InputArguments<DateOnly>
 	/// <param name="max"><inheritdoc cref="Max" path="/summary"/></param>
 	public InputArgumentsDate(string? prompt, DateOnly? min, DateOnly? max)
 	{
-		Prompt = prompt;
+		Prompt.Text = prompt;
 		MinMax = new(min, max);
 	}
 

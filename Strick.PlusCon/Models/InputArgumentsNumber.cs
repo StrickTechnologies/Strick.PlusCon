@@ -49,7 +49,7 @@ public class InputArgumentsNumber<T> : InputArguments<T> where T : struct, INumb
 	/// <param name="max"><inheritdoc cref="InputArgumentsNumber{T}.InputArgumentsNumber(T?, T?)" path="/param[@name='max']"/></param>
 	public InputArgumentsNumber(string? prompt, T? min, T? max)
 	{
-		Prompt = prompt;
+		Prompt.Text = prompt;
 		MinMax = new Range<T>(min, max);
 	}
 

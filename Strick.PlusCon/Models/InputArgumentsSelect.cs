@@ -70,7 +70,7 @@ public class InputArgumentsSelect<T> : InputArguments<T>
 
 		SetOptions(options);
 
-		Prompt = prompt;
+		Prompt.Text = prompt;
 
 		if (selectedOption == null)
 		{ SelectedOption = Options[0]; }

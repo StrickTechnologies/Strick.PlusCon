@@ -16,9 +16,9 @@ public class InputArgumentsText_Tests
 		CheckArgs(args, null, null, null);
 		args = new InputArgumentsText("foo");
 		CheckArgs(args, "foo", null, null);
-		args.Prompt = "bar";
+		args.Prompt.Text = "bar";
 		CheckArgs(args, "bar", null, null);
-		args.Prompt = null;
+		args.Prompt.Text = null;
 		CheckArgs(args, null, null, null);
 
 
@@ -53,7 +53,7 @@ public class InputArgumentsText_Tests
 	private void CheckArgs(InputArgumentsText args, string? expectedPrompt, int? expectedMinLength, int? expectedMaxLength)
 	{
 		Assert.IsNotNull(args);
-		Assert.AreEqual(expectedPrompt, args.Prompt);
+		Assert.AreEqual(expectedPrompt, args.Prompt.Text);
 		CheckRange(args, expectedMinLength, expectedMaxLength);
 	}
 

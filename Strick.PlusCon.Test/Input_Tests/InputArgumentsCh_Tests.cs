@@ -15,9 +15,9 @@ public class InputArgumentsCh_Tests
 
 		args = new InputArgumentsCh("foo");
 		CheckArgs(args, "foo");
-		args.Prompt = "bar";
+		args.Prompt.Text = "bar";
 		CheckArgs(args, "bar");
-		args.Prompt = null;
+		args.Prompt.Text = null;
 		CheckArgs(args, null);
 
 		args = new InputArgumentsCh(['a', 'b', 'c']);
@@ -30,7 +30,7 @@ public class InputArgumentsCh_Tests
 	private void CheckArgs(InputArgumentsCh args, string? expectedPrompt, IEnumerable<char>? allowed = null)
 	{
 		Assert.IsNotNull(args);
-		Assert.AreEqual(expectedPrompt, args.Prompt);
+		Assert.AreEqual(expectedPrompt, args.Prompt.Text);
 		Assert.IsNotNull(args.Allowed);
 
 		if (allowed.HasAny())

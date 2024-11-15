@@ -10,13 +10,24 @@ public abstract class InputArguments<T>
 	/// <summary>
 	/// The prompt to display
 	/// </summary>
-	public string? Prompt { get; set; }
+	public StyledText Prompt { get; } = new(null);
 
 	/// <summary>
 	/// The style to apply to the prompt. 
 	/// If null, no styling is applied.
 	/// </summary>
-	public TextStyle? PromptStyle { get; set; }
+	public TextStyle? PromptStyle
+	{
+		get => Prompt.Style;
+
+		set
+		{
+			if (value != null)
+			{ Prompt.Style = value; }
+			else
+			{ Prompt.Style = new TextStyle(); }
+		}
+	}
 
 	internal virtual bool Validate(T value) => true;
 }

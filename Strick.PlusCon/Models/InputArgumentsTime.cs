@@ -47,7 +47,7 @@ public class InputArgumentsTime : InputArguments<TimeOnly>
 	/// <param name="max"><inheritdoc cref="Max" path="/summary"/></param>
 	public InputArgumentsTime(string? prompt, TimeOnly? min, TimeOnly? max)
 	{
-		Prompt = prompt;
+		Prompt.Text = prompt;
 		MinMax=new Range<TimeOnly>(min, max);
 	}
 

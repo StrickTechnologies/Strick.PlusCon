@@ -32,7 +32,7 @@ public static class Input
 
 		do
 		{
-			var key = RK(arguments.Prompt, arguments.PromptStyle);
+			var key = RK(arguments.Prompt);
 			if (arguments.Validate(key.KeyChar))
 			{ return key; }
 
@@ -98,9 +98,9 @@ public static class Input
 		};
 
 		if (prompt != null)
-		{ args.Prompt = prompt; }
+		{ args.Prompt.Text = prompt; }
 		else
-		{ args.Prompt = "Press Any Key "; }
+		{ args.Prompt.Text = "Press Any Key "; }
 
 		return Ch(args);
 	}
@@ -129,7 +129,7 @@ public static class Input
 
 		do
 		{
-			string? entry = RL(arguments.Prompt, arguments.PromptStyle);
+			string? entry = RL(arguments.Prompt);
 			if (string.IsNullOrEmpty(entry))
 			{ return default; }
 
@@ -140,7 +140,7 @@ public static class Input
 			}
 
 			if (pos != null)
-			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt, entry.Length); }
+			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt.Text, entry.Length); }
 		} while (true);
 	}
 
@@ -163,13 +163,13 @@ public static class Input
 
 		do
 		{
-			var txt = RL(arguments.Prompt, arguments.PromptStyle);
+			var txt = RL(arguments.Prompt);
 
 			if (txt != null && arguments.Validate(txt))
 			{ return txt; }
 
 			if (pos != null)
-			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt, txt == null ? 0 : txt.Length); }
+			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt.Text, txt == null ? 0 : txt.Length); }
 		} while (true);
 	}
 
@@ -180,7 +180,7 @@ public static class Input
 	/// or null if the enter key is pressed (without entering a time).
 	/// </summary>
 	/// <param name="prompt"><inheritdoc cref="Ch(string?)" path="/param[@name='prompt']"/></param>
-	public static TimeOnly? Time(string? prompt) => Time(new InputArgumentsTime() { Prompt = prompt });
+	public static TimeOnly? Time(string? prompt) => Time(new InputArgumentsTime(prompt));
 
 	/// <summary>
 	/// <inheritdoc cref="Time(string?)"/>
@@ -192,7 +192,7 @@ public static class Input
 
 		do
 		{
-			var strTm = RL(arguments.Prompt, arguments.PromptStyle);
+			var strTm = RL(arguments.Prompt);
 			if (string.IsNullOrWhiteSpace(strTm))
 			{ break; }
 
@@ -201,14 +201,14 @@ public static class Input
 				if (arguments.Validate(time))
 				{
 					if (pos != null)
-					{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt, strTm.Length); }
-					WL(arguments.Prompt + time.ToLongTimeString());
+					{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt.Text, strTm.Length); }
+					WL(arguments.Prompt.Text + time.ToLongTimeString());
 					return time;
 				}
 			}
 
 			if (pos != null)
-			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt, strTm.Length); }
+			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt.Text, strTm.Length); }
 
 		} while (true);
 
@@ -222,7 +222,7 @@ public static class Input
 	/// or null if the enter key is pressed (without entering a date).
 	/// </summary>
 	/// <param name="prompt"><inheritdoc cref="Ch(string?)" path="/param[@name='prompt']"/></param>
-	public static DateOnly? Date(string? prompt) => Date(new InputArgumentsDate() { Prompt = prompt });
+	public static DateOnly? Date(string? prompt) => Date(new InputArgumentsDate(prompt));
 
 	/// <summary>
 	/// <inheritdoc cref="Date(string?)"/>
@@ -234,7 +234,7 @@ public static class Input
 
 		do
 		{
-			var strDt = RL(arguments.Prompt, arguments.PromptStyle);
+			var strDt = RL(arguments.Prompt);
 			if (string.IsNullOrWhiteSpace(strDt))
 			{ break; }
 
@@ -243,14 +243,14 @@ public static class Input
 				if (arguments.Validate(date))
 				{
 					if (pos != null)
-					{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt, strDt.Length); }
-					WL(arguments.Prompt + date.ToShortDateString());
+					{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt.Text, strDt.Length); }
+					WL(arguments.Prompt.Text + date.ToShortDateString());
 					return date;
 				}
 			}
 
 			if (pos != null)
-			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt, strDt.Length); }
+			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt.Text, strDt.Length); }
 
 		} while (true);
 
@@ -317,7 +317,7 @@ public static class Input
 
 		do
 		{
-			W(arguments.Prompt + arguments.SelectionOptionStyle.StyleText(arguments.SelectedOption!.ToString()!));
+			W(arguments.Prompt.TextStyled + arguments.SelectionOptionStyle.StyleText(arguments.SelectedOption!.ToString()!));
 			var k = Console.ReadKey(true);
 
 			if (k.Key == ConsoleKey.Enter)
@@ -330,7 +330,7 @@ public static class Input
 			}
 
 			if (pos != null)
-			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt, arguments.SelectedOption!.ToString()!.Length); }
+			{ ResetCursorPosition(pos.Value.X, pos.Value.Y, arguments.Prompt.Text, arguments.SelectedOption!.ToString()!.Length); }
 			if (arguments.SelectNextKeys.Contains((char)k.Key))
 			{ arguments.SelectNext(); }
 			if (arguments.SelectPreviousKeys.Contains((char)k.Key))

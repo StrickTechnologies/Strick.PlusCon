@@ -53,7 +53,7 @@ public class InputArgumentsText : InputArguments<string>
 		if (maxLength <= 0)
 		{ throw new ArgumentOutOfRangeException(nameof(maxLength)); }
 
-		Prompt = prompt;
+		Prompt.Text = prompt;
 		LengthRange = new Range<int>(minLength, maxLength);
 	}
 

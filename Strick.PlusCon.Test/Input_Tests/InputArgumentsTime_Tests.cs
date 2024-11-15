@@ -24,7 +24,7 @@ public class InputArgumentsTime_Tests
 	private void CheckArgs(InputArgumentsTime args, string? expectedPrompt, TimeOnly? expectedMin, TimeOnly? expectedMax)
 	{
 		Assert.IsNotNull(args);
-		Assert.AreEqual(expectedPrompt, args.Prompt);
+		Assert.AreEqual(expectedPrompt, args.Prompt.Text);
 		Assert.AreEqual(expectedMin, args.Min);
 		Assert.AreEqual(expectedMax, args.Max);
 
