@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 
 using Strick.PlusCon.Models;
+using Strick.PlusCon.Test.Models;
 
 using static Strick.PlusCon.Helpers;
 
@@ -17,6 +18,11 @@ public class InputTests
 		YNMenu.Add(new MenuOption("YN", 'Y', InputTests_YN));
 		YNMenu.Add(new MenuOption("Select Yes/No", 'S', InputTests_SelectYesNo));
 
+		Menu SMenu = new Menu("Select");
+		SMenu.Add(new MenuOption("Sunrise/Sunset", 'S', InputTests_SelectSun));
+		SMenu.Add(new MenuOption("Int", 'I', InputTests_SelectInt));
+		SMenu.Add(new MenuOption("Select Widget", 'W', InputTests_SelectWidget));
+
 		Menu itMenu = new Menu("Input Tests");
 		itMenu.Add(new MenuOption("Any", 'A', InputTests_Any));
 		itMenu.Add(new MenuOption("Ch", 'C', InputTests_Ch));
@@ -24,7 +30,7 @@ public class InputTests
 		itMenu.Add(new MenuOption("Text", 'X', InputTestsText));
 		itMenu.Add(new MenuOption("Date", 'D', InputTests_Date));
 		itMenu.Add(new MenuOption("Time", 'T', InputTests_Time));
-		itMenu.Add(new MenuOption("Select", 'S', InputTests_Select));
+		itMenu.Add(new MenuOption("Select", 'S', SMenu));
 		itMenu.Add(new MenuOption("Yes/No Menu", 'Y', YNMenu));
 
 		return itMenu;
@@ -126,8 +132,17 @@ public class InputTests
 
 	internal static void InputTestsText()
 	{
-		InputArgumentsText args = new InputArgumentsText("text ", 3, 6);
+		WL();
+
+		InputArgumentsText args = new InputArgumentsText("Enter any text: ");
 		string? txt = Input.Text(args);
+		if (txt == null)
+		{ Input.Any("null"); }
+		else
+		{ Input.Any(txt); }
+
+		args = new InputArgumentsText("Enter text between 3 and 6 characters in length: ", 3, 6);
+		txt = Input.Text(args);
 		if (txt == null)
 		{ Input.Any("null"); }
 		else
@@ -137,7 +152,7 @@ public class InputTests
 
 	internal static void InputTests_Date()
 	{
-		InputArgumentsDate args = new InputArgumentsDate("Enter a date: ", new DateOnly(2000, 1, 1), DateOnly.FromDateTime(DateTime.Today));
+		InputArgumentsDate args = new InputArgumentsDate("Enter a date (in this millennium up to today): ", new DateOnly(2000, 1, 1), DateOnly.FromDateTime(DateTime.Today));
 		args.ParseFunction = ParseDateSample;
 
 		WL();
@@ -146,7 +161,55 @@ public class InputTests
 		{ Input.Any("null"); }
 		else
 		{ Input.Any(dt.Value.ToShortDateString()); }
+
+		args = new InputArgumentsDate_Future("Enter any date in the future: ");
+		args.ParseFunction = ParseDateSample;
+		WL();
+		dt = Input.Date(args);
+		if (dt == null)
+		{ Input.Any("null"); }
+		else
+		{ Input.Any(dt.Value.ToShortDateString()); }
+
+		args = new InputArgumentsDate_Future_Weekend("Enter any Weekend date in the future: ");
+		WL();
+		dt = Input.Date(args);
+		if (dt == null)
+		{ Input.Any("null"); }
+		else
+		{ Input.Any(dt.Value.ToShortDateString() + $" {dt.Value.DayOfWeek.ToString()}"); }
 	}
+
+	internal class InputArgumentsDate_Future : InputArgumentsDate
+	{
+		public InputArgumentsDate_Future() : this(null) { }
+
+		public InputArgumentsDate_Future(string? prompt) : base(prompt, getMin(), null) { }
+
+		private static DateOnly getMin() => DateOnly.FromDateTime(DateTime.Today.AddDays(1));
+	}
+
+	internal class InputArgumentsDate_Future_Weekend : InputArgumentsDate_Future
+	{
+		public InputArgumentsDate_Future_Weekend() : this(null) { }
+
+		public InputArgumentsDate_Future_Weekend(string? prompt) : base(prompt) { }
+
+
+		internal override bool Validate(DateOnly value)
+		{
+			if (!base.Validate(value))
+			{ return false; }
+
+			return IsWeekend(value);
+		}
+
+		private bool IsWeekend(DateOnly value)
+		{
+			return value.DayOfWeek == DayOfWeek.Sunday || value.DayOfWeek == DayOfWeek.Saturday;
+		}
+	}
+
 
 	internal static bool ParseDateSample(string date, out DateOnly result)
 	{
@@ -224,29 +287,51 @@ public class InputTests
 	}
 
 
-	internal static void InputTests_Select()
+	internal static void InputTests_SelectSun()
 	{
 		WL();
 
-		List<string> choices = ["foo", "bar", "baz", "foo bar"];
-		var args = new InputArgumentsSelect<string>("select one ", choices, "bar") { SelectionOptionStyle = new(Color.White, Color.Red) };
+		List<string> choices = ["Sunrise", "Mid-day", "Sunset"];
+		var args = new InputArgumentsSelect<string>("Which do you prefer? ", choices)
+		{
+			SelectionOptionStyle = new(Color.White, Color.DarkOrange),
+			PromptStyle = new(Color.White)
+		};
+
 		string? sel = Input.Select(args);
 		WL();
 		if (sel != null)
-		{ WL($"selected {sel}"); }
+		{ RK($"selected {sel}"); }
 		else
-		{ WL("espace"); }
+		{ RK("escape"); }
+	}
 
-		List<int?> choices2 = [1, 2, 3];
-		var args2 = new InputArgumentsSelect<int?>("select one ", choices2, 2) { Wrap = false };
-		int? sel2 = Input.Select(args2);
+	internal static void InputTests_SelectInt()
+	{
 		WL();
-		if (sel2 != null)
-		{ WL($"selected {sel2}"); }
+		List<int?> choices = [1, 2, 3];
+		var args = new InputArgumentsSelect<int?>("select one ", choices, 2) { Wrap = false };
+		int? sel = Input.Select(args);
+		WL();
+		if (sel != null)
+		{ RK($"selected {sel}"); }
 		else
-		{ WL("espace"); }
+		{ RK("escape"); }
+	}
 
-		RK();
+	internal static void InputTests_SelectWidget()
+	{
+		WL();
+
+		List<Widget> choices = [Widget.SmallWidget, Widget.MediumWidget, Widget.LargeWidget];
+
+		var args = new InputArgumentsSelect<Widget>("Choose a Widget: ", choices) { SelectionOptionStyle = new(Color.White, Color.Red) };
+		Widget? sel = Input.Select(args);
+		WL();
+		if (sel != null)
+		{ Input.Any($"selected {sel}"); }
+		else
+		{ Input.Any("escape"); }
 	}
 
 

@@ -11,9 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add CHANGELOG.md
 - Grids
   - New constructors to take `Title`, `Subtitle`, `Footer` arguments.
+- `Input` class, and related
+  - `InputArguments` abstract class and derived classes
+  - `Range` class
+  - Documentation updates
+  - Examples
 
 ### Changes/Fixes
-- Update target framework to .Net 8.0
+- Update target framework to .Net 8.0 :exclamation:<span style='xbackground-color:#f0f0f0; color: red;'>` Breaking `</span>
 - Add missing XML comments for `GridSearchExpression` constructor parameters
 - Miscellaneous cleanup, corrections in docs and examples
 - `TextStyle`, `StyledText`

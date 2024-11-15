@@ -100,6 +100,11 @@ alignment can be applied at the grid, row, column and cell level.
 
 [See the Doc](https://stricktechnologies.github.io/Strick.PlusCon/grid.html)  
 
+### `Input` static class
+Methods used to get keyboard input of specific types such as numerics (e.g. `int`, `decimal`), dates, times and others. Includes an easily extensible validation mechanism that allows entered values to be filtered against ranges (e.g. min/max values, min/max length for strings) and other conditions.
+
+[See the Doc](https://stricktechnologies.github.io/Strick.PlusCon/input.html)  
+
 
 ## Background and Inspiration
 Some of the things in this utility (`W` and `WL` in particular) are things I've dragged around from project to project for years -- just generally copy/pasting into a new project whenever I finally tired of typing "Console.WriteLine" (intellisense notwithstanding) over and over. These things are generally used informally for basic testing, and to aid in creating and debugging unit tests.

@@ -25,6 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{F27B2819-B
 		docs\escapeSequences.md = docs\escapeSequences.md
 		docs\grid.md = docs\grid.md
 		docs\index.md = docs\index.md
+		docs\input.md = docs\input.md
 		docs\menu.md = docs\menu.md
 		docs\otherFormatting.md = docs\otherFormatting.md
 		docs\otherUtilities.md = docs\otherUtilities.md

@@ -143,7 +143,7 @@ public static class Input
 	/// <summary>
 	/// Prompts for the entry of a text value.
 	/// Returns a <see cref="string"/> containing the entered text, 
-	/// or null if the user presses the enter key (without entering anything).
+	/// or null if the user presses only the enter key (without entering anything).
 	/// </summary>
 	/// <param name="prompt"><inheritdoc cref="Ch(string?)" path="/param[@name='prompt']"/></param>
 	public static string? Text(string? prompt) => Text(new InputArgumentsText(prompt));
@@ -171,7 +171,7 @@ public static class Input
 	/// <summary>
 	/// Prompts for the entry of a time (time of day) value.
 	/// Returns a <see cref="Nullable{TimeOnly}"/> containing the time value entered, 
-	/// or null if the user presses the enter key (without entering a time).
+	/// or null if the enter key is pressed (without entering a time).
 	/// </summary>
 	/// <param name="prompt"><inheritdoc cref="Ch(string?)" path="/param[@name='prompt']"/></param>
 	public static TimeOnly? Time(string? prompt) => Time(new InputArgumentsTime() { Prompt = prompt });
@@ -209,9 +209,9 @@ public static class Input
 
 
 	/// <summary>
-	/// Prompts the user for the entry of a date value. 
+	/// Prompts for the entry of a date value. 
 	/// Returns a <see cref="Nullable{DateOnly}"/> containing the date value entered, 
-	/// or null if the user presses the enter key (without entering a date).
+	/// or null if the enter key is pressed (without entering a date).
 	/// </summary>
 	/// <param name="prompt"><inheritdoc cref="Ch(string?)" path="/param[@name='prompt']"/></param>
 	public static DateOnly? Date(string? prompt) => Date(new InputArgumentsDate() { Prompt = prompt });
@@ -292,10 +292,10 @@ public static class Input
 	}
 
 	/// <summary>
-	/// Presents a list of options and the user can select one. Returns the selected option, or null if escape is pressed. 
-	/// The options are of the type specified by the <typeparamref name="T"/>.
+	/// Presents a list of options and allows one to be selected. Returns the selected option, or null if escape is pressed. 
+	/// The options are of the type specified by the type parameter <typeparamref name="T"/>.
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="T">The type for the options. The <see cref="object.ToString"/> method is used to display each option.</typeparam>
 	/// <param name="arguments"><inheritdoc cref="Ch(InputArgumentsCh)" path="/param[@name='arguments']"/></param>
 	/// <exception cref="ArgumentNullException"></exception>
 	public static T? Select<T>(InputArgumentsSelect<T> arguments)

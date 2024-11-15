@@ -116,7 +116,7 @@ public class InputArgumentsSelect<T> : InputArguments<T>
 
 
 	/// <summary>
-	/// The <see cref="TextStyle"/> used to format the options when displayed for selection.
+	/// A <see cref="TextStyle"/> object used to format the options when displayed for selection.
 	/// </summary>
 	public TextStyle SelectionOptionStyle { get; set; } = new TextStyle() { Reverse = true };
 
