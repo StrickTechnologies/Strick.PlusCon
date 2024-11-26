@@ -2,7 +2,7 @@
 
 Provides a collection of static methods used to collect strongly typed values from the keyboard. The specific types include numerics (e.g. `int`, `decimal`), dates, times, strings and chars.
 
-It also has an easily extensible validation mechanism that allows entered values to be filtered against ranges (e.g. min/max values, min/max length for strings) and other conditions.
+It also has an easily extensible mechanism for validating entered values against ranges (e.g. min/max values, min/max length for strings) and other conditions.
 
 Each method has multiple overloads to keep things quick and easy. Use the overload that accepts only a `Prompt` argument when any value is acceptable. Or pass an `InputArguments` object when more advanced validation is needed.
 
@@ -23,7 +23,7 @@ Styling that is applied to the prompt. If null, no styling is applied to the pro
 Prompts for entry of a single `char`. Returns a `ConsoleKeyInfo` structure whose `KeyChar` property contains the key that was pressed.
 
 #### `InputArgumentsCh` class
-Represents arguments used by the `Ch` method to collect a `char` value from the keyboard. The arguments that contol how the input is collected and validated.
+Represents arguments used by the `Ch` method to collect a `char` value from the keyboard.
 
 ##### `Allowed` (`List<char>`) property.
 The acceptable values - only values in the collection are accepted. If the collection is empty (the default), any value will be accepted.
@@ -45,14 +45,12 @@ The type is specified by the type parameter `<T>`, which can be any `struct` typ
 #### `InputArgumentsNumber<T>` class
 Represents arguments used by the `Input.Number<T>()` method to collect a numeric value from the user.
 
-The type parameter `T` must be any `struct` type that implements the `INumber<TSelf>` interface.
+As with the `Input.Number<T>()` method, the type parameter `T` must be any `struct` type that implements the `INumber<TSelf>` interface.
 
 ##### `Min` (`T?`) property
-The minimum value that is acceptable. If null, there is no minimum value.
 The minimum acceptable value. If null (the default), no minimum is checked. 
 
 ##### `Max` (`T?`) property
-The maximum value that is acceptable. If null, there is no maximum value.
 The maximum acceptable value. If null (the default), no maximum is checked.
 
 
@@ -76,10 +74,10 @@ Prompts for the entry of a date value. Returns a `DateOnly?` structure containin
 Represents arguments used by the `Input.Date()` method to collect a date (`DateOnly`) value from the user.
 
 ##### `Min` (`DateOnly?`) property
-The minimum time value that is acceptable. If null, there is no minimum value.
+The minimum date value that is acceptable. If null, there is no minimum value.
 
 ##### `Max` (`DateOnly?`) property
-The maximum time value that is acceptable. If null, there is no maximum value.
+The maximum date value that is acceptable. If null, there is no maximum value.
 
 ##### `ParseFunction` (`InputEntryParseDelegate<DateOnly>`) property
 A delegate that is used to parse the string entered by the user into a `DateOnly` object. The default is the `DateOnly.TryParse(string?, out DateOnly)` method. This can be set to a custom function to accomodate additional specific parsing requirements.
