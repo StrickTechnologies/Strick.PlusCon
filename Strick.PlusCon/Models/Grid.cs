@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
+using System.Reflection;
 
 using static Strick.PlusCon.Helpers;
 
@@ -384,5 +386,60 @@ public class Grid
 	{
 		Cursor.MoveDown();
 		Console.CursorLeft = left;
+	}
+}
+
+
+public class Grid<T> : Grid
+{
+	public Grid()
+	{
+		foreach (var prop in GetPropertyInfos())
+		{
+			Columns.Add(prop.Name);
+			if(IsNumeric(prop.PropertyType))
+			{
+				Columns[^1].CellLayout.HorizontalAlignment = HorizontalAlignment.Right;
+			}	
+		}
+	}
+
+	public Grid(IEnumerable<T> rowContent):this()
+	{
+		AddRows(rowContent);
+	}
+
+
+	public void AddRows(IEnumerable<T> rowContent)
+	{ 
+		foreach(T obj in rowContent)
+		{ AddRow(obj); }
+	}
+
+	public void AddRow(T rowContent)
+	{
+		if (rowContent != null)
+		{
+			var row = AddRow();
+			int i = 0;
+			foreach (var prop in GetPropertyInfos())
+			{
+				object? val = prop.GetValue(rowContent);
+				row.Cells[i].Content = val?.ToString() ?? "";
+				i++;
+			}
+		}
+	}
+
+
+	protected IEnumerable<PropertyInfo> GetPropertyInfos()
+	{
+		return typeof(T).GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+	}
+
+	protected static bool IsNumeric(Type type)
+	{
+		var numType = typeof(INumber<>);
+		return type.GetInterfaces().Any(i => i.IsGenericType && (i.GetGenericTypeDefinition() == numType));
 	}
 }

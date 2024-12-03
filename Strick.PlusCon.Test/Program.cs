@@ -57,6 +57,7 @@ internal class Program
 		Menu gridMenu = new PCMenu("Grid Menu");
 		gridMenu.Options.Add(new("Show test grid", 'G', GridTest));
 		gridMenu.Options.Add(new("Show test grid 2", '2', GridTest2));
+		gridMenu.Options.Add(new("Generic Grid test", '3', GridTest3));
 
 		Menu colorsMenu = new PCMenu("Colors Menu");
 		colorsMenu.Add(new("Show Named Greens  ", 'G', ShowGreens));
@@ -734,6 +735,32 @@ internal class Program
 		CLS();
 		g.Show();
 		RK();
+	}
+
+	private static void GridTest3()
+	{
+		WL();
+		WL();
+		var gw = new Grid<Widget>(Widget.AllWidgets());
+		//gw.AddRow(Widget.SmallWidget());
+		//gw.AddRow(Widget.MediumWidget());
+		//gw.AddRow(Widget.LargeWidget());
+		gw.Show();
+
+		//WL();
+		//var gi = new Grid<int>();
+
+		//WL();
+		//var gs = new Grid<string>();
+
+		//WL();
+		//var gd = new Grid<DateTime>();
+
+		//WL();
+		//var gt = new Grid<TimeOnly>();
+
+		//WL();
+		Input.Any(null, new(Color.Gray));
 	}
 
 
