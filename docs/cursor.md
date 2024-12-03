@@ -14,7 +14,7 @@ Moves the cursor position to the bottom row of the console buffer.
 
 #### MoveVertical
 Moves the cursor position vertically (up -- toward the top, or down -- toward the bottom) 
-within the <see cref="Console"/> buffer by the number of rows indicated 
+within the `Console` buffer by the number of rows indicated 
 by the "rows" argument.
 
 The "rows parameter is an integer value indicating the number of rows to move the 
