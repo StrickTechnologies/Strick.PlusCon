@@ -392,49 +392,59 @@ public class Grid
 
 public class Grid<T> : Grid
 {
-	public Grid()
+	public Grid(bool autoGenerateColumns)
 	{
-		foreach (var prop in GetPropertyInfos())
-		{
-			Columns.Add(prop.Name);
-			if(IsNumeric(prop.PropertyType))
-			{
-				Columns[^1].CellLayout.HorizontalAlignment = HorizontalAlignment.Right;
-			}	
-		}
+		if (autoGenerateColumns)
+		{ GenerateColumns(); }
 	}
 
-	public Grid(IEnumerable<T> rowContent):this()
+	public Grid(IEnumerable<T> rowContent) : this(true)
 	{
 		AddRows(rowContent);
 	}
 
 
 	public void AddRows(IEnumerable<T> rowContent)
-	{ 
-		foreach(T obj in rowContent)
+	{
+		foreach (T obj in rowContent)
 		{ AddRow(obj); }
 	}
 
 	public void AddRow(T rowContent)
 	{
+		var row = AddRow();
+
 		if (rowContent != null)
 		{
-			var row = AddRow();
-			int i = 0;
-			foreach (var prop in GetPropertyInfos())
+			var type = typeof(T);
+			foreach (GridColumn col in Columns.Where(c => !string.IsNullOrEmpty(c.Name)))
 			{
-				object? val = prop.GetValue(rowContent);
-				row.Cells[i].Content = val?.ToString() ?? "";
-				i++;
+				var val = type.GetProperty(col.Name!, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public)?.GetValue(rowContent);
+				if (val != null)
+				{
+					row.Cells[col.Index].Content = val.ToString();
+				}
 			}
 		}
 	}
 
 
+	private void GenerateColumns()
+	{
+		foreach (var prop in GetPropertyInfos())
+		{
+			var col = Columns.Add(prop.Name);
+			col.Name = prop.Name;
+			if (IsNumeric(prop.PropertyType))
+			{
+				col.CellLayout.HorizontalAlignment = HorizontalAlignment.Right;
+			}
+		}
+	}
+
 	protected IEnumerable<PropertyInfo> GetPropertyInfos()
 	{
-		return typeof(T).GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+		return typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
 	}
 
 	protected static bool IsNumeric(Type type)

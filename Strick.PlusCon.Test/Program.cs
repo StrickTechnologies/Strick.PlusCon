@@ -742,10 +742,25 @@ internal class Program
 		WL();
 		WL();
 		var gw = new Grid<Widget>(Widget.AllWidgets());
+		//gw.Columns.Add("id").Name = "id";
+		//gw.Columns.Add("fooey").Name = "fooey";
+		//gw.AddRow(new Widget(88, "Super Widget", 99.97m));
+		//gw.AddRow(new Widget(99, null!, 149.98m));
+		//gw.AddRow(null!);
 		//gw.AddRow(Widget.SmallWidget());
 		//gw.AddRow(Widget.MediumWidget());
 		//gw.AddRow(Widget.LargeWidget());
 		gw.Show();
+		Input.Any(null, new(Color.Gray));
+		WL();
+
+		gw = new(false);
+		gw.Columns.Add(nameof(Widget.Name)).Name = nameof(Widget.Name);
+		gw.Columns.Add(nameof(Widget.Price)).Name = nameof(Widget.Price);
+		gw.AddRows(Widget.AllWidgets());
+		gw.Show();
+		Input.Any(null, new(Color.Gray));
+
 
 		//WL();
 		//var gi = new Grid<int>();
@@ -760,7 +775,6 @@ internal class Program
 		//var gt = new Grid<TimeOnly>();
 
 		//WL();
-		Input.Any(null, new(Color.Gray));
 	}
 
 
