@@ -112,7 +112,7 @@ public class GridRow
 	/// Returns true if the row has at least one cell (i.e. the grid has at least one column), otherwise false. 
 	/// If true, the <see cref="Cells"/> property will contain at least one element.
 	/// </summary>
-	public bool HasCells => Cells.Any();
+	public bool HasCells => Cells.Count > 0;
 
 
 	internal void RemoveCellAt(int index)
@@ -196,7 +196,7 @@ public class GridRow
 	{
 		var cells = Find(searchExpression);
 		if (cells == null)
-		{ return Enumerable.Empty<GridColumn>(); }
+		{ return []; }
 
 		return cells.Select(cell => cell.Column);
 	}

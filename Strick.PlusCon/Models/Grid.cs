@@ -22,7 +22,7 @@ public class Grid
 	public Grid()
 	{
 		Columns = new GridColumns(this);
-		Rows = new List<GridRow>();
+		Rows = [];
 	}
 
 	/// <summary>
@@ -289,10 +289,10 @@ public class Grid
 	/// <exception cref="InvalidOperationException"></exception>
 	public void Show()
 	{
-		if (Columns == null || !Columns.Any())
+		if (Columns == null || Columns.Count == 0)
 		{ throw new InvalidOperationException("Displaying a grid with no columns is somewhat pointless. You should add columns first."); }
 
-		if (Rows == null || !Rows.Any())
+		if (Rows == null || Rows.Count == 0)
 		{ throw new InvalidOperationException("Displaying a grid with no rows is somewhat pointless. You should add rows first."); }
 
 		int row = Console.CursorTop;

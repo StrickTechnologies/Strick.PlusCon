@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Strick.PlusCon.Models;
+﻿using Strick.PlusCon.Models;
 using Strick.PlusCon.Test.Models;
 
 using static Strick.PlusCon.Test.Expectations;
@@ -676,7 +674,7 @@ public class GridTests
 		Assert.AreEqual(expectedContentWidth, col.ContentWidth);
 		Assert.AreEqual(expectedTotalWidth, col.TotalWidth);
 
-		Assert.AreEqual(col.Grid.Rows.Any(), col.HasCells);
+		Assert.AreEqual(col.Grid.Rows.Count > 0, col.HasCells);
 		Assert.AreEqual(col.Grid.RowCount, col.Cells.Count());
 
 		if (!string.IsNullOrEmpty(expectedHeaderText))

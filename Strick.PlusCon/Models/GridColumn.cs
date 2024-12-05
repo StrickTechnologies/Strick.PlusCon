@@ -55,8 +55,8 @@ public class GridColumn
 	{
 		get
 		{
-			if (Grid == null || Grid.Rows == null || !Grid.Rows.Any())
-			{ return Enumerable.Empty<GridCell>(); }
+			if (Grid == null || Grid.Rows.Count == 0)
+			{ return []; }
 
 			int x = Index;
 			return Grid.Rows.Select(r => r.Cells[x]);
@@ -67,7 +67,7 @@ public class GridColumn
 	/// Returns true if the column has at least one cell (i.e. the grid has at least one row), otherwise false. 
 	/// If true, the <see cref="Cells"/> property will contain at least one element.
 	/// </summary>
-	public bool HasCells => Grid.Rows.Any();
+	public bool HasCells => Grid.Rows.Count > 0;
 
 
 	/// <summary>
@@ -205,7 +205,7 @@ public class GridColumn
 	{
 		var cells = Find(searchExpression);
 		if (cells == null)
-		{ return Enumerable.Empty<GridRow>(); }
+		{ return []; }
 
 		return cells.Select(cell => cell.Row);
 	}

@@ -17,26 +17,27 @@ public class GridColumns : IReadOnlyList<GridColumn>
 		Grid = g;
 	}
 
-	private readonly List<GridColumn> cols = new List<GridColumn>();
-	
+	private readonly List<GridColumn> cols = [];
+
 	/// <summary>
-	/// The <see cref="Grid"/> object these columns belong to.
+	/// The <see cref="Models.Grid"/> object these columns belong to.
 	/// </summary>
 	public Grid Grid { get; }
+
 
 	#region IREADONLYLIST
 
 	/// <inheritdoc/>
-	public GridColumn this[int index] => ((IReadOnlyList<GridColumn>)cols)[index];
+	public GridColumn this[int index] => cols[index];
 
 	/// <inheritdoc/>
-	public int Count => ((IReadOnlyCollection<GridColumn>)cols).Count;
+	public int Count => cols.Count;
 
 	/// <inheritdoc/>
-	public IEnumerator<GridColumn> GetEnumerator() => ((IEnumerable<GridColumn>)cols).GetEnumerator();
+	public IEnumerator<GridColumn> GetEnumerator() => cols.GetEnumerator();
 
 	/// <inheritdoc/>
-	IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)cols).GetEnumerator();
+	IEnumerator IEnumerable.GetEnumerator() => cols.GetEnumerator();
 
 	#endregion IREADONLYLIST
 
@@ -94,8 +95,7 @@ public class GridColumns : IReadOnlyList<GridColumn>
 	/// <exception cref="ArgumentNullException"></exception>
 	public bool Remove(GridColumn col)
 	{
-		if (col == null)
-		{ throw new ArgumentNullException(nameof(col)); }
+		ArgumentNullException.ThrowIfNull(col, nameof(col));
 
 		var x = cols.IndexOf(col);
 		if (x == -1)
