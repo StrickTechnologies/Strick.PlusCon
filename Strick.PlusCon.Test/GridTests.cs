@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Strick.PlusCon.Models;
+using Strick.PlusCon.Test.Models;
 
 using static Strick.PlusCon.Test.Expectations;
 
@@ -214,6 +215,53 @@ public class GridTests
 		CheckGridState(g, 3, 0);
 		CheckColumnState(c3, 2, "c3", 2, 2, 4);
 		Assert.AreEqual(HorizontalAlignment.Center, c3.CellLayout.HorizontalAlignment);
+	}
+
+	[TestMethod]
+	public void ColName()
+	{
+		Grid g = new Grid();
+		Assert.IsNotNull(g);
+
+		GridColumn colId = g.AddColumn(nameof(Widget.Id));
+		Assert.IsNotNull(colId);
+		Assert.AreEqual(colId, g.Columns[0]);
+		Assert.IsNull(colId.Name);
+		Assert.AreEqual(null, g.Columns[nameof(Widget.Id)]);
+		Assert.AreEqual(null, g.Columns.ByName(nameof(Widget.Id)));
+		colId.Name = nameof(Widget.Id);
+		Assert.AreEqual("Id", colId.Name);
+		Assert.AreEqual(colId, g.Columns[nameof(Widget.Id)]);
+		Assert.AreEqual(colId, g.Columns.ByName(nameof(Widget.Id)));
+
+		GridColumn colName = g.AddColumn(nameof(Widget.Name));
+		Assert.IsNotNull(colName);
+		Assert.AreEqual(colName, g.Columns[1]);
+		Assert.IsNull(colName.Name);
+		Assert.AreEqual(null, g.Columns[nameof(Widget.Name)]);
+		Assert.AreEqual(null, g.Columns.ByName(nameof(Widget.Name)));
+		colName.Name = nameof(Widget.Name);
+		Assert.AreEqual("Name", colName.Name);
+		Assert.AreEqual(colName, g.Columns[nameof(Widget.Name)]);
+		Assert.AreEqual(colName, g.Columns.ByName(nameof(Widget.Name)));
+
+		GridColumn colPrice = g.AddColumn(nameof(Widget.Price));
+		Assert.IsNotNull(colPrice);
+		Assert.AreEqual(colPrice, g.Columns[2]);
+		Assert.IsNull(colPrice.Name);
+		Assert.AreEqual(null, g.Columns[nameof(Widget.Price)]);
+		Assert.AreEqual(null, g.Columns.ByName(nameof(Widget.Price)));
+		colPrice.Name = nameof(Widget.Price);
+		Assert.AreEqual("Price", colPrice.Name);
+		Assert.AreEqual(colPrice, g.Columns[nameof(Widget.Price)]);
+		Assert.AreEqual(colPrice, g.Columns.ByName(nameof(Widget.Price)));
+
+		Assert.AreEqual(null, g.Columns["foo"]);
+		Assert.AreEqual(null, g.Columns.ByName("foo"));
+		Assert.AreEqual(null, g.Columns[""]);
+		Assert.AreEqual(null, g.Columns.ByName(""));
+		Assert.AreEqual(null, g.Columns[null!]);
+		Assert.AreEqual(null, g.Columns.ByName(null!));
 	}
 
 	[TestMethod]

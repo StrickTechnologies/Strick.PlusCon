@@ -39,6 +39,13 @@ public class GridColumn
 	/// </summary>
 	public int Index => Grid.Columns.IndexOf(this);
 
+	/// <summary>
+	/// The name of the column. 
+	/// Can be used to retrieve the <see cref="GridColumn"/> object from the grid's <see cref="Grid.Columns"/> collection via 
+	/// the <see cref="GridColumns.this[string]"/> indexer, or the <see cref="GridColumns.ByName(string)"/> method.
+	/// </summary>
+	public string? Name { get; set; }
+
 
 	/// <summary>
 	/// Returns a sequence containing the <see cref="GridCell"/> objects associated with the column.

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Strick.PlusCon.Models;
@@ -121,5 +122,27 @@ public class GridColumns : IReadOnlyList<GridColumn>
 			foreach (var row in Grid.Rows)
 			{ row.RemoveCellAt(index); }
 		}
+	}
+
+
+	/// <summary>
+	/// <inheritdoc cref="ByName(string)"/>
+	/// </summary>
+	/// <param name="name"><inheritdoc cref="ByName(string)" path="/param[@name='name']"/></param>
+	public GridColumn? this[string name] => ByName(name);
+
+	/// <summary>
+	/// Returns the <see cref="GridColumn"/> object whose <see cref="GridColumn.Name"/> property 
+	/// matches the <paramref name="name"/> argument (case insensitive).
+	/// If the <paramref name="name"/> argument is null (or empty) or no column with a 
+	/// matching name is found, null is returned.
+	/// </summary>
+	/// <param name="name">The name of the column to retrieve</param>
+	public GridColumn? ByName(string name)
+	{
+		if (string.IsNullOrEmpty(name))
+		{ return null; }
+
+		return cols.FirstOrDefault(c => !string.IsNullOrEmpty(c.Name) && c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 	}
 }
