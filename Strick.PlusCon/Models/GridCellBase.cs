@@ -7,7 +7,7 @@ namespace Strick.PlusCon.Models;
 /// <summary>
 /// Represents a cell within a grid
 /// </summary>
-public abstract class GridCellBase
+public abstract class GridCellBase<T>
 {
 	/// <summary>
 	/// The grid the cell belongs to
@@ -28,7 +28,9 @@ public abstract class GridCellBase
 	/// <summary>
 	/// The content of the cell
 	/// </summary>
-	public string? Content { get; set; }
+	public T? Content { get; set; }
+
+	protected string? GetRenderableContent => Content?.ToString();
 
 	/// <summary>
 	/// Returns true if the cell's <see cref="Content"/> property is not null. 
@@ -36,6 +38,7 @@ public abstract class GridCellBase
 	/// to have content, and this property will return true.</para>
 	/// </summary>
 	[MemberNotNullWhen(true, nameof(Content))]
+	[MemberNotNullWhen(true, nameof(GetRenderableContent))]
 	public bool HasContent => Content != null;
 
 	/// <summary>
@@ -109,7 +112,7 @@ public abstract class GridCellBase
 	/// <summary>
 	/// Width (Length) of <see cref="Content"/> property. (0 or more)
 	/// </summary>
-	public int ContentWidth => HasContent ? Content.Length : 0;
+	public int ContentWidth => HasContent ? GetRenderableContent.Length : 0;
 
 	/// <summary>
 	/// The width of the cell. Calculated as <see cref="ContentWidth"/> + left/right padding (<see cref="GridColumn.CellLayout"/>).
@@ -134,7 +137,7 @@ public abstract class GridCellBase
 		{
 			if (HasContent)
 			{
-				string rc = ContentWidth > 0 ? ContentStyleI.StyleText(Content) : "";
+				string rc = ContentWidth > 0 ? ContentStyleI.StyleText(GetRenderableContent) : "";
 				return new string(LayoutI.MarginLeftChar, LayoutI.MarginLeft) + AlignContent(rc) + new string(LayoutI.MarginRightChar, LayoutI.MarginRight);
 			}
 

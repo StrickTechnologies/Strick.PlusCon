@@ -5,6 +5,12 @@ using System.Linq;
 
 namespace Strick.PlusCon.Models;
 
+//public class GridColumn : GridColumn<string?>
+//{
+//	internal GridColumn(Grid grid) : base(grid) { }
+//	internal GridColumn(Grid grid, string headerText) : base(grid, headerText) { }
+//	internal GridColumn(Grid grid, string headerText, HorizontalAlignment alignment) : base(grid, headerText, alignment) { }
+//}
 
 /// <summary>
 /// Represents a column in a <see cref="Grid"/> object.
@@ -43,6 +49,9 @@ public class GridColumn
 	/// The name of the column. 
 	/// Can be used to retrieve the <see cref="GridColumn"/> object from the grid's <see cref="Grid.Columns"/> collection via 
 	/// the <see cref="GridColumns.this[string]"/> indexer, or the <see cref="GridColumns.ByName(string)"/> method.
+	/// <para>
+	/// Also used to bind data to the column. It will be matched up to the property name of objects added to the grid.
+	/// </para>
 	/// </summary>
 	public string? Name { get; set; }
 
@@ -116,7 +125,7 @@ public class GridColumn
 
 
 	/// <summary>
-	/// The Max value of the <see cref="GridCellBase.ContentWidth"/> property of all the column's cells . (0 or more)
+	/// The Max value of the <see cref="GridCellBase{T}.ContentWidth"/> property of all the column's cells . (0 or more)
 	/// </summary>
 	public int ContentWidth
 	{
@@ -131,7 +140,7 @@ public class GridColumn
 	}
 
 	/// <summary>
-	/// The Max value of the <see cref="GridCellBase.CellWidth"/> property of all the column's cells . (0 or more)
+	/// The Max value of the <see cref="GridCellBase{T}.CellWidth"/> property of all the column's cells . (0 or more)
 	/// </summary>
 	public int CellWidth
 	{
@@ -146,7 +155,7 @@ public class GridColumn
 	}
 
 	/// <summary>
-	/// The Max value of the <see cref="GridCellBase.TotalWidth"/> property of all the column's cells . (0 or more)
+	/// The Max value of the <see cref="GridCellBase{T}.TotalWidth"/> property of all the column's cells . (0 or more)
 	/// </summary>
 	public int TotalWidth
 	{

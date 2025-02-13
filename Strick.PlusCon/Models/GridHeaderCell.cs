@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace Strick.PlusCon.Models;
+﻿namespace Strick.PlusCon.Models;
 
 
 /// <summary>
 /// Represents a header cell within a grid column
 /// </summary>
-public class GridHeaderCell : GridCellBase
+public class GridHeaderCell : GridCellBase<string?>
 {
 	/// <summary>
 	/// Creates a new header cell in the column specified by <paramref name="column"/>.
@@ -23,7 +16,7 @@ public class GridHeaderCell : GridCellBase
 	}
 
 	/// <summary>
-	/// <inheritdoc cref="GridCellBase.Grid"/>
+	/// <inheritdoc cref="GridCellBase{T}.Grid"/>
 	/// </summary>
 	public override Grid Grid => Column.Grid;
 
@@ -31,23 +24,23 @@ public class GridHeaderCell : GridCellBase
 	private readonly GridColumn col;
 
 	/// <summary>
-	/// <inheritdoc cref="GridCellBase.Column"/>
+	/// <inheritdoc cref="GridCellBase{T}.Column"/>
 	/// </summary>
 	public override GridColumn Column => col;
 
 	/// <summary>
-	/// <inheritdoc cref="GridCellBase.ColumnIndex"/>
+	/// <inheritdoc cref="GridCellBase{T}.ColumnIndex"/>
 	/// </summary>
 	public override int ColumnIndex => Grid.Columns.IndexOf(Column);
 
 
 	/// <summary>
-	/// <inheritdoc cref="GridCellBase.ContentStyleI"/>
+	/// <inheritdoc cref="GridCellBase{T}.ContentStyleI"/>
 	/// </summary>
 	internal protected override TextStyle ContentStyleI => ContentStyle ?? Grid.ColumnHeaderContentStyle;
 
 	/// <summary>
-	/// <inheritdoc cref="GridCellBase.CellStyleI"/>
+	/// <inheritdoc cref="GridCellBase{T}.CellStyleI"/>
 	/// </summary>
 	internal protected override TextStyle CellStyleI => CellStyle ?? Grid.ColumnHeaderCellStyle;
 

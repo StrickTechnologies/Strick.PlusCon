@@ -86,6 +86,7 @@ public class Grid
 
 	#endregion COLUMNS
 
+	public void AddColumns<T>() => GenerateColumns<T>();
 
 	#region ROWS
 
@@ -161,6 +162,37 @@ public class Grid
 		newRow.Cells.SetFillerChar(fillerChar);
 
 		return newRow;
+	}
+
+
+	public void AddRow<T>(T rowContent)
+	{
+		if (ColumnCount == 0)
+		{
+			GenerateColumns<T>();
+		}
+
+
+		var row = AddRow();
+
+		if (rowContent != null)
+		{
+			var type = typeof(T);
+			foreach (GridColumn col in Columns.Where(c => !string.IsNullOrEmpty(c.Name)))
+			{
+				var val = type.GetProperty(col.Name!, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public)?.GetValue(rowContent);
+				if (val != null)
+				{
+					row.Cells[col.Index].Content = val.ToString();
+				}
+			}
+		}
+	}
+
+	public void AddRows<T>(IEnumerable<T> rowContent)
+	{
+		foreach (T obj in rowContent)
+		{ AddRow(obj); }
 	}
 
 	#endregion ROWS
@@ -387,6 +419,43 @@ public class Grid
 		Cursor.MoveDown();
 		Console.CursorLeft = left;
 	}
+
+
+	internal void GenerateColumns<T>()
+	{
+		foreach (var prop in GetPropertyInfos<T>())
+		{
+			var col = Columns.Add(prop.Name);
+			col.Name = prop.Name;
+			if (IsNumeric(prop.PropertyType))
+			{
+				col.CellLayout.HorizontalAlignment = HorizontalAlignment.Right;
+			}
+		}
+	}
+	internal void GenerateColumns<T>(T obj)
+	{
+		foreach (var prop in GetPropertyInfos<T>())
+		{
+			var col = Columns.Add(prop.Name);
+			col.Name = prop.Name;
+			if (IsNumeric(prop.PropertyType))
+			{
+				col.CellLayout.HorizontalAlignment = HorizontalAlignment.Right;
+			}
+		}
+	}
+
+	internal IEnumerable<PropertyInfo> GetPropertyInfos<T>()
+	{
+		return typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
+	}
+
+	internal bool IsNumeric(Type type)
+	{
+		var numType = typeof(INumber<>);
+		return type.GetInterfaces().Any(i => i.IsGenericType && (i.GetGenericTypeDefinition() == numType));
+	}
 }
 
 
@@ -395,7 +464,7 @@ public class Grid<T> : Grid
 	public Grid(bool autoGenerateColumns)
 	{
 		if (autoGenerateColumns)
-		{ GenerateColumns(); }
+		{ GenerateColumns<T>(); }
 	}
 
 	public Grid(IEnumerable<T> rowContent) : this(true)
@@ -426,30 +495,5 @@ public class Grid<T> : Grid
 				}
 			}
 		}
-	}
-
-
-	private void GenerateColumns()
-	{
-		foreach (var prop in GetPropertyInfos())
-		{
-			var col = Columns.Add(prop.Name);
-			col.Name = prop.Name;
-			if (IsNumeric(prop.PropertyType))
-			{
-				col.CellLayout.HorizontalAlignment = HorizontalAlignment.Right;
-			}
-		}
-	}
-
-	protected IEnumerable<PropertyInfo> GetPropertyInfos()
-	{
-		return typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
-	}
-
-	protected static bool IsNumeric(Type type)
-	{
-		var numType = typeof(INumber<>);
-		return type.GetInterfaces().Any(i => i.IsGenericType && (i.GetGenericTypeDefinition() == numType));
 	}
 }
