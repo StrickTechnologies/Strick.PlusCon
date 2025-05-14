@@ -1,4 +1,8 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Diagnostics.Contracts;
+using System.Drawing;
+using System.Globalization;
+using System.Net.Http.Headers;
 
 using Strick.PlusCon.Models;
 using Strick.PlusCon.Test.Models;
@@ -49,7 +53,7 @@ internal class Program
 		Menu styleMenu = new PCMenu("Style Menu");
 		styleMenu.Add(new("TextStyle tests", 'T', TextStyleTests));
 		styleMenu.Add(new MenuBackOption("back", 'X'));
-		
+
 		Menu rulerMenu = new PCMenu("Ruler Menu");
 		rulerMenu.Add(new("Ruler tests", 'R', RulerTests));
 		rulerMenu.Add(new MenuBackOption("back", 'X'));
@@ -63,6 +67,19 @@ internal class Program
 		colorsMenu.Add(new("Show Named Greens  ", 'G', ShowGreens));
 		colorsMenu.Options[0].Style = new TextStyle(Color.LightGreen, null, Color.DarkGreen) { BackColor = Color.White, Reverse = true };
 		colorsMenu.Add(new MenuOption("color lighten/darken", 'L', BrightenDarkenColors));
+
+		Menu widgetCMenu = new PCMenu("Widget Menu - Classic");
+		widgetCMenu.Add(new("Widget List (C)", 'L', WidgetListClassic));
+		widgetCMenu.Add(new("Widget Annual Sales Summary (C)", 'A', WidgetAnnualClassic));
+		widgetCMenu.Add(new("Widget Annual Sales Detail (C)", 'D', WidgetAnnualDetailClassic));
+		widgetCMenu.Add(new("Widget Quarterly Sales (C)", 'Q', WidgetQuarterlyClassic));
+		Menu widgetGMenu = new PCMenu("Widget Menu - Generic");
+		widgetGMenu.Add(new("Widget List (G)", 'L', WidgetListGeneric));
+		widgetGMenu.Add(new("Widget Annual Sales Summary (G)", 'A', WidgetAnnualGeneric));
+		widgetGMenu.Add(new("Widget Quarterly Sales (G)", 'Q', WidgetQuarterlyGeneric));
+		Menu widgetMenu = new PCMenu("Widget Menu");
+		widgetMenu.Add(new("Widget Tests - Classic Grid", 'C', widgetCMenu));
+		widgetMenu.Add(new("Widget Tests - Generic Grid", 'G', widgetGMenu));
 
 		Menu mainMenu = new PCMenu("Main Menu");
 
@@ -79,6 +96,7 @@ internal class Program
 		mainMenu.Add(new MenuOption("Ruler Menu", 'R', rulerMenu));
 		mainMenu.Add(new MenuOption("Grid Menu", 'G', gridMenu));
 		mainMenu.Add(new MenuOption("Input Menu", 'I', Input_Tests.InteractiveTests.Menu()));
+		mainMenu.Add(new MenuOption("Widget Menu", 'W', widgetMenu));
 		mainMenu.Add(new MenuSeperator(""));
 		mainMenu.Add(new MenuOption("Show Version Info", 'V', ShowVersionInfo));
 		mainMenu.Add(new MenuSeperator("-"));
@@ -586,6 +604,19 @@ internal class Program
 		} while (input != null && !string.IsNullOrEmpty(input));
 	}
 
+
+	private static void ShowGrid(Grid grid, bool wait = true)
+	{
+		WL();
+		WL();
+		grid.Show();
+		if (wait)
+		{
+			Input.Any(null, new(Color.Gray));
+			WL();
+		}
+	}
+
 	private static void GridTest()
 	{
 		Grid g = new();
@@ -739,28 +770,19 @@ internal class Program
 
 	private static void GridTest3()
 	{
-		WL();
-		WL();
 		var gw = new Grid<Widget>(Widget.AllWidgets());
-		//gw.Columns.Add("id").Name = "id";
-		//gw.Columns.Add("fooey").Name = "fooey";
-		//gw.AddRow(new Widget(88, "Super Widget", 99.97m));
-		//gw.AddRow(new Widget(99, null!, 149.98m));
-		//gw.AddRow(null!);
-		//gw.AddRow(Widget.SmallWidget());
-		//gw.AddRow(Widget.MediumWidget());
-		//gw.AddRow(Widget.LargeWidget());
-		gw.Show();
-		Input.Any(null, new(Color.Gray));
-		WL();
+		ShowGrid(gw);
 
 		gw = new(false);
 		gw.Columns.Add(nameof(Widget.Name)).Name = nameof(Widget.Name);
 		gw.Columns.Add(nameof(Widget.Price)).Name = nameof(Widget.Price);
 		gw.AddRows(Widget.AllWidgets());
-		gw.Show();
-		Input.Any(null, new(Color.Gray));
+		ShowGrid(gw);
 
+		gw = new(true);
+		gw.Columns.Add("Nothing");
+		gw.AddRows(Widget.AllWidgets());
+		ShowGrid(gw);
 
 		//WL();
 		//var gi = new Grid<int>();
@@ -777,6 +799,302 @@ internal class Program
 		//WL();
 	}
 
+
+	#region WIDGETS
+
+	private static void WidgetListClassic()
+	{
+		Grid grid = new Grid("Widgets");
+		grid.AddColumn("Id");
+		grid.AddColumn("Name");
+		grid.AddColumn("Price", HorizontalAlignment.Right);
+		foreach (Widget widget in Widget.AllWidgets())
+		{ grid.AddRow(widget.Id, widget.Name, widget.Price.ToString("N2")); }
+
+		ShowGrid(grid);
+	}
+
+	private static void WidgetListGeneric()
+	{
+		var gw = new Grid<Widget>(Widget.AllWidgets());
+		gw.Title = new StyledText("Widgets");
+		gw.Subtitle = new StyledText("Method 1");
+		ShowGrid(gw, false);
+
+		//alternate
+		Grid gwAlt = new Grid("Widgets", "Method 2");
+		gwAlt.AddRows(Widget.AllWidgets());
+		ShowGrid(gwAlt, false);
+
+		//alternate 2
+		gwAlt = new Grid("Widgets", "Method 3");
+		gwAlt.AddColumns<Widget>();
+		//you can change column properties from the defaults here...
+		gwAlt.Columns["Id"]!.Header.HorizontalAlignment = HorizontalAlignment.Center;
+		gwAlt.Columns["Name"]!.Header.HorizontalAlignment = HorizontalAlignment.Center;
+		gwAlt.AddRows(Widget.AllWidgets());
+		ShowGrid(gwAlt);
+	}
+
+
+	private static void WidgetAnnualClassic()
+	{
+		Grid grid = new("Widget Annual Sales", (DateTime.Today.Year - 1).ToString());
+		grid.Columns.Add("Id");
+		grid.Columns.Add("Product");
+		grid.Columns.Add("Price", HorizontalAlignment.Right);
+		grid.Columns.Add("Qty", HorizontalAlignment.Right);
+		grid.Columns.Add("Amount", HorizontalAlignment.Right);
+		var data = Widget.AllWidgets();
+		int totalSales = 0;
+		decimal totalAmount = 0;
+		foreach (Widget widget in data)
+		{
+			var sales = Widget.GetAnnualSales(widget.Id).Sum();
+			totalSales += sales;
+			totalAmount += sales * widget.Price;
+			grid.AddRow(widget.Id, widget.Name, widget.Price, sales, (sales * widget.Price).ToString("N2"));
+		}
+		grid.AddRow(null, "Total", null, totalSales.ToString("N0"), totalAmount.ToString("N2"));
+
+		ShowGrid(grid);
+	}
+
+	private static void WidgetAnnualGeneric()
+	{
+		Grid grid = new("Widget Annual Sales", (DateTime.Today.Year - 1).ToString());
+		var data = Widget.AllWidgets().Select(w => new { w.Id, w.Name, w.Price, Qty = Widget.GetAnnualSales(w.Id).Sum(), Amount = Widget.GetAnnualSales(w.Id).Sum() * w.Price });
+		grid.AddRows(data);
+		grid.AddRow(null, "Total", null, data.Sum(x => x.Qty).ToString("N0"), data.Sum(x => x.Amount).ToString("N2"));
+		ShowGrid(grid);
+	}
+
+
+	private static void WidgetAnnualDetailClassic()
+	{
+		ConsoleSize size = new(new Size(Console.LargestWindowWidth, Console.WindowHeight), new Size(300, Console.WindowHeight), true);
+		WidgetAnnualDetailClassic_H();
+		WidgetAnnualDetailClassic_V();
+		size.Restore();
+	}
+
+	private static void WidgetAnnualDetailClassic_H()
+	{
+		Grid grid = new("Widget Annual Sales Detail");
+		grid.Columns.Add("Id");
+		grid.Columns.Add("Product");
+		grid.Columns.Add("Price", HorizontalAlignment.Right);
+		for (int i = 1; i <= 12; i++)
+		{
+			string month = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(i);
+			grid.Columns.Add($"{month} Qty", HorizontalAlignment.Right);
+			grid.Columns.Add($"{month} Amt", HorizontalAlignment.Right);
+		}
+		grid.Columns.Add("Tot Qty", HorizontalAlignment.Right);
+		grid.Columns.Add("Tot Amt", HorizontalAlignment.Right);
+
+		int[] tQ = new int[12];
+		decimal[] tA = new decimal[12];
+		foreach (Widget widget in Widget.AllWidgets())
+		{
+			var sales = Widget.GetAnnualSales(widget.Id).ToArray();
+			GridRow r = grid.AddRow(widget.Id, widget.Name, widget.Price);
+			int i = 0;
+			foreach (int qty in sales)
+			{
+				r.Cells[(i * 2) + 3].Content = qty.ToString("N0");
+				r.Cells[(i * 2) + 4].Content = (qty * widget.Price).ToString("N2");
+				tQ[i] += qty;
+				tA[i] += qty * widget.Price;
+				i += 1;
+			}
+			r.Cells[^2].Content = sales.Sum().ToString("N0");
+			r.Cells[^1].Content = (sales.Sum() * widget.Price).ToString("N2");
+		}
+		GridRow totalRow = grid.AddRow(null, "Total");
+		for (int i = 0; i < tQ.Length; i++)
+		{
+			totalRow.Cells[(i * 2) + 3].Content = tQ[i].ToString("N0");
+			totalRow.Cells[(i * 2) + 4].Content = tA[i].ToString("N2");
+		}
+		totalRow.Cells[^2].Content = tQ.Sum().ToString("N0");
+		totalRow.Cells[^1].Content = tA.Sum().ToString("N2");
+
+		ShowGrid(grid);
+	}
+
+	private static void WidgetAnnualDetailClassic_V()
+	{
+		//"VERTICAL" VERSION
+		Grid grid = new("Widget Annual Sales Detail");
+		grid.Columns.Add("Month");
+		Dictionary<int, IEnumerable<int>> allSales = new();
+		foreach (var widget in Widget.AllWidgets())
+		{
+			grid.Columns.Add($"{widget.Name}", HorizontalAlignment.Right);
+			grid.Columns.Add("$", HorizontalAlignment.Right);
+			grid.Columns[^1].Header.HorizontalAlignment = HorizontalAlignment.Center;
+			var sales = Widget.GetAnnualSales(widget.Id);
+			allSales.Add(widget.Id, sales);
+		}
+		grid.Columns.Add("Total Q", HorizontalAlignment.Right);
+		grid.Columns.Add("Total $", HorizontalAlignment.Right);
+
+		for (int i = 1; i <= 12; i++)
+		{ grid.AddRow(CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(i)); }
+		grid.AddRow("Total", "...");
+
+		int col = 1;
+		int row = 0;
+		int[] tQ = new int[12];
+		decimal[] tA = new decimal[12];
+		foreach (var widget in Widget.AllWidgets())
+		{
+			var sales = allSales[widget.Id];
+			foreach (int qty in sales)
+			{
+				grid.Columns[col].Cells.ElementAt(row).Content = qty.ToString("N0");
+				grid.Columns[col + 1].Cells.ElementAt(row).Content = (qty * widget.Price).ToString("N2");
+				tQ[row] += qty;
+				tA[row] += qty * widget.Price;
+				row++;
+			}
+			grid.Columns[col].Cells.ElementAt(row).Content = sales.Sum().ToString("N0");
+			grid.Columns[col + 1].Cells.ElementAt(row).Content = (sales.Sum() * widget.Price).ToString("N2");
+			col += 2;
+			row = 0;
+		}
+
+		for (int i = 0; i < tQ.Length; i++)
+		{
+			grid.Columns[^2].Cells.ElementAt(i).Content = tQ[i].ToString("N0");
+			grid.Columns[^1].Cells.ElementAt(i).Content = tA[i].ToString("N2");
+		}
+		grid.Columns[^2].Cells.ToArray()[^1].Content = tQ.Sum().ToString("N0");
+		grid.Columns[^1].Cells.ToArray()[^1].Content = tA.Sum().ToString("N2");
+
+		ShowGrid(grid);
+	}
+
+
+	private static void WidgetQuarterlyClassic()
+	{
+		TextStyle altCol = new(Color.White, Color.FromArgb(96, 96, 96));
+		TextStyle altColHd = new(altCol) { Underline = true };
+		Grid grid = new("Widget Quarterly Sales");
+		grid.Columns.Add("Product");
+		grid.Columns.Add("Price", HorizontalAlignment.Right);
+		grid.Columns.Add("Q1 Qty", HorizontalAlignment.Right);
+		grid.Columns.Add("Q1 $", HorizontalAlignment.Right);
+		grid.Columns.Add("Q2 Qty", HorizontalAlignment.Right);
+		grid.Columns.Add("Q2 $", HorizontalAlignment.Right);
+		grid.Columns.Add("Q3 Qty", HorizontalAlignment.Right);
+		grid.Columns.Add("Q3 $", HorizontalAlignment.Right);
+		grid.Columns.Add("Q4 Qty", HorizontalAlignment.Right);
+		grid.Columns.Add("Q4 $", HorizontalAlignment.Right);
+		grid.Columns[2].CellStyle = altCol;
+		grid.Columns[2].ContentStyle = altCol;
+		grid.Columns[2].Header.CellStyle = altColHd;
+		grid.Columns[2].Header.ContentStyle = altColHd;
+		grid.Columns[2].CellLayout.MarginRight = 0;
+		grid.Columns[2].CellLayout.PaddingRight = 1;
+		grid.Columns[3].CellStyle = altCol;
+		grid.Columns[3].ContentStyle = altCol;
+		grid.Columns[3].Header.CellStyle = altColHd;
+		grid.Columns[3].Header.ContentStyle = altColHd;
+		grid.Columns[3].CellLayout.MarginLeft = 0;
+		grid.Columns[3].CellLayout.PaddingLeft = 1;
+		grid.Columns[6].CellStyle = altCol;
+		grid.Columns[6].ContentStyle = altCol;
+		grid.Columns[6].Header.CellStyle = altColHd;
+		grid.Columns[6].Header.ContentStyle = altColHd;
+		grid.Columns[6].CellLayout.MarginRight = 0;
+		grid.Columns[6].CellLayout.PaddingRight = 1;
+		grid.Columns[7].CellStyle = altCol;
+		grid.Columns[7].ContentStyle = altCol;
+		grid.Columns[7].Header.CellStyle = altColHd;
+		grid.Columns[7].Header.ContentStyle = altColHd;
+		grid.Columns[7].CellLayout.MarginLeft = 0;
+		grid.Columns[7].CellLayout.PaddingLeft = 1;
+
+		foreach (Widget widget in Widget.AllWidgets())
+		{
+			var sales1 = Widget.GetQuarterlySales(widget.Id, 1);
+			var sales2 = Widget.GetQuarterlySales(widget.Id, 2);
+			var sales3 = Widget.GetQuarterlySales(widget.Id, 3);
+			var sales4 = Widget.GetQuarterlySales(widget.Id, 4);
+			grid.AddRow
+			(
+				widget.Name, widget.Price,
+				sales1, (sales1 * widget.Price).ToString("N2"),
+				sales2, (sales2 * widget.Price).ToString("N2"),
+				sales3, (sales3 * widget.Price).ToString("N2"),
+				sales4, (sales4 * widget.Price).ToString("N2")
+			);
+		}
+
+		ShowGrid(grid);
+	}
+
+	private static void WidgetQuarterlyGeneric()
+	{
+		TextStyle altCol = new(Color.White, Color.FromArgb(96, 96, 96));
+		TextStyle altColHd = new(altCol) { Underline = true };
+		Grid grid = new Grid("Widget Quarterly Sales");
+
+		foreach (Widget widget in Widget.AllWidgets())
+		{
+			var Q1_Qty = Widget.GetQuarterlySales(widget.Id, 1);
+			var Q2_Qty = Widget.GetQuarterlySales(widget.Id, 2);
+			var Q3_Qty = Widget.GetQuarterlySales(widget.Id, 3);
+			var Q4_Qty = Widget.GetQuarterlySales(widget.Id, 4);
+			grid.AddRow
+			(new
+			{
+				Product = widget.Name,
+				widget.Price,
+				Q1_Qty,
+				Q1_Amt = Q1_Qty * widget.Price,
+				Q2_Qty,
+				Q2_Amt = Q2_Qty * widget.Price,
+				Q3_Qty,
+				Q3_Amt = Q3_Qty * widget.Price,
+				Q4_Qty,
+				Q4_Amt = Q4_Qty * widget.Price
+			});
+		}
+		grid.Columns[2].CellStyle = altCol;
+		grid.Columns[2].ContentStyle = altCol;
+		grid.Columns[2].Header.CellStyle = altColHd;
+		grid.Columns[2].Header.ContentStyle = altColHd;
+		grid.Columns[2].CellLayout.MarginRight = 0;
+		grid.Columns[2].CellLayout.PaddingRight = 1;
+		grid.Columns[3].CellStyle = altCol;
+		grid.Columns[3].ContentStyle = altCol;
+		grid.Columns[3].Header.CellStyle = altColHd;
+		grid.Columns[3].Header.ContentStyle = altColHd;
+		grid.Columns[3].CellLayout.MarginLeft = 0;
+		grid.Columns[3].CellLayout.PaddingLeft = 1;
+		grid.Columns[6].CellStyle = altCol;
+		grid.Columns[6].ContentStyle = altCol;
+		grid.Columns[6].Header.CellStyle = altColHd;
+		grid.Columns[6].Header.ContentStyle = altColHd;
+		grid.Columns[6].CellLayout.MarginRight = 0;
+		grid.Columns[6].CellLayout.PaddingRight = 1;
+		grid.Columns[7].CellStyle = altCol;
+		grid.Columns[7].ContentStyle = altCol;
+		grid.Columns[7].Header.CellStyle = altColHd;
+		grid.Columns[7].Header.ContentStyle = altColHd;
+		grid.Columns[7].CellLayout.MarginLeft = 0;
+		grid.Columns[7].CellLayout.PaddingLeft = 1;
+
+		ShowGrid(grid);
+	}
+
+	#endregion WIDGETS
+
+
+	#region MENU TESTS
 
 	private static void MenuTestsMenu()
 	{
@@ -923,6 +1241,8 @@ internal class Program
 		menu.TitleAlignment = HorizontalAlignment.Right;
 		menu.Show();
 	}
+
+	#endregion MENU TESTS
 
 
 	class SpecialChar
