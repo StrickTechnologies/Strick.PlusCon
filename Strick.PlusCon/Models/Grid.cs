@@ -425,19 +425,7 @@ public class Grid
 	{
 		foreach (var prop in GetPropertyInfos<T>())
 		{
-			var col = Columns.Add(prop.Name);
-			col.Name = prop.Name;
-			if (IsNumeric(prop.PropertyType))
-			{
-				col.CellLayout.HorizontalAlignment = HorizontalAlignment.Right;
-			}
-		}
-	}
-	internal void GenerateColumns<T>(T obj)
-	{
-		foreach (var prop in GetPropertyInfos<T>())
-		{
-			var col = Columns.Add(prop.Name);
+			var col = Columns.Add(MakeHeaderText(prop.Name));
 			col.Name = prop.Name;
 			if (IsNumeric(prop.PropertyType))
 			{
@@ -446,16 +434,18 @@ public class Grid
 		}
 	}
 
-	internal IEnumerable<PropertyInfo> GetPropertyInfos<T>()
+	internal static IEnumerable<PropertyInfo> GetPropertyInfos<T>()
 	{
 		return typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
 	}
 
-	internal bool IsNumeric(Type type)
+	internal static bool IsNumeric(Type type)
 	{
 		var numType = typeof(INumber<>);
 		return type.GetInterfaces().Any(i => i.IsGenericType && (i.GetGenericTypeDefinition() == numType));
 	}
+
+	internal static string MakeHeaderText(string propName) => propName.Replace("_", " ");
 }
 
 
