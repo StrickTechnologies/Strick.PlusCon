@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Examples
 
 ### Changes/Fixes
-- Update target framework to .Net 8.0 <span class="breaking"></span>
+- Update target framework to .Net 8.0 <span style="font-weight: bold; letter-spacing: .075rem; color: red; background-color: #fff0f0; padding: 0 .25rem;">❗ Breaking</span>
 - Add missing XML comments for `GridSearchExpression` constructor parameters
 - Miscellaneous cleanup, corrections in docs and examples
 - `TextStyle`, `StyledText`
@@ -103,14 +103,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.0]: https://github.com/StrickTechnologies/Strick.PlusCon/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/StrickTechnologies/Strick.PlusCon/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/StrickTechnologies/Strick.PlusCon/releases/tag/v1.0.0
-
-
-<style type="text/css">
-    .breaking::after 
-    { 
-        content: " ❗ Breaking "; 
-        font-weight: bold; letter-spacing: .075rem; 
-        color: red; background-color: #fff0f0; 
-        padding: 0 .25rem; 
-    }
-</style>
