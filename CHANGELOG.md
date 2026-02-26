@@ -1,4 +1,4 @@
-# Changelog
+﻿# Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Examples
 
 ### Changes/Fixes
-- Update target framework to .Net 8.0 :exclamation:<span style='xbackground-color:#f0f0f0; color: red;'>` Breaking `</span>
+- Update target framework to .Net 8.0 <span class="breaking"></span>
 - Add missing XML comments for `GridSearchExpression` constructor parameters
 - Miscellaneous cleanup, corrections in docs and examples
 - `TextStyle`, `StyledText`
@@ -44,7 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `FillerChar` property on `GridCell`
     - `SetFillerChar` extension method for `IEnumerable<GridCell>`
   - `AddSeparatorRow` method on `Grid`
-  - `AddColumn` methods (shortcuts for `Grid.Columns.Add(�)` methods)
+  - `AddColumn` methods (shortcuts for `Grid.Columns.Add(…)` methods)
   - `ShowColumnHeaders` property on `Grid` to control visibility of ALL column headers
 - Menus
   - Now supports multi-column menus (uses `Grid` to render)
@@ -103,3 +103,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.2.0]: https://github.com/StrickTechnologies/Strick.PlusCon/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/StrickTechnologies/Strick.PlusCon/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/StrickTechnologies/Strick.PlusCon/releases/tag/v1.0.0
+
+
+<style type="text/css">
+    .breaking::after 
+    { 
+        content: " ❗ Breaking "; 
+        font-weight: bold; letter-spacing: .075rem; 
+        color: red; background-color: #fff0f0; 
+        padding: 0 .25rem; 
+    }
+</style>
