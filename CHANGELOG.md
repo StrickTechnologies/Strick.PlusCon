@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Examples
 
 ### Changes/Fixes
-- Update target framework to .Net 8.0 <span style="font-weight: bold; letter-spacing: .075rem; color: red; background-color: #fff0f0; padding: 0 .25rem;">❗ Breaking</span>
+- Update target framework to .Net 8.0 **` ❗ Breaking `**
 - Add missing XML comments for `GridSearchExpression` constructor parameters
 - Miscellaneous cleanup, corrections in docs and examples
 - `TextStyle`, `StyledText`
