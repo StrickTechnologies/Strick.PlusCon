@@ -16,6 +16,8 @@ namespace Strick.PlusCon.Models;
 /// </summary>
 public class Grid
 {
+	#region CONSTRUCTORS
+
 	/// <summary>
 	/// Instantiates a new <seealso cref="Grid"/> object
 	/// </summary>
@@ -52,6 +54,8 @@ public class Grid
 		Footer = new StyledText(footer);
 	}
 
+	#endregion CONSTRUCTORS
+
 
 	#region COLUMNS
 
@@ -84,9 +88,12 @@ public class Grid
 	/// <param name="alignment"><inheritdoc cref="GridColumns.Add(string, HorizontalAlignment)" path="/param[@name='alignment']"/></param>
 	public GridColumn AddColumn(string headerText, HorizontalAlignment alignment) => Columns.Add(headerText, alignment);
 
+	public void AddColumns<T>() => GenerateColumns<T>();
+
+	public void AddColumns<T>(T obj) => AddColumns<T>();
+
 	#endregion COLUMNS
 
-	public void AddColumns<T>() => GenerateColumns<T>();
 
 	#region ROWS
 
@@ -446,44 +453,4 @@ public class Grid
 	}
 
 	internal static string MakeHeaderText(string propName) => propName.Replace("_", " ");
-}
-
-
-public class Grid<T> : Grid
-{
-	public Grid(bool autoGenerateColumns)
-	{
-		if (autoGenerateColumns)
-		{ GenerateColumns<T>(); }
-	}
-
-	public Grid(IEnumerable<T> rowContent) : this(true)
-	{
-		AddRows(rowContent);
-	}
-
-
-	public void AddRows(IEnumerable<T> rowContent)
-	{
-		foreach (T obj in rowContent)
-		{ AddRow(obj); }
-	}
-
-	public void AddRow(T rowContent)
-	{
-		var row = AddRow();
-
-		if (rowContent != null)
-		{
-			var type = typeof(T);
-			foreach (GridColumn col in Columns.Where(c => !string.IsNullOrEmpty(c.Name)))
-			{
-				var val = type.GetProperty(col.Name!, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public)?.GetValue(rowContent);
-				if (val != null)
-				{
-					row.Cells[col.Index].Content = val.ToString();
-				}
-			}
-		}
-	}
 }

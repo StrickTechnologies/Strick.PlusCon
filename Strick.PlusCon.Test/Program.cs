@@ -1,8 +1,5 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.Contracts;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Globalization;
-using System.Net.Http.Headers;
 
 using Strick.PlusCon.Models;
 using Strick.PlusCon.Test.Models;
@@ -770,33 +767,20 @@ internal class Program
 
 	private static void GridTest3()
 	{
-		var gw = new Grid<Widget>(Widget.AllWidgets());
+		Grid gw = new Grid();
+		gw.AddRows(Widget.AllWidgets());
 		ShowGrid(gw);
 
-		gw = new(false);
+		gw = new Grid();
 		gw.Columns.Add(nameof(Widget.Name)).Name = nameof(Widget.Name);
 		gw.Columns.Add(nameof(Widget.Price)).Name = nameof(Widget.Price);
 		gw.AddRows(Widget.AllWidgets());
 		ShowGrid(gw);
 
-		gw = new(true);
+		gw = new Grid();
 		gw.Columns.Add("Nothing");
 		gw.AddRows(Widget.AllWidgets());
 		ShowGrid(gw);
-
-		//WL();
-		//var gi = new Grid<int>();
-
-		//WL();
-		//var gs = new Grid<string>();
-
-		//WL();
-		//var gd = new Grid<DateTime>();
-
-		//WL();
-		//var gt = new Grid<TimeOnly>();
-
-		//WL();
 	}
 
 
@@ -816,24 +800,26 @@ internal class Program
 
 	private static void WidgetListGeneric()
 	{
-		var gw = new Grid<Widget>(Widget.AllWidgets());
-		gw.Title = new StyledText("Widgets");
-		gw.Subtitle = new StyledText("Method 1");
+		var gw = new Grid("Widgets", "Method 1");
+		gw.AddRows(Widget.AllWidgets());
 		ShowGrid(gw, false);
 
 		//alternate
-		Grid gwAlt = new Grid("Widgets", "Method 2");
-		gwAlt.AddRows(Widget.AllWidgets());
-		ShowGrid(gwAlt, false);
+		gw = new Grid("Widgets", "Method 2");
+		gw.AddColumns<Widget>();
 
-		//alternate 2
-		gwAlt = new Grid("Widgets", "Method 3");
-		gwAlt.AddColumns<Widget>();
 		//you can change column properties from the defaults here...
-		gwAlt.Columns["Id"]!.Header.HorizontalAlignment = HorizontalAlignment.Center;
-		gwAlt.Columns["Name"]!.Header.HorizontalAlignment = HorizontalAlignment.Center;
-		gwAlt.AddRows(Widget.AllWidgets());
-		ShowGrid(gwAlt);
+		var col = gw.Columns["Id"]!;
+		col.Header.HorizontalAlignment = HorizontalAlignment.Center;
+		col.ContentStyle = new TextStyle(Color.Gray);
+		col = gw.Columns["Name"]!;
+		col.Header.HorizontalAlignment = HorizontalAlignment.Center;
+		col = gw.Columns["Price"]!;
+		col.ContentStyle = new TextStyle(Color.LimeGreen);
+
+		gw.AddRows(Widget.AllWidgets());
+
+		ShowGrid(gw);
 	}
 
 
@@ -866,6 +852,26 @@ internal class Program
 		var data = Widget.AllWidgets().Select(w => new { w.Id, w.Name, w.Price, Qty = Widget.GetAnnualSales(w.Id).Sum(), Amount = Widget.GetAnnualSales(w.Id).Sum() * w.Price });
 		grid.AddRows(data);
 		grid.AddRow(null, "Total", null, data.Sum(x => x.Qty).ToString("N0"), data.Sum(x => x.Amount).ToString("N2"));
+		ShowGrid(grid, false);
+
+		var widgets = Widget.AllWidgets();
+		grid = new();
+		grid.Title = new("Widget Annual Sales (method 2)");
+		grid.Subtitle = new((DateTime.Today.Year - 1).ToString());
+		grid.AddRows(widgets);
+		var salesData = widgets.Select(w => new { Qty = Widget.GetAnnualSales(w.Id).Sum(), Amount = Widget.GetAnnualSales(w.Id).Sum() * w.Price });
+		var t = salesData.ElementAt(0).GetType();
+		grid.AddColumns(salesData.ElementAt(0));
+
+		var colQty = grid.Columns["Qty"] ?? throw new InvalidOperationException("Column 'Qty' not found");
+		var colAmt = grid.Columns["Amount"] ?? throw new InvalidOperationException("Column 'Amount' not found");
+		for (int i = 0; i < salesData.Count(); i++)
+		{
+			colQty.Cells.ElementAt(i).Content = salesData.ElementAt(i).Qty.ToString("N0");
+			colAmt.Cells.ElementAt(i).Content = salesData.ElementAt(i).Amount.ToString("N2");
+		}
+
+		grid.AddRow(null, "Total", null, salesData.Sum(x => x.Qty).ToString("N0"), salesData.Sum(x => x.Amount).ToString("N2"));
 		ShowGrid(grid);
 	}
 
@@ -1042,27 +1048,21 @@ internal class Program
 		TextStyle altColHd = new(altCol) { Underline = true };
 		Grid grid = new Grid("Widget Quarterly Sales");
 
-		foreach (Widget widget in Widget.AllWidgets())
+		var widgets = Widget.AllWidgets().Select(w => new 
 		{
-			var Q1_Qty = Widget.GetQuarterlySales(widget.Id, 1);
-			var Q2_Qty = Widget.GetQuarterlySales(widget.Id, 2);
-			var Q3_Qty = Widget.GetQuarterlySales(widget.Id, 3);
-			var Q4_Qty = Widget.GetQuarterlySales(widget.Id, 4);
-			grid.AddRow
-			(new
-			{
-				Product = widget.Name,
-				widget.Price,
-				Q1_Qty,
-				Q1_Amt = Q1_Qty * widget.Price,
-				Q2_Qty,
-				Q2_Amt = Q2_Qty * widget.Price,
-				Q3_Qty,
-				Q3_Amt = Q3_Qty * widget.Price,
-				Q4_Qty,
-				Q4_Amt = Q4_Qty * widget.Price
-			});
-		}
+			w.Name, w.Price,
+			Q1_Qty = Widget.GetQuarterlySales(w.Id, 1),
+			Q1_Amt = Widget.GetQuarterlySales(w.Id, 1) * w.Price,
+			Q2_Qty = Widget.GetQuarterlySales(w.Id, 2),
+			Q2_Amt = Widget.GetQuarterlySales(w.Id, 2) * w.Price,
+			Q3_Qty = Widget.GetQuarterlySales(w.Id, 3),
+			Q3_Amt = Widget.GetQuarterlySales(w.Id, 3) * w.Price,
+			Q4_Qty = Widget.GetQuarterlySales(w.Id, 4),
+			Q4_Amt = Widget.GetQuarterlySales(w.Id, 4) * w.Price,
+		});
+
+		grid.AddRows(widgets);
+
 		grid.Columns[2].CellStyle = altCol;
 		grid.Columns[2].ContentStyle = altCol;
 		grid.Columns[2].Header.CellStyle = altColHd;
