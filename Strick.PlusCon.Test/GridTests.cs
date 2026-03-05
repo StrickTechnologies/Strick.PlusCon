@@ -36,14 +36,14 @@ public class GridTests
 
 		var col = g.Columns.Add("");
 		CheckGridState(g, 1, 0);
-		CheckColumnState(col, 0, null, 0, 0, 2);
+		CheckColumnState(col, 0, null, null, 0, 0, 2);
 		Assert.AreEqual(2, g.Width); //2=margins
 
 		Assert.ThrowsException<InvalidOperationException>(() => g.Show()); //no rows
 
 		col = g.Columns.Add("foo");
 		CheckGridState(g, 2, 0);
-		CheckColumnState(col, 1, "foo", 3, 3, 5);
+		CheckColumnState(col, 1, null, "foo", 3, 3, 5);
 		Assert.AreEqual(7, g.Width);
 
 
@@ -92,6 +92,61 @@ public class GridTests
 	}
 
 	[TestMethod]
+	public void Constructors()
+	{
+		Grid? g;
+		string? title = null;
+		string? subtitle = null;
+		string? footer = null;
+
+		g = new Grid();
+		CheckGridState(g, 0, 0);
+		CheckChromeContent(g, null, null, null);
+
+		g = new Grid(title!);
+		CheckGridState(g, 0, 0);
+		CheckChromeContent(g, null, null, null);
+
+		title = "";
+		g = new Grid(title);
+		CheckGridState(g, 0, 0);
+		CheckChromeContent(g, "", null, null);
+
+		title = "foo";
+		g = new Grid(title);
+		CheckGridState(g, 0, 0);
+		CheckChromeContent(g, "foo", null, null);
+
+		g = new Grid(title, subtitle!);
+		CheckGridState(g, 0, 0);
+		CheckChromeContent(g, "foo", null, null);
+
+		subtitle = "";
+		g = new Grid(title, subtitle);
+		CheckGridState(g, 0, 0);
+		CheckChromeContent(g, "foo", "", null);
+
+		subtitle = "bar";
+		g = new Grid(title, subtitle);
+		CheckGridState(g, 0, 0);
+		CheckChromeContent(g, "foo", "bar", null);
+
+		g = new Grid(title, subtitle, footer!);
+		CheckGridState(g, 0, 0);
+		CheckChromeContent(g, "foo", "bar", null);
+
+		footer = "";
+		g = new Grid(title, subtitle, footer);
+		CheckGridState(g, 0, 0);
+		CheckChromeContent(g, "foo", "bar", "");
+
+		footer = "baz";
+		g = new Grid(title, subtitle, footer);
+		CheckGridState(g, 0, 0);
+		CheckChromeContent(g, "foo", "bar", "baz");
+	}
+
+	[TestMethod]
 	public void ColManipulation()
 	{
 		Grid g = new Grid();
@@ -99,25 +154,25 @@ public class GridTests
 
 		var c1 = g.Columns.Add("c1");
 		CheckGridState(g, 1, 0);
-		CheckColumnState(c1, 0, "c1", 2, 2, 4);
+		CheckColumnState(c1, 0, null, "c1", 2, 2, 4);
 		var c2 = g.Columns.Add("c2");
 		CheckGridState(g, 2, 0);
-		CheckColumnState(c2, 1, "c2", 2, 2, 4);
+		CheckColumnState(c2, 1, null, "c2", 2, 2, 4);
 		var c3 = g.Columns.Add("c3");
 		CheckGridState(g, 3, 0);
-		CheckColumnState(c3, 2, "c3", 2, 2, 4);
+		CheckColumnState(c3, 2, null, "c3", 2, 2, 4);
 
 		Assert.IsTrue(g.Columns.Remove(c1));
 		CheckGridState(g, 2, 0);
 		Assert.IsFalse(g.Columns.Contains(c1));
-		CheckColumnState(c2, 0, "c2", 2, 2, 4);
-		CheckColumnState(c3, 1, "c3", 2, 2, 4);
+		CheckColumnState(c2, 0, null, "c2", 2, 2, 4);
+		CheckColumnState(c3, 1, null, "c3", 2, 2, 4);
 		Assert.IsFalse(g.Columns.Remove(c1)); //cannot remove column that's not in the collection
 
 		g.Columns.RemoveAt(0);
 		CheckGridState(g, 1, 0);
 		Assert.IsFalse(g.Columns.Contains(c2));
-		CheckColumnState(c3, 0, "c3", 2, 2, 4);
+		CheckColumnState(c3, 0, null, "c3", 2, 2, 4);
 
 		Assert.IsTrue(g.Columns.Remove(c3));
 		CheckGridState(g, 0, 0);
@@ -128,7 +183,7 @@ public class GridTests
 
 		c1 = g.AddColumn("c1");
 		CheckGridState(g, 1, 1);
-		CheckColumnState(c1, 0, "c1", 2, 2, 4);
+		CheckColumnState(c1, 0, null, "c1", 2, 2, 4);
 		CheckRowState(r1, 0, 1);
 		CheckCellState(r1.Cells[0], 0, 0, null, g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
 		r1.Cells[0].Content = "r1-c1";
@@ -136,7 +191,7 @@ public class GridTests
 
 		c2 = g.AddColumn("c2");
 		CheckGridState(g, 2, 1);
-		CheckColumnState(c2, 1, "c2", 2, 2, 4);
+		CheckColumnState(c2, 1, null, "c2", 2, 2, 4);
 		CheckRowState(g.Rows[0], 0, 2);
 		CheckCellState(r1.Cells[0], 0, 0, "r1-c1", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
 		CheckCellState(r1.Cells[1], 0, 1, null, g.CellStyle, g.CellContentStyle, g.Columns[1].CellLayout);
@@ -163,7 +218,7 @@ public class GridTests
 
 		c3 = g.Columns.Add("c3");
 		CheckGridState(g, 2, 2);
-		CheckColumnState(c3, 1, "c3", 2, 2, 4);
+		CheckColumnState(c3, 1, null, "c3", 2, 2, 4);
 		CheckRowState(r1, 0, 2);
 		CheckRowState(r2, 1, 2);
 		CheckCellState(r1.Cells[0], 0, 0, "r1-c1", g.CellStyle, g.CellContentStyle, g.Columns[0].CellLayout);
@@ -173,7 +228,7 @@ public class GridTests
 
 		Assert.IsTrue(g.Columns.Remove(c1));
 		CheckGridState(g, 1, 2);
-		CheckColumnState(c3, 0, "c3", 2, 2, 4);
+		CheckColumnState(c3, 0, null, "c3", 2, 2, 4);
 		Assert.IsFalse(g.Columns.Contains(c1));
 		Assert.IsFalse(g.Columns.Remove(c1));
 		CheckGridState(g, 1, 2);
@@ -205,14 +260,45 @@ public class GridTests
 		CheckGridState(g, 0, 0);
 		c1 = g.AddColumn();
 		CheckGridState(g, 1, 0);
-		CheckColumnState(c1, 0, null, 0, 0, 2);
+		CheckColumnState(c1, 0, null, null, 0, 0, 2);
 		c2 = g.AddColumn("c2");
 		CheckGridState(g, 2, 0);
-		CheckColumnState(c2, 1, "c2", 2, 2, 4);
+		CheckColumnState(c2, 1, null, "c2", 2, 2, 4);
 		c3 = g.AddColumn("c3", HorizontalAlignment.Center);
 		CheckGridState(g, 3, 0);
-		CheckColumnState(c3, 2, "c3", 2, 2, 4);
+		CheckColumnState(c3, 2, null, "c3", 2, 2, 4);
 		Assert.AreEqual(HorizontalAlignment.Center, c3.CellLayout.HorizontalAlignment);
+	}
+
+	[TestMethod]
+	public void ColManipulationG()
+	{
+		Grid g = new Grid();
+		CheckGridState(g, 0, 0);
+		g.AddColumns<Widget>();
+		CheckGridState(g, 3, 0);
+		CheckColumnState(g.Columns[0], 0, "Id", "Id", 2, 2, 4);
+		CheckColumnState(g.Columns[1], 1, "Name", "Name", 4, 4, 6);
+		CheckColumnState(g.Columns[2], 2, "Price", "Price", 5, 5, 7);
+
+		Widget w = Widget.MediumWidget();
+		g = new Grid();
+		CheckGridState(g, 0, 0);
+
+		g.AddColumns(w);
+		CheckGridState(g, 3, 0);
+		CheckColumnState(g.Columns[0], 0, "Id", "Id", 2, 2, 4);
+		CheckColumnState(g.Columns[1], 1, "Name", "Name", 4, 4, 6);
+		CheckColumnState(g.Columns[2], 2, "Price", "Price", 5, 5, 7);
+
+		var foo = new { bar = 123, baz = "z" };
+		g.AddColumns(foo);
+		CheckGridState(g, 5, 0);
+		CheckColumnState(g.Columns[0], 0, "Id", "Id", 2, 2, 4);
+		CheckColumnState(g.Columns[1], 1, "Name", "Name", 4, 4, 6);
+		CheckColumnState(g.Columns[2], 2, "Price", "Price", 5, 5, 7);
+		CheckColumnState(g.Columns[3], 3, "bar", "bar", 3, 3, 5);
+		CheckColumnState(g.Columns[4], 4, "baz", "baz", 3, 3, 5);
 	}
 
 	[TestMethod]
@@ -270,9 +356,9 @@ public class GridTests
 		var c2 = g.Columns.Add("c2");
 		var c3 = g.Columns.Add("c3");
 		CheckGridState(g, 3, 0);
-		CheckColumnState(c1, 0, "c1", 2, 2, 4);
-		CheckColumnState(c2, 1, "c2", 2, 2, 4);
-		CheckColumnState(c3, 2, "c3", 2, 2, 4);
+		CheckColumnState(c1, 0, null, "c1", 2, 2, 4);
+		CheckColumnState(c2, 1, null, "c2", 2, 2, 4);
+		CheckColumnState(c3, 2, null, "c3", 2, 2, 4);
 
 		var r1 = g.AddRow();
 		CheckGridState(g, 3, 1);
@@ -342,6 +428,45 @@ public class GridTests
 	}
 
 	[TestMethod]
+	public void RowManipulationG()
+	{
+		Grid g = new Grid();
+		Widget w = null!;
+		IEnumerable<Widget> ws = null!;
+		
+		g = new Grid();
+		CheckGridState(g, 0, 0);
+		Assert.ThrowsException<ArgumentNullException>(() => g.AddRow(w));
+		Assert.ThrowsException<ArgumentNullException>(() => g.AddRows(ws));
+		CheckGridState(g, 0, 0);
+
+		ws = Widget.AllWidgets();
+		Assert.IsNotNull(ws);
+		Assert.AreEqual(3, ws.Count());
+
+		w = Widget.SmallWidget();
+		var r = g.AddRow(w);
+		CheckGridState(g, 3, 1);
+		CheckRowState(r, 0, 3);
+		Assert.AreSame(r, g.Rows[0]);
+		r = g.AddRow(Widget.MediumWidget());
+		CheckGridState(g, 3, 2);
+		CheckRowState(r, 1, 3);
+		Assert.AreSame(r, g.Rows[1]);
+
+		g = new Grid();
+		CheckGridState(g, 0, 0);
+		var rs = g.AddRows(Widget.AllWidgets()).ToList();
+		CheckGridState(g, 3, 3);
+		CheckRowState(rs[0], 0, 3);
+		CheckRowState(rs[1], 1, 3);
+		CheckRowState(rs[2], 2, 3);
+		Assert.AreSame(rs[0], g.Rows[0]);
+		Assert.AreSame(rs[1], g.Rows[1]);
+		Assert.AreSame(rs[2], g.Rows[2]);
+	}
+
+	[TestMethod]
 	public void CellRendering()
 	{
 		Grid g = new Grid();
@@ -350,7 +475,7 @@ public class GridTests
 		col1.CellLayout.MarginRight = 0;
 		col1.CellLayout.PaddingLeft = 0;
 		col1.CellLayout.PaddingRight = 0;
-		CheckColumnState(col1, 0, "", 0, 0, 0);
+		CheckColumnState(col1, 0, null, "", 0, 0, 0);
 		CheckColHead(col1, 0, "", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "");
 		var r1 = g.AddRow();
 		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, null, g.CellStyle, g.CellContentStyle, col1.CellLayout, "");
@@ -467,7 +592,7 @@ public class GridTests
 		col1.CellLayout.MarginRight = 0;
 		col1.CellLayout.PaddingLeft = 0;
 		col1.CellLayout.PaddingRight = 0;
-		CheckColumnState(col1, 0, "", 0, 0, 0);
+		CheckColumnState(col1, 0, null, "", 0, 0, 0);
 		CheckColHead(col1, 0, "", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "");
 		var r1 = g.AddRow();
 		CheckCellRendering(col1.Cells.ElementAt(0), 0, 0, null, g.CellStyle, g.CellContentStyle, col1.CellLayout, "");
@@ -571,20 +696,20 @@ public class GridTests
 		g.AddRow("31", "32", "33");
 
 		CheckColHead(col1, 0, "foo", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "foo");
-		CheckColumnState(col1, 0, "foo", 3, 3, 3);
+		CheckColumnState(col1, 0, null, "foo", 3, 3, 3);
 		CheckColHead(col2, 1, "bar", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "bar");
-		CheckColumnState(col2, 1, "bar", 3, 3, 3);
+		CheckColumnState(col2, 1, null, "bar", 3, 3, 3);
 		CheckColHead(col3, 2, "longer", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "longer");
-		CheckColumnState(col3, 2, "longer", 6, 6, 6);
+		CheckColumnState(col3, 2, null, "longer", 6, 6, 6);
 
 		g.ShowColumnHeaders = false;
 
 		CheckColHead(col1, 0, "foo", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "");
-		CheckColumnState(col1, 0, "foo", 2, 2, 2);
+		CheckColumnState(col1, 0, null, "foo", 2, 2, 2);
 		CheckColHead(col2, 1, "bar", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "");
-		CheckColumnState(col2, 1, "bar", 2, 2, 2);
+		CheckColumnState(col2, 1, null, "bar", 2, 2, 2);
 		CheckColHead(col3, 2, "longer", g.ColumnHeaderCellStyle, g.ColumnHeaderContentStyle, col1.CellLayout, "");
-		CheckColumnState(col3, 2, "longer", 2, 2, 2);
+		CheckColumnState(col3, 2, null, "longer", 2, 2, 2);
 	}
 
 	[TestMethod]
@@ -662,7 +787,45 @@ public class GridTests
 		Assert.AreEqual(expectedRowCount, g.Rows.Count);
 	}
 
-	private static void CheckColumnState(GridColumn col, int expectedIndex, string? expectedHeaderText, int expectedCellWidth, int expectedContentWidth, int expectedTotalWidth)
+	private static void CheckChromeContent(Grid g, string? expectedTitle, string? expectedSubtitle, string? expectedFooter)
+	{
+		Assert.IsNotNull(g);
+
+		if (expectedTitle == null)
+		{
+			if (g.Title != null)
+			{ Assert.IsNull(g.Title.Text); }
+		}
+		else
+		{
+			Assert.IsNotNull(g.Title);
+			Assert.AreEqual(expectedTitle, g.Title.Text, true);
+		}
+
+		if (expectedSubtitle == null)
+		{
+			if (g.Subtitle != null)
+			{ Assert.IsNull(g.Subtitle.Text); }
+		}
+		else
+		{
+			Assert.IsNotNull(g.Subtitle);
+			Assert.AreEqual(expectedSubtitle, g.Subtitle.Text, true);
+		}
+
+		if (expectedFooter == null)
+		{
+			if (g.Footer != null)
+			{ Assert.IsNull(g.Footer.Text); }
+		}
+		else
+		{
+			Assert.IsNotNull(g.Footer);
+			Assert.AreEqual(expectedFooter, g.Footer.Text, true);
+		}
+	}
+
+	private static void CheckColumnState(GridColumn col, int expectedIndex, string? expectedName, string? expectedHeaderText, int expectedCellWidth, int expectedContentWidth, int expectedTotalWidth)
 	{
 		Assert.IsNotNull(col);
 		Assert.IsNotNull(col.Grid);
@@ -670,6 +833,7 @@ public class GridTests
 
 		Assert.IsTrue(ReferenceEquals(col, col.Grid.Columns[expectedIndex]));
 		Assert.AreEqual(expectedIndex, col.Index);
+		Assert.AreEqual(expectedName, col.Name);
 		Assert.AreEqual(expectedCellWidth, col.CellWidth);
 		Assert.AreEqual(expectedContentWidth, col.ContentWidth);
 		Assert.AreEqual(expectedTotalWidth, col.TotalWidth);
