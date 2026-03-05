@@ -197,18 +197,20 @@ public class Grid
 	/// If the <see cref="Grid"/> has no columns, columns are generated 
 	/// automatically (see <see cref="AddColumns{T}()"/>).
 	/// </para>
+	/// If the <paramref name="cellContent"/> argument is null, an <see cref="ArgumentNullException"/> is thrown.
 	/// </summary>
 	/// <returns><inheritdoc cref="AddRow()" path="/returns"/></returns>
 	/// 
 	/// <typeparam name="T">The type of the object that provides the data for the new row. Each public property of this type is mapped to a
 	/// corresponding column in the grid by name.</typeparam>
 	/// <param name="cellContent">An object containing the data to populate the new row.</param>
+	/// <exception cref="ArgumentNullException">Thrown if <paramref name="cellContent"/> is null.</exception>
 	public GridRow AddRow<T>(T cellContent)
 	{
+		ArgumentNullException.ThrowIfNull(cellContent, nameof(cellContent));
+
 		if (ColumnCount == 0)
-		{
-			AddColumns<T>();
-		}
+		{ AddColumns<T>(); }
 
 
 		var row = AddRow();
@@ -233,13 +235,24 @@ public class Grid
 	/// Adds rows to the grid, and returns a sequence containing the newly created <see cref="GridRow"/> objects. 
 	/// One row is added for each element in the <paramref name="rowContent"/> argument. 
 	/// <para>See <see cref="AddRow{T}(T)"/> for details on how each row is generated from the elements in <paramref name="rowContent"/>.</para>
+	/// If the <paramref name="rowContent"/> argument is null, an <see cref="ArgumentNullException"/> is thrown.
 	/// </summary>
 	/// <typeparam name="T"><inheritdoc cref="AddRow{T}(T)" path="/typeparam[@name='T']"/></typeparam>
 	/// <param name="rowContent">A seqence consisting of the objects containing the data to populate the new rows.</param>
+	/// <exception cref="ArgumentNullException">Thrown if <paramref name="rowContent"/> is null.</exception>"
 	public IEnumerable<GridRow> AddRows<T>(IEnumerable<T> rowContent)
 	{
+		ArgumentNullException.ThrowIfNull(rowContent, nameof(rowContent));
+
+		if(!rowContent.Any())
+		{ return []; }
+
+		List<GridRow> newRows = [];
+
 		foreach (T obj in rowContent)
-		{ yield return AddRow(obj); }
+		{ newRows.Add(AddRow<T>(obj)); }
+
+		return newRows;
 	}
 
 	#endregion ROWS
