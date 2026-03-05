@@ -12,13 +12,13 @@ internal static class MenuExamples
 {
 	static MenuExamples()
 	{
-		Samples = new List<DocSample>()
-		{
+		Samples =
+		[
 			new DocSample("menu1", "Example - Menu (1)", Ex_Menu_1),
 			new DocSample("menu2", "Example - Menu (2)", Ex_Menu_2),
 			new DocSample("menu3", "Example - Menu Events (3)", Ex_Menu_3),
 			new DocSample("menu4", "Example - Menu Multi-column (4)", Ex_Menu_4),
-		};
+		];
 
 	}
 
@@ -86,7 +86,7 @@ internal static class MenuExamples
 
 		subMenu.Add(new MenuSeperator("-"));
 		subMenu.Add(new MenuBackOption("Return to Example Menu", 'X'));
-		subMenu.Options[subMenu.Options.Count - 1].Style = new(Color.Silver);
+		subMenu.Options[^1].Style = new(Color.Silver);
 
 
 		Menu myMenu = new("Example Menu", " ");
@@ -96,7 +96,7 @@ internal static class MenuExamples
 		myMenu.Add(new MenuOption("Option 2", '2', ExampleMenuOption2));
 		myMenu.Add(new MenuSeperator(""));
 		myMenu.Add(new MenuOption("Submenu", 'S', subMenu));
-		myMenu.Options[myMenu.Options.Count - 1].Style = new(Color.White);
+		myMenu.Options[^1].Style = new(Color.White);
 		myMenu.Add(new MenuSeperator(""));
 
 		myMenu.Show();
@@ -147,7 +147,7 @@ internal static class MenuExamples
 			m.Subtitle = st;
 		}
 		var t = DateTime.Now;
-		st.Text = $"Last refreshed {t.ToString("G")}";
+		st.Text = $"Last refreshed {t:G}";
 		if (t.Second > 29)
 		{ st.Style.ForeColor = Color.Red; }
 		else

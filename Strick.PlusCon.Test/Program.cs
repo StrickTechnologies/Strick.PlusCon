@@ -107,7 +107,7 @@ internal class Program
 
 		MenuOption clock = (MenuOption)sender;
 		//clock.Caption = DateTime.Now.ToString("G");
-		clock.Caption = $"Last refresh: {DateTime.Now.ToString("G")}"; //.Center(50, '*');
+		clock.Caption = $"Last refresh: {DateTime.Now:G}"; //.Center(50, '*');
 	}
 
 	private static void Menu_BeforeShow(object? sender, EventArgs e)
@@ -157,7 +157,7 @@ internal class Program
 	private static void RulerTests()
 	{
 		CLS();
-		Ruler.Colors = new();
+		Ruler.Colors = [];
 		//Ruler.chars[4] = '┼';
 		//Ruler.chars[4] = '*';
 		//Ruler.five.Text = "┼";
@@ -168,21 +168,21 @@ internal class Program
 		Ruler.Colors = null!;
 		WL(Ruler.GetH(Console.WindowWidth - 3));
 		WL(Ruler.GetH(Console.WindowWidth - 3).Gradient(Color.White, Color.Red));
-		Ruler.Colors = ColorUtilities.GetGradientColors(Color.White, Color.Red, 10).ToList();
+		Ruler.Colors = [.. ColorUtilities.GetGradientColors(Color.White, Color.Red, 10)];
 		WL(Ruler.GetH(Console.WindowWidth - 3));
 		WL(Ruler.GetH(Console.WindowWidth - 3).Reverse());
-		Ruler.Colors = ColorUtilities.GetGradientColors(Color.White, Color.Silver, 10).ToList();
+		Ruler.Colors = [.. ColorUtilities.GetGradientColors(Color.White, Color.Silver, 10)];
 		WL(Ruler.GetH(Console.WindowWidth - 3));
 		WL(Ruler.GetH(Console.WindowWidth - 3).Reverse());
 		WL(Ruler.GetH(Console.WindowWidth - 3).Colorize(null, Color.Blue).Reverse());
-		Ruler.Colors = ColorUtilities.GetGradientColors(Color.Gray, Color.White, 10).ToList();
+		Ruler.Colors = [.. ColorUtilities.GetGradientColors(Color.Gray, Color.White, 10)];
 		WL(Ruler.GetH(Console.WindowWidth - 3).Reverse());
 		WL(Ruler.GetH(Console.WindowWidth - 3).Colorize(null, Color.Blue).Reverse());
 		WL(Ruler.GetH(Console.WindowWidth - 3));
 
 		//NumberLine.chars = new char[] { '┌', '─', '┬', '─', '┼', '─', '┬', '─', '┐', };
 		//Ruler.chars = new char[] { '-', '┬', '-', '┼', '─', '┬', '─', '┐', };
-		WL("123456789012345678901234567890".Colorize(new[] { Color.Red, Color.White }));
+		WL("123456789012345678901234567890".Colorize([Color.Red, Color.White]));
 		WL("123456789012345678901234567890".Colorize(ColorUtilities.GetGradientColors(Color.White, Color.Gray, 10)));
 		WL(Ruler.GetH(30));
 		RK();
@@ -934,7 +934,7 @@ internal class Program
 		//"VERTICAL" VERSION
 		Grid grid = new("Widget Annual Sales Detail");
 		grid.Columns.Add("Month");
-		Dictionary<int, IEnumerable<int>> allSales = new();
+		Dictionary<int, IEnumerable<int>> allSales = [];
 		foreach (var widget in Widget.AllWidgets())
 		{
 			grid.Columns.Add($"{widget.Name}", HorizontalAlignment.Right);
@@ -1138,7 +1138,7 @@ internal class Program
 		if (sender is null) return;
 
 		MenuOption option = (MenuOption)sender;
-		option.Caption = $"# of Options ({MenuTests_OptionCount.ToString()})";
+		option.Caption = $"# of Options ({MenuTests_OptionCount})";
 	}
 	private static void MenuTestGetTitleWidth()
 	{
@@ -1168,7 +1168,7 @@ internal class Program
 		if (sender is null) return;
 
 		MenuOption option = (MenuOption)sender;
-		option.Caption = $"Columns ({MenuTests_ColumnCount.ToString()})";
+		option.Caption = $"Columns ({MenuTests_ColumnCount})";
 	}
 	private static void MenuTestGetGutterWidth()
 	{
@@ -1185,7 +1185,7 @@ internal class Program
 		if (sender is null) return;
 
 		MenuOption option = (MenuOption)sender;
-		option.Caption = $"Gutter Width ({MenuTests_GutterWidth.ToString()})";
+		option.Caption = $"Gutter Width ({MenuTests_GutterWidth})";
 	}
 	private static void MenuTestGetRender()
 	{
@@ -1245,35 +1245,32 @@ internal class Program
 	#endregion MENU TESTS
 
 
-	class SpecialChar
+	class SpecialChar(char character, string name, int unicode)
 	{
-		public SpecialChar(char character, string name, int unicode)
-		{
-			Character = character;
-			Name = name;
-			Unicode = unicode;
-		}
-		public char Character { get; }
-		public string Name { get; }
-		public int Unicode { get; }
+		public char Character { get; } = character;
+		public string Name { get; } = name;
+		public int Unicode { get; } = unicode;
 	}
 
 	private static void SpecialChars()
 	{
-		List<SpecialChar> chars = new List<SpecialChar>();
-		chars.Add(new('√', "sq root (251)", 0x221A));
-		chars.Add(new('✓', "check mark", 0x2713));
-		chars.Add(new('✔', "heavy check mark", 0x2714));
-		//checks.Add(new('🗸', "light check mark", 0x1F5F8));
-		chars.Add(new('⍻', "not check mark", 0x237B));
-		chars.Add(new('☑', "box check mark", 0x2611));
-		chars.Add(new('✅', "box heavy check mark", 0x2705));
-		chars.Add(new('•', "bullet", 0x2022)); //bullet is char 07 (bell)
-		chars.Add(new('∙', "bullet operator", 0x2219));
-		chars.Add(new('↔', "left-right arrow", 0x2194));
+		List<SpecialChar> chars =
+		[
+			new('√', "sq root (251)", 0x221A),
+			new('✓', "check mark", 0x2713),
+			new('✔', "heavy check mark", 0x2714),
+			//checks.Add(new('🗸', "light check mark", 0x1F5F8));
+			new('⍻', "not check mark", 0x237B),
+			new('☑', "box check mark", 0x2611),
+			new('✅', "box heavy check mark", 0x2705),
+			new('•', "bullet", 0x2022), //bullet is char 07 (bell)
+			new('∙', "bullet operator", 0x2219),
+			new('↔', "left-right arrow", 0x2194),
+		];
+
 		foreach (SpecialChar chk in chars)
 		{
-			WL($"{chk.Character.ToString()} {(char)chk.Unicode} {chk.Name}");
+			WL($"{chk.Character} {(char)chk.Unicode} {chk.Name}");
 		}
 		//WL($"X:{EscapeCodes.Escape}^{chars[6].Character}{"\x1b^\x07"}");
 	}
