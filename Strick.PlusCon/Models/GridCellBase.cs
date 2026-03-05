@@ -25,11 +25,16 @@ public abstract class GridCellBase<T>
 	public abstract int ColumnIndex { get; }
 
 
+	#region CONTENT
+	
 	/// <summary>
 	/// The content of the cell
 	/// </summary>
 	public T? Content { get; set; }
 
+	/// <summary>
+	/// Returns the cell's content ready to be rendered for display within the grid.
+	/// </summary>
 	protected string? GetRenderableContent => Content?.ToString();
 
 	/// <summary>
@@ -40,6 +45,26 @@ public abstract class GridCellBase<T>
 	[MemberNotNullWhen(true, nameof(Content))]
 	[MemberNotNullWhen(true, nameof(GetRenderableContent))]
 	public bool HasContent => Content != null;
+
+	/// <summary>
+	/// Returns the cell's content rendered for display within the grid (all text styling, cell styling, filler, padding and margins applied)
+	/// </summary>
+	internal virtual string RenderedContent
+	{
+		get
+		{
+			if (HasContent)
+			{
+				string rc = ContentWidth > 0 ? ContentStyleI.StyleText(GetRenderableContent) : "";
+				return new string(LayoutI.MarginLeftChar, LayoutI.MarginLeft) + AlignContent(rc) + new string(LayoutI.MarginRightChar, LayoutI.MarginRight);
+			}
+
+			return new string(LayoutI.MarginLeftChar, LayoutI.MarginLeft) + CellStyleI.StyleText(new string(FillerChar, Column.CellWidth)) + new string(LayoutI.MarginRightChar, LayoutI.MarginRight);
+		}
+	}
+
+	#endregion CONTENT
+
 
 	/// <summary>
 	/// The character used for "filler" when the cell is rendered for display in the grid. 
@@ -127,23 +152,6 @@ public abstract class GridCellBase<T>
 	/// </summary>
 	public int TotalWidth => CellWidth + LayoutI.MarginLeft + LayoutI.MarginRight;
 
-
-	/// <summary>
-	/// Returns the cell's content rendered for display within the grid (all text styling, cell styling, filler, padding and margins applied)
-	/// </summary>
-	internal virtual string RenderedContent
-	{
-		get
-		{
-			if (HasContent)
-			{
-				string rc = ContentWidth > 0 ? ContentStyleI.StyleText(GetRenderableContent) : "";
-				return new string(LayoutI.MarginLeftChar, LayoutI.MarginLeft) + AlignContent(rc) + new string(LayoutI.MarginRightChar, LayoutI.MarginRight);
-			}
-
-			return new string(LayoutI.MarginLeftChar, LayoutI.MarginLeft) + CellStyleI.StyleText(new string(FillerChar, Column.CellWidth)) + new string(LayoutI.MarginRightChar, LayoutI.MarginRight);
-		}
-	}
 
 	/// <summary>
 	/// Aligns the content within the cell

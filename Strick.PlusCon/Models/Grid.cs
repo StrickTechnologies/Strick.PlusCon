@@ -88,9 +88,21 @@ public class Grid
 	/// <param name="alignment"><inheritdoc cref="GridColumns.Add(string, HorizontalAlignment)" path="/param[@name='alignment']"/></param>
 	public GridColumn AddColumn(string headerText, HorizontalAlignment alignment) => Columns.Add(headerText, alignment);
 
+	/// <summary>
+	/// <inheritdoc cref="GenerateColumns{T}"/>
+	/// </summary>
+	/// <typeparam name="T"><inheritdoc cref="GenerateColumns{T}" path="/typeparam[@name='T']"/></typeparam>
 	public void AddColumns<T>() => GenerateColumns<T>();
 
+	/// <summary>
+	/// <inheritdoc cref="GenerateColumns{T}"/>
+	/// </summary>
+	/// <typeparam name="T"><inheritdoc cref="GenerateColumns{T}" path="/typeparam[@name='T']"/></typeparam>
+	/// <param name="obj">An object of type <typeparamref name="T"/>. This parameter is not used. 
+	/// It is only included to allow for type inference when calling the method.</param>
+#pragma warning disable IDE0060
 	public void AddColumns<T>(T obj) => AddColumns<T>();
+#pragma warning restore IDE0060
 
 	#endregion COLUMNS
 
@@ -109,8 +121,8 @@ public class Grid
 	public int RowCount => Rows.Count;
 
 	/// <summary>
-	/// Adds a new row to the grid. The cells of the row all default to having content = null. 
-	/// The newly created <see cref="GridRow"/> object is returned.
+	/// <para id='summary'>Adds a new row to the grid, and returns the newly created <see cref="GridRow"/> object.</para>
+	/// The cells of the row all default to having their <see cref="GridCellBase{T}.Content"/> property set to <c>null</c>. 
 	/// </summary>
 	/// <returns>The newly created <see cref="GridRow"/> object</returns>
 	public GridRow AddRow()
@@ -121,13 +133,13 @@ public class Grid
 	}
 
 	/// <summary>
-	/// Adds a new row to the grid. 
-	/// The <paramref name="cellContent"/> array maps to the <seealso cref="GridRow.Cells"/> of the row. 
-	/// If the number of elements in <paramref name="cellContent"/> is less than the number of columns in the grid, the remaining cells default to having content = null. 
+	/// <inheritdoc cref="AddRow()" path="/summary/para[@id='summary']"/>
+	/// The <paramref name="cellContent"/> array maps to the <seealso cref="GridRow.Cells"/> of the row by index. 
+	/// If the number of elements in <paramref name="cellContent"/> is less than the number of columns in the grid, the remaining cells 
+	/// default to having their <see cref="GridCellBase{T}.Content"/> property set to <c>null</c>. 
 	/// If the number of elements in <paramref name="cellContent"/> is more than the number of columns in the grid, an exception is thrown.
-	/// The newly created <see cref="GridRow"/> object is returned.
 	/// </summary>
-	/// <returns>The newly created <see cref="GridRow"/> object</returns>
+	/// <returns><inheritdoc cref="AddRow()" path="/returns"/></returns>
 	public GridRow AddRow(params string?[] cellContent)
 	{
 		GridRow r = new(this, cellContent);
@@ -136,14 +148,12 @@ public class Grid
 	}
 
 	/// <summary>
-	/// Adds a new row to the grid. 
-	/// The <paramref name="cellContent"/> array maps to the <seealso cref="GridRow.Cells"/> of the row. 
+	/// <inheritdoc cref="AddRow(string?[])" path="/summary"/>
+	/// <para>
 	/// Values in <paramref name="cellContent"/> that are not strings will be converted to strings using their <see cref="object.ToString"/> method. 
-	/// If the number of elements in <paramref name="cellContent"/> is less than the number of columns in the grid, the remaining cells default to having content = null. 
-	/// If the number of elements in <paramref name="cellContent"/> is more than the number of columns in the grid, an exception is thrown.
-	/// The newly created <see cref="GridRow"/> object is returned.
+	/// </para>
 	/// </summary>
-	/// <returns>The newly created <see cref="GridRow"/> object</returns>
+	/// <returns><inheritdoc cref="AddRow()" path="/returns"/></returns>
 	public GridRow AddRow(params object?[] cellContent)
 	{
 		GridRow r = new(this, cellContent);
@@ -152,16 +162,18 @@ public class Grid
 	}
 
 	/// <summary>
-	/// Adds a new "separator" row to the grid. A separator row is just a normal row with:
+	/// <para id='summary'>Adds a new <i>"separator"</i> row to the grid, and returns the newly created <see cref="GridRow"/> object.</para>
+	/// A separator row is just a normal row with:
 	/// <list type="bullet">
-	/// <item>Each cell's  <see cref="GridCellBase.FillerChar"/> property set to the 
+	/// <item>Each cell's  <see cref="GridCellBase{T}.FillerChar"/> property set to the 
 	/// value of the <paramref name="fillerChar"/> argument.</item>
-	/// <item>Each cell's <see cref="GridCellBase.Content"/> property set to null. 
+	/// <item>Each cell's <see cref="GridCellBase{T}.Content"/> property set to null. 
 	/// Note: the Content property can be set for cells in a separator row, just as in any other row.
 	/// </item>
 	/// </list>
 	/// </summary>
-	/// <param name="fillerChar">foo</param>
+	/// <returns><inheritdoc cref="AddRow()" path="/returns"/></returns>
+	/// <param name="fillerChar">The character to use as the filler in each of the row's cells. See <see cref="GridCellBase{T}.FillerChar"/> for more details.</param>
 	public GridRow AddSeparatorRow(char fillerChar = ' ')
 	{
 		GridRow newRow = new(this);
@@ -172,34 +184,62 @@ public class Grid
 	}
 
 
-	public void AddRow<T>(T rowContent)
+	/// <summary>
+	/// <inheritdoc cref="AddRow()" path="/summary/para[@id='summary']"/>
+	/// The row's cells are populated with data from the <paramref name="cellContent"/> argument 
+	/// by matching the names of the public properties of the <paramref name="cellContent"/> object to the column's <see cref="GridColumn.Name"/> property. 
+	/// The value of each property in the <paramref name="cellContent"/> object is converted to a string using its <see cref="object.ToString"/> method, 
+	/// and that string is used as the content for the corresponding cell in the new row. 
+	/// Properties of the <paramref name="cellContent"/> object that do not have a corresponding column with a matching <see cref="GridColumn.Name"/> are ignored. 
+	/// Columns that do not have a corresponding property in the <paramref name="cellContent"/> object will have their 
+	/// cell's <see cref="GridCellBase{T}.Content"/> property set to <c>null</c>.
+	/// <para>
+	/// If the <see cref="Grid"/> has no columns, columns are generated 
+	/// automatically (see <see cref="AddColumns{T}()"/>).
+	/// </para>
+	/// </summary>
+	/// <returns><inheritdoc cref="AddRow()" path="/returns"/></returns>
+	/// 
+	/// <typeparam name="T">The type of the object that provides the data for the new row. Each public property of this type is mapped to a
+	/// corresponding column in the grid by name.</typeparam>
+	/// <param name="cellContent">An object containing the data to populate the new row.</param>
+	public GridRow AddRow<T>(T cellContent)
 	{
 		if (ColumnCount == 0)
 		{
-			GenerateColumns<T>();
+			AddColumns<T>();
 		}
 
 
 		var row = AddRow();
 
-		if (rowContent != null)
+		if (cellContent != null)
 		{
 			var type = typeof(T);
 			foreach (GridColumn col in Columns.Where(c => !string.IsNullOrEmpty(c.Name)))
 			{
-				var val = type.GetProperty(col.Name!, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public)?.GetValue(rowContent);
+				var val = type.GetProperty(col.Name!, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public)?.GetValue(cellContent);
 				if (val != null)
 				{
 					row.Cells[col.Index].Content = val.ToString();
 				}
 			}
 		}
+
+		return row;
 	}
 
-	public void AddRows<T>(IEnumerable<T> rowContent)
+	/// <summary>
+	/// Adds rows to the grid, and returns a sequence containing the newly created <see cref="GridRow"/> objects. 
+	/// One row is added for each element in the <paramref name="rowContent"/> argument. 
+	/// <para>See <see cref="AddRow{T}(T)"/> for details on how each row is generated from the elements in <paramref name="rowContent"/>.</para>
+	/// </summary>
+	/// <typeparam name="T"><inheritdoc cref="AddRow{T}(T)" path="/typeparam[@name='T']"/></typeparam>
+	/// <param name="rowContent">A seqence consisting of the objects containing the data to populate the new rows.</param>
+	public IEnumerable<GridRow> AddRows<T>(IEnumerable<T> rowContent)
 	{
 		foreach (T obj in rowContent)
-		{ AddRow(obj); }
+		{ yield return AddRow(obj); }
 	}
 
 	#endregion ROWS
@@ -295,18 +335,18 @@ public class Grid
 	/// <para>Can be overridden at the 
 	/// column (<see cref="GridColumn.CellStyle"/>), 
 	/// row (<see cref="GridRow.CellStyle"/>), 
-	/// or cell (<see cref="GridCellBase.CellStyle"/>) level.
+	/// or cell (<see cref="GridCellBase{T}.CellStyle"/>) level.
 	/// </para>
 	/// </summary>
 	public TextStyle CellStyle { get; set; } = new(Color.White);
 
 	/// <summary>
 	/// The text styling to be applied to the content of ALL the grid's cells. 
-	/// This is the cell's "content" (see <see cref="GridCellBase.Content"/>). 
+	/// This is the cell's "content" (see <see cref="GridCellBase{T}.Content"/>). 
 	/// <para>Can be overridden at the 
 	/// column (<see cref="GridColumn.ContentStyle"/>), 
 	/// row (<see cref="GridRow.ContentStyle"/>), 
-	/// or cell (<see cref="GridCellBase.ContentStyle"/>) level.
+	/// or cell (<see cref="GridCellBase{T}.ContentStyle"/>) level.
 	/// </para>
 	/// </summary>
 	public TextStyle CellContentStyle { get; set; } = new(Color.White);
@@ -427,7 +467,13 @@ public class Grid
 		Console.CursorLeft = left;
 	}
 
-
+	/// <summary>
+	/// Generates and adds columns to the <see cref="Columns"/> collection based on the public properties of the specified type.
+	/// <para>Creates a column for each public property of the specified type. Columns corresponding
+	/// to numeric properties are right-aligned.</para>
+	/// <para>New columns are appended to any existing columns in the <see cref="Columns"/> collection.</para>
+	/// </summary>
+	/// <typeparam name="T">The type whose public properties are used to generate columns.</typeparam>
 	internal void GenerateColumns<T>()
 	{
 		foreach (var prop in GetPropertyInfos<T>())

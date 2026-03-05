@@ -14,7 +14,7 @@ public static class GridExtensions
 	/// <summary>
 	/// Searches the <paramref name="cells"/> argument and 
 	/// <span id='rtype'>returns a sequence of <see cref="GridCell"/> objects (or an empty set if no matching cells)</span>
-	/// <span id='desc'>whose <see cref="GridCellBase.Content"/> property 
+	/// <span id='desc'>whose <see cref="GridCellBase{T}.Content"/> property 
 	/// matches the <see cref="GridSearchExpression.Text"/> property of the <paramref name="searchExpression"/> argument. 
 	/// The various properties of the <paramref name="searchExpression"/> argument (<see cref="GridSearchExpression"/>) specify the type of search that is performed.
 	/// </span>
@@ -25,7 +25,7 @@ public static class GridExtensions
 	public static IEnumerable<GridCell> Find(this IEnumerable<GridCell> cells, GridSearchExpression searchExpression)
 	{
 		if (cells == null)
-		{ return Enumerable.Empty<GridCell>(); }
+		{ return []; }
 
 		if (searchExpression == null)
 		{ return cells.Where(cell => cell.Content == null); }
@@ -47,7 +47,7 @@ public static class GridExtensions
 	}
 
 	/// <summary>
-	/// Sets the <see cref="GridCellBase.FillerChar"/> property of each object in the <paramref name="cells"/> sequence 
+	/// Sets the <see cref="GridCellBase{T}.FillerChar"/> property of each object in the <paramref name="cells"/> sequence 
 	/// to the value of the <paramref name="fillerChar"/> argument.
 	/// </summary>
 	/// <param name="cells">A sequence of <see cref="GridCell"/> objects.</param>
