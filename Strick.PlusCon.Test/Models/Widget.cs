@@ -28,11 +28,27 @@ internal record Widget(int Id, string Name, decimal Price)
 	/// The Price of the widget
 	/// </summary>
 	public decimal Price { get; } = Price;
+}
 
 
-	#region STATICS
-
-	#region REPOSITORY
+internal static class WidgetRepository
+{
+	/// <summary>
+	/// Retrieves a widget by its Id.
+	/// </summary>
+	/// <param name="id">The Id of the widget to retrieve.</param>
+	/// <returns>A <see cref="Widget"/> object representing the widget with the specified Id.</returns>
+	/// <exception cref="ArgumentOutOfRangeException"></exception>
+	public static Widget ById(int id)
+	{
+		return id switch
+		{
+			1001 => SmallWidget(),
+			1002 => MediumWidget(),
+			1003 => LargeWidget(),
+			_ => throw new ArgumentOutOfRangeException(nameof(id))
+		};
+	}
 
 	/// <summary>
 	/// Retrieves a small widget.
@@ -49,13 +65,13 @@ internal record Widget(int Id, string Name, decimal Price)
 	/// </summary>
 	public static Widget LargeWidget() => new Widget(1003, "Large Widget", 3.49M);
 
+
 	/// <summary>
 	/// Retrieves a collection of all available widgets.
 	/// </summary>
 	/// <returns>An <see cref="IEnumerable{T}"/> containing all available widgets.</returns>
 	public static IEnumerable<Widget> AllWidgets() => [SmallWidget(), MediumWidget(), LargeWidget()];
 
-	#endregion REPOSITORY
 
 	#region SALES
 
@@ -82,14 +98,12 @@ internal record Widget(int Id, string Name, decimal Price)
 	/// <param name="quarter">The quarter for which sales data is being retrieved.</param>
 	public static int GetQuarterlySales(int widgetId, int quarter)
 	{
-		var sales = Widget.GetAnnualSales(widgetId).ToArray();
+		var sales = GetAnnualSales(widgetId).ToArray();
 		int q1 = (quarter - 1) * 3;
 		int q2 = q1 + 3;
 
 		return sales[q1..q2].Sum();
 	}
-	
-	#endregion SALES
 
-	#endregion STATICS
+	#endregion SALES
 }

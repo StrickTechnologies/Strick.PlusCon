@@ -281,7 +281,7 @@ public class GridTests
 		CheckColumnState(g.Columns[1], 1, "Name", "Name", 4, 4, 6);
 		CheckColumnState(g.Columns[2], 2, "Price", "Price", 5, 5, 7);
 
-		Widget w = Widget.MediumWidget();
+		Widget w = WidgetRepository.MediumWidget();
 		g = new Grid();
 		CheckGridState(g, 0, 0);
 
@@ -440,23 +440,23 @@ public class GridTests
 		Assert.ThrowsException<ArgumentNullException>(() => g.AddRows(ws));
 		CheckGridState(g, 0, 0);
 
-		ws = Widget.AllWidgets();
+		ws = WidgetRepository.AllWidgets();
 		Assert.IsNotNull(ws);
 		Assert.AreEqual(3, ws.Count());
 
-		w = Widget.SmallWidget();
+		w = WidgetRepository.SmallWidget();
 		var r = g.AddRow(w);
 		CheckGridState(g, 3, 1);
 		CheckRowState(r, 0, 3);
 		Assert.AreSame(r, g.Rows[0]);
-		r = g.AddRow(Widget.MediumWidget());
+		r = g.AddRow(WidgetRepository.MediumWidget());
 		CheckGridState(g, 3, 2);
 		CheckRowState(r, 1, 3);
 		Assert.AreSame(r, g.Rows[1]);
 
 		g = new Grid();
 		CheckGridState(g, 0, 0);
-		var rs = g.AddRows(Widget.AllWidgets()).ToList();
+		var rs = g.AddRows(WidgetRepository.AllWidgets()).ToList();
 		CheckGridState(g, 3, 3);
 		CheckRowState(rs[0], 0, 3);
 		CheckRowState(rs[1], 1, 3);

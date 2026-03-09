@@ -324,7 +324,7 @@ internal class InteractiveTests
 	{
 		WL();
 
-		List<Widget> choices = Widget.AllWidgets().ToList();
+		List<Widget> choices = WidgetRepository.AllWidgets().ToList();
 
 		var args = new InputArgumentsSelect<Widget>("Choose a Widget: ", choices) { SelectionOptionStyle = new(Color.White, Color.Red) };
 		Widget? sel = Input.Select(args);

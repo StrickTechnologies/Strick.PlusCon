@@ -768,18 +768,18 @@ internal class Program
 	private static void GridTest3()
 	{
 		Grid gw = new Grid();
-		gw.AddRows(Widget.AllWidgets());
+		gw.AddRows(WidgetRepository.AllWidgets());
 		ShowGrid(gw);
 
 		gw = new Grid();
 		gw.Columns.Add(nameof(Widget.Name)).Name = nameof(Widget.Name);
 		gw.Columns.Add(nameof(Widget.Price)).Name = nameof(Widget.Price);
-		gw.AddRows(Widget.AllWidgets());
+		gw.AddRows(WidgetRepository.AllWidgets());
 		ShowGrid(gw);
 
 		gw = new Grid();
 		gw.Columns.Add("Nothing");
-		gw.AddRows(Widget.AllWidgets());
+		gw.AddRows(WidgetRepository.AllWidgets());
 		ShowGrid(gw);
 	}
 
@@ -792,7 +792,7 @@ internal class Program
 		grid.AddColumn("Id");
 		grid.AddColumn("Name");
 		grid.AddColumn("Price", HorizontalAlignment.Right);
-		foreach (Widget widget in Widget.AllWidgets())
+		foreach (Widget widget in WidgetRepository.AllWidgets())
 		{ grid.AddRow(widget.Id, widget.Name, widget.Price.ToString("N2")); }
 
 		ShowGrid(grid);
@@ -801,7 +801,7 @@ internal class Program
 	private static void WidgetListGeneric()
 	{
 		var gw = new Grid("Widgets", "Method 1");
-		gw.AddRows(Widget.AllWidgets());
+		gw.AddRows(WidgetRepository.AllWidgets());
 		ShowGrid(gw, false);
 
 		//alternate
@@ -817,7 +817,7 @@ internal class Program
 		col = gw.Columns["Price"]!;
 		col.ContentStyle = new TextStyle(Color.LimeGreen);
 
-		gw.AddRows(Widget.AllWidgets());
+		gw.AddRows(WidgetRepository.AllWidgets());
 
 		ShowGrid(gw);
 	}
@@ -831,12 +831,12 @@ internal class Program
 		grid.Columns.Add("Price", HorizontalAlignment.Right);
 		grid.Columns.Add("Qty", HorizontalAlignment.Right);
 		grid.Columns.Add("Amount", HorizontalAlignment.Right);
-		var data = Widget.AllWidgets();
+		var data = WidgetRepository.AllWidgets();
 		int totalSales = 0;
 		decimal totalAmount = 0;
 		foreach (Widget widget in data)
 		{
-			var sales = Widget.GetAnnualSales(widget.Id).Sum();
+			var sales = WidgetRepository.GetAnnualSales(widget.Id).Sum();
 			totalSales += sales;
 			totalAmount += sales * widget.Price;
 			grid.AddRow(widget.Id, widget.Name, widget.Price, sales, (sales * widget.Price).ToString("N2"));
@@ -849,17 +849,17 @@ internal class Program
 	private static void WidgetAnnualGeneric()
 	{
 		Grid grid = new("Widget Annual Sales", (DateTime.Today.Year - 1).ToString());
-		var data = Widget.AllWidgets().Select(w => new { w.Id, w.Name, w.Price, Qty = Widget.GetAnnualSales(w.Id).Sum(), Amount = Widget.GetAnnualSales(w.Id).Sum() * w.Price });
+		var data = WidgetRepository.AllWidgets().Select(w => new { w.Id, w.Name, w.Price, Qty = WidgetRepository.GetAnnualSales(w.Id).Sum(), Amount = WidgetRepository.GetAnnualSales(w.Id).Sum() * w.Price });
 		grid.AddRows(data);
 		grid.AddRow(null, "Total", null, data.Sum(x => x.Qty).ToString("N0"), data.Sum(x => x.Amount).ToString("N2"));
 		ShowGrid(grid, false);
 
-		var widgets = Widget.AllWidgets();
+		var widgets = WidgetRepository.AllWidgets();
 		grid = new();
 		grid.Title = new("Widget Annual Sales (method 2)");
 		grid.Subtitle = new((DateTime.Today.Year - 1).ToString());
 		grid.AddRows(widgets);
-		var salesData = widgets.Select(w => new { Qty = Widget.GetAnnualSales(w.Id).Sum(), Amount = Widget.GetAnnualSales(w.Id).Sum() * w.Price });
+		var salesData = widgets.Select(w => new { Qty = WidgetRepository.GetAnnualSales(w.Id).Sum(), Amount = WidgetRepository.GetAnnualSales(w.Id).Sum() * w.Price });
 		var t = salesData.ElementAt(0).GetType();
 		grid.AddColumns(salesData.ElementAt(0));
 
@@ -901,9 +901,9 @@ internal class Program
 
 		int[] tQ = new int[12];
 		decimal[] tA = new decimal[12];
-		foreach (Widget widget in Widget.AllWidgets())
+		foreach (Widget widget in WidgetRepository.AllWidgets())
 		{
-			var sales = Widget.GetAnnualSales(widget.Id).ToArray();
+			var sales = WidgetRepository.GetAnnualSales(widget.Id).ToArray();
 			GridRow r = grid.AddRow(widget.Id, widget.Name, widget.Price);
 			int i = 0;
 			foreach (int qty in sales)
@@ -935,12 +935,12 @@ internal class Program
 		Grid grid = new("Widget Annual Sales Detail");
 		grid.Columns.Add("Month");
 		Dictionary<int, IEnumerable<int>> allSales = [];
-		foreach (var widget in Widget.AllWidgets())
+		foreach (var widget in WidgetRepository.AllWidgets())
 		{
 			grid.Columns.Add($"{widget.Name}", HorizontalAlignment.Right);
 			grid.Columns.Add("$", HorizontalAlignment.Right);
 			grid.Columns[^1].Header.HorizontalAlignment = HorizontalAlignment.Center;
-			var sales = Widget.GetAnnualSales(widget.Id);
+			var sales = WidgetRepository.GetAnnualSales(widget.Id);
 			allSales.Add(widget.Id, sales);
 		}
 		grid.Columns.Add("Total Q", HorizontalAlignment.Right);
@@ -954,7 +954,7 @@ internal class Program
 		int row = 0;
 		int[] tQ = new int[12];
 		decimal[] tA = new decimal[12];
-		foreach (var widget in Widget.AllWidgets())
+		foreach (var widget in WidgetRepository.AllWidgets())
 		{
 			var sales = allSales[widget.Id];
 			foreach (int qty in sales)
@@ -1023,12 +1023,12 @@ internal class Program
 		grid.Columns[7].CellLayout.MarginLeft = 0;
 		grid.Columns[7].CellLayout.PaddingLeft = 1;
 
-		foreach (Widget widget in Widget.AllWidgets())
+		foreach (Widget widget in WidgetRepository.AllWidgets())
 		{
-			var sales1 = Widget.GetQuarterlySales(widget.Id, 1);
-			var sales2 = Widget.GetQuarterlySales(widget.Id, 2);
-			var sales3 = Widget.GetQuarterlySales(widget.Id, 3);
-			var sales4 = Widget.GetQuarterlySales(widget.Id, 4);
+			var sales1 = WidgetRepository.GetQuarterlySales(widget.Id, 1);
+			var sales2 = WidgetRepository.GetQuarterlySales(widget.Id, 2);
+			var sales3 = WidgetRepository.GetQuarterlySales(widget.Id, 3);
+			var sales4 = WidgetRepository.GetQuarterlySales(widget.Id, 4);
 			grid.AddRow
 			(
 				widget.Name, widget.Price,
@@ -1048,17 +1048,17 @@ internal class Program
 		TextStyle altColHd = new(altCol) { Underline = true };
 		Grid grid = new Grid("Widget Quarterly Sales");
 
-		var widgets = Widget.AllWidgets().Select(w => new 
+		var widgets = WidgetRepository.AllWidgets().Select(w => new 
 		{
 			w.Name, w.Price,
-			Q1_Qty = Widget.GetQuarterlySales(w.Id, 1),
-			Q1_Amt = Widget.GetQuarterlySales(w.Id, 1) * w.Price,
-			Q2_Qty = Widget.GetQuarterlySales(w.Id, 2),
-			Q2_Amt = Widget.GetQuarterlySales(w.Id, 2) * w.Price,
-			Q3_Qty = Widget.GetQuarterlySales(w.Id, 3),
-			Q3_Amt = Widget.GetQuarterlySales(w.Id, 3) * w.Price,
-			Q4_Qty = Widget.GetQuarterlySales(w.Id, 4),
-			Q4_Amt = Widget.GetQuarterlySales(w.Id, 4) * w.Price,
+			Q1_Qty = WidgetRepository.GetQuarterlySales(w.Id, 1),
+			Q1_Amt = WidgetRepository.GetQuarterlySales(w.Id, 1) * w.Price,
+			Q2_Qty = WidgetRepository.GetQuarterlySales(w.Id, 2),
+			Q2_Amt = WidgetRepository.GetQuarterlySales(w.Id, 2) * w.Price,
+			Q3_Qty = WidgetRepository.GetQuarterlySales(w.Id, 3),
+			Q3_Amt = WidgetRepository.GetQuarterlySales(w.Id, 3) * w.Price,
+			Q4_Qty = WidgetRepository.GetQuarterlySales(w.Id, 4),
+			Q4_Amt = WidgetRepository.GetQuarterlySales(w.Id, 4) * w.Price,
 		});
 
 		grid.AddRows(widgets);
