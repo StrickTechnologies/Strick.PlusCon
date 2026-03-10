@@ -17,6 +17,8 @@ internal static class GridExamples
 			new DocSample("grid1", "Example - Grid (1)", Ex_Grid_1),
 			new DocSample("grid2", "Example - Grid (2)", Ex_Grid_2),
 			new DocSample("grid3", "Example - Grid (3)", Ex_Grid_3),
+			new DocSample("grid-gen1", "Example - Grid Generics (1)", Ex_Grid_Gen1),
+			new DocSample("grid-gen2", "Example - Grid Generics (2)", Ex_Grid_Gen2),
 		};
 
 	}
@@ -52,7 +54,9 @@ internal static class GridExamples
 	internal static void Ex_Grid_2()
 	{
 		Grid g = new();
-		g.Title = new("Grid".SpaceOut(), new TextStyle(Color.Silver, Color.Gray, Color.Silver) { BackColor = Color.LimeGreen, Reverse = true });
+		var ts = new TextStyle(Color.Silver, Color.Gray, Color.Silver)
+		{ BackColor = Color.LimeGreen, Reverse = true };
+		g.Title = new("Grid".SpaceOut(), ts);
 		g.Subtitle = new("Example 2 (Styling)", Color.LimeGreen, Color.Gray);
 
 		//set cell/content styling for entire grid
@@ -62,7 +66,8 @@ internal static class GridExamples
 		g.ColumnHeaderCellStyle.Underline = false;
 
 		GridColumn col = g.Columns.Add("C 1");
-		col.Header.HorizontalAlignment = HorizontalAlignment.Center; //override column header alignment
+		//override column header alignment
+		col.Header.HorizontalAlignment = HorizontalAlignment.Center;
 
 		col = g.Columns.Add("Column 2", HorizontalAlignment.Center);
 		//override styling for column
@@ -146,6 +151,36 @@ internal static class GridExamples
 		Console.SetCursorPosition(legendLeft, 7);
 		W(" ", text, grid.CellStyle.BackColor);
 		W(" Cell non content", text, background);
+		RK();
+	}
+
+	internal static void Ex_Grid_Gen1()
+	{
+		var grid = new Grid("Grid".SpaceOut(), "Generics Example 1");
+		//since no columns were added, AddRows will generate them automatically
+		//by calling AddColumns<T>
+		grid.AddRows(WidgetRepository.AllWidgets());
+		grid.Show();
+		RK();
+	}
+
+	internal static void Ex_Grid_Gen2()
+	{
+		var grid = new Grid("Grid".SpaceOut(), "Generics Example 2");
+		grid.AddColumns<Widget>();
+		//don't want Id in this list...
+		grid.Columns.Remove(grid.Columns["Id"]!);
+		grid.AddRows(WidgetRepository.AllWidgets());
+		grid.Show();
+		RK();
+
+		//alternate using anonymous type
+		CLS();
+		grid = new Grid("Grid".SpaceOut(), "Generics Example 2 (alt)");
+		var widgets = WidgetRepository.AllWidgets();
+		var gData = widgets.Select(w => new { w.Name, w.Price });
+		grid.AddRows(gData);
+		grid.Show();
 		RK();
 	}
 }

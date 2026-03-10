@@ -14,10 +14,18 @@ The styling for the titles and footer can also be customized.
 To create a grid, use the `Grid` class. Add columns and rows. 
 Then use the `Show` method to display the grid.
 
-Columns can be added using any of the various `AddColumn` methods or the 
-grid's `Columns` collection. 
-Rows can be added using any of the various `AddRow` methods or the grid's 
-`Rows` collection. 
+Columns can be added using any of the various `AddColumn` methods, 
+the `AddColumns<T>` method, or the grid's `Columns` collection. 
+The `AddColumns<T>` method adds columns based on the public properties 
+of a type or object.
+
+Rows can be added using any of the various `AddRow` methods, 
+the `AddRows<T>` method, or the grid's `Rows` collection. 
+The `AddRow<T>` and `AddRows<T>` methods add rows by matching the 
+public properties of an object to the column names 
+(`GridColumn.Name` property) of the grid. Either method will 
+automatically add columns if the grid has none. 
+
 There is also an `AddSeparatorRow` method that will add a 
 "separator" row to the grid. A separator row is just a normal row with 
 each cell's `FillerChar` property set to the value of the `fillerChar` 
@@ -63,6 +71,10 @@ A column always has a `Cells` collection, which always contains the same number 
 The `HasCells` property returns a boolean indicating whether or not the column has any cells 
 (i.e. whether or not the grid has any rows). *The `Cells` collection is readonly -- to add rows
 to a grid, use the `Rows` collection, or one of the `AddRow` methods of the `Grid` object.*
+
+The optional `Name` property of a column can be used to identify it within the grid. 
+There is an indexer that takes a string argument to return the column with 
+the matching name (e.g., `myGrid.Columns["ColumnName"]`). 
 
 The `GridColumn` class has `Find`, `FindFirst`, `FindRows` and `FindFirstRow` methods 
 that will perform a search of all the columns's cells. 
@@ -220,7 +232,9 @@ RK();
 ### Styling
 ```c#
 Grid g = new();
-g.Title = new("Grid".SpaceOut(), new TextStyle(Color.Silver, Color.Gray, Color.Silver) { BackColor = Color.LimeGreen, Reverse = true });
+var ts = new TextStyle(Color.Silver, Color.Gray, Color.Silver)
+{ BackColor = Color.LimeGreen, Reverse = true };
+g.Title = new("Grid".SpaceOut(), ts);
 g.Subtitle = new("Example 2 (Styling)", Color.LimeGreen, Color.Gray);
 
 //set cell/content styling for entire grid
@@ -230,7 +244,8 @@ g.ColumnHeaderContentStyle.Underline = false;
 g.ColumnHeaderCellStyle.Underline = false;
 
 GridColumn col = g.Columns.Add("C 1");
-col.Header.HorizontalAlignment = HorizontalAlignment.Center; //override column header alignment
+//override column header alignment
+col.Header.HorizontalAlignment = HorizontalAlignment.Center;
 
 col = g.Columns.Add("Column 2", HorizontalAlignment.Center);
 //override styling for column
@@ -256,6 +271,59 @@ g.Show();
 RK();
 ```
 ![Example - Grid 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_grid_2.png)
+
+### Generics
+You can easily create rows and columns in a grid based on types or objects. 
+
+Use `AddColumns<T>` to add columns based on the public properties 
+of a type or object.
+
+Using the `AddRow<T>` or `AddRows<T>` methods will add rows by
+matching the public properties of an object to the column names 
+(`GridColumn.Name` property) of the grid. 
+Either method will automatically add columns if the grid has none. 
+
+```c#
+var grid = new Grid("Grid".SpaceOut(), "Generics Example 1");
+//since no columns were added, AddRows will generate them automatically
+//by calling AddColumns<T>
+grid.AddRows(WidgetRepository.AllWidgets());
+grid.Show();
+RK();
+
+...
+
+public class Widget
+{
+	public int Id { get; set; }
+	public string Name { get; set; }
+	public decimal Price { get; set; }
+}
+```
+
+![Example - Grid Generics 1](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_grid_gen_1.png)
+
+```c#
+var grid = new Grid("Grid".SpaceOut(), "Generics Example 2");
+grid.AddColumns<Widget>();
+//don't want Id in this list...
+grid.Columns.Remove(grid.Columns["Id"]!);
+grid.AddRows(WidgetRepository.AllWidgets());
+grid.Show();
+RK();
+
+//alternate using anonymous type
+CLS();
+grid = new Grid("Grid".SpaceOut(), "Generics Example 2 (alt)");
+var widgets = WidgetRepository.AllWidgets();
+var gData = widgets.Select(w => new { w.Name, w.Price });
+grid.AddRows(gData);
+grid.Show();
+RK();
+```
+
+![Example - Grid Generics 2](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_grid_gen_2-1.png)
+![Example - Grid Generics 2 (anonymous type alternative)](https://raw.githubusercontent.com/StrickTechnologies/Strick.PlusCon/master/SampleImages/ex_grid_gen_2-2.png)
 
 ### Cell Rendering & Layout
 This example illustrates how cells are structured (including content, margins, padding, 

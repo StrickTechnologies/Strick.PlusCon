@@ -9,8 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### New Features
 - Add CHANGELOG.md
-- Grids
+- `Grid`
   - New constructors to take `Title`, `Subtitle`, `Footer` arguments.
+  - New `Name` property on `GridColumn`
+  - New generics features:
+    - Automatically generate columns from an object or type
+    - Automatically generate rows from objects
 - `Input` class, and related
   - `InputArguments` abstract class and derived classes
   - `Range` class
@@ -18,11 +22,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Examples
 
 ### Changes/Fixes
-- Update target framework to .Net 8.0 **` ❗ Breaking `**
+- Update target framework to .Net 8.0 :exclamation: **` Breaking `**
 - Add missing XML comments for `GridSearchExpression` constructor parameters
 - Miscellaneous cleanup, corrections in docs and examples
 - `TextStyle`, `StyledText`
   - Improved null/empty string support
+- Widget refactor - for docs and unit tests
 
 
 ## [1.3.1] - 2024-02-23
